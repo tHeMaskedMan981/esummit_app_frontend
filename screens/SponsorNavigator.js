@@ -7,26 +7,51 @@ import {
 
 import { createBottomTabNavigator,createStackNavigator } from 'react-navigation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import SponsorScreen from './SponsorScreen'
+import { Header, Left, Icon } from "native-base";
+// import SponsorScreen from './SponsorScreen'
 
-export default class AppTabNavigator extends Component {
+// export default class AppTabNavigator extends Component {
+
+//     static navigationOptions = ({ navigation }) => {
+//         return {
+//             title:'Sponsors',
+//             headerLeft: (
+//                 <View style={{ padding: 10 }}>
+//                     <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
+//                 </View>
+//             )
+//         }
+//     }
+//     render() {
+//         return (
+//             <SponsorNavigator screenProps={{ navigation: this.props.navigation }} />
+//         )
+//     }
+// }
+
+class SponsorScreen extends Component {
 
     static navigationOptions = ({ navigation }) => {
-        return {
-            headerLeft: (
-                <View style={{ padding: 10 }}>
-                    <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
-                </View>
-            )
-        }
-    }
+                return {
+                    title:'Sponsors',
+                    headerLeft: (
+                        <View style={{ padding: 10 }}>
+                            <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
+                        </View>
+                    )
+                }
+            }
     render() {
         return (
-            <SponsorNavigator screenProps={{ navigation: this.props.navigation }} />
-        )
+            
+            <View style={styles.container}>
+                <Text>SponsorScreen</Text>
+            </View>
+          
+        );
     }
 }
-
+export default SponsorScreen;
 
 const SponsorNavigator = new createStackNavigator({
     SponsorScreen: {
@@ -42,5 +67,10 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    header: {
+        flex: 1,
+        marginTop:10,
+        backgroundColor:'#fff',
     }
 });

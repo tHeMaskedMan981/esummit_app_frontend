@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import {
     View,
     Text,
-    StyleSheet
+    StyleSheet,
+    Image
 } from "react-native";
 
 import { createBottomTabNavigator } from 'react-navigation'
@@ -17,11 +18,19 @@ export default class AppTabNavigator extends Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
+            title: "Schedule",
             headerLeft: (
                 <View style={{ padding: 10 }}>
                     <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
                 </View>
-            )
+            ),
+            drawerLabel: 'Schedule',
+            drawerIcon: ({ tintColor }) => (
+              <Image
+                source={require('../assets/images/robot-dev.png')}
+                style={styles.icon}
+              />
+        ),
         }
     }
     render() {
@@ -67,5 +76,9 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
-    }
+    },
+    icon: {
+        width: 24,
+        height: 24,
+    },
 });

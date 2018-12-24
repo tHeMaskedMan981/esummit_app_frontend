@@ -2,9 +2,11 @@ import React, { Component } from "react";
 import {
     View,
     Text,
-    StyleSheet
+    StyleSheet,
+    Image
 } from "react-native";
-
+import {StackNavigator, DrawerItems, SafeAreaView } from 'react-navigation'
+import { Container, Content, Icon, Header, Body } from 'native-base'
 import HomeScreen from './HomeScreen';
 // import MyEventScreen from './MyEventScreen';
 // import SpeakerSessions from './SpeakerSessions';
@@ -47,7 +49,24 @@ const DeveloperStackNavigator = new createStackNavigator({
     }
 })
 
+const CustomDrawerContentComponent = (props) => (
 
+    <Container>
+      <Header style={styles.drawerHeader}>
+        <Body style={styles.container}>
+          <Image
+            style={styles.drawerImage}
+            source={require('../assets/images/robot-dev.png')} />
+        </Body>
+      </Header>
+      <Content>
+        <DrawerItems {...props} />
+      </Content>
+  
+    </Container>
+  
+  );
+  
 const AppDrawerNavigator = new createDrawerNavigator({
     HomeScreen: { screen: InnerStackNavigator },
     Schedule: { screen: EventStackNavigator },
@@ -55,7 +74,16 @@ const AppDrawerNavigator = new createDrawerNavigator({
     Helpline: {screen : HelplineStackNavigator},
     Developer: {screen : DeveloperStackNavigator}
 
-})
+    },
+    {
+      initialRouteName: 'HomeScreen',
+      drawerPosition: 'left',
+      contentComponent: CustomDrawerContentComponent,
+      drawerOpenRoute: 'DrawerOpen',
+      drawerCloseRoute: 'DrawerClose',
+      drawerToggleRoute: 'DrawerToggle'
+  }
+)
 
 
 export default AppDrawerNavigator;
@@ -65,5 +93,15 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    drawerHeader: {
+      height: 150,
+      backgroundColor: 'white'
+    },
+    drawerImage: {
+      height: 100,
+      width: 100,
+      borderRadius: 75
     }
+  
 });
