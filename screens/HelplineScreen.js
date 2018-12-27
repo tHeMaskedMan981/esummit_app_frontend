@@ -9,7 +9,8 @@ class HelplineScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>HelplineScreen</Text>
+                <Text>HelplineScreen </Text>
+                <Text>the clan is {this.props.screenProps.clan}</Text>
             </View>
         );
     }

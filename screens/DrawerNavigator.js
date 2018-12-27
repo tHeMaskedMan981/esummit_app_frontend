@@ -18,6 +18,7 @@ import EventTabNavigator from './EventTabNavigator'
 import SponsorNavigator from './SponsorNavigator'
 import HelplineNavigator from './HelplineNavigator'
 import DeveloperNavigator from './DeveloperNavigator'
+import MapNavigator from './MapNavigator'
 
 const InnerStackNavigator = new createStackNavigator({
     TabNavigator: {
@@ -49,6 +50,15 @@ const DeveloperStackNavigator = new createStackNavigator({
     }
 })
 
+const MapStackNavigator = new createStackNavigator({
+    MapNavigator: {
+        screen: MapNavigator,
+        navigationOptions: {
+          header: null
+        }
+    }
+})
+
 const CustomDrawerContentComponent = (props) => (
 
     <Container>
@@ -72,7 +82,8 @@ const AppDrawerNavigator = new createDrawerNavigator({
     Schedule: { screen: EventStackNavigator },
     Sponsors: {screen : SponsorStackNavigator},
     Helpline: {screen : HelplineStackNavigator},
-    Developer: {screen : DeveloperStackNavigator}
+    Developer: {screen : DeveloperStackNavigator},
+    Map: {screen : MapStackNavigator}
 
     },
     {
@@ -85,8 +96,44 @@ const AppDrawerNavigator = new createDrawerNavigator({
   }
 )
 
+export default class AppTabNavigator extends Component {
 
-export default AppDrawerNavigator;
+    constructor(props) {
+        super(props);
+        
+        this.state = {
+          email: '',
+          esummit_id: '',
+          user_name:'',
+          user_id:'',
+    
+        };
+      }
+
+    render() {
+        const { navigation } = this.props;
+        const user_id = navigation.getParam('user_id', 'NO-ID');
+        const user_name = navigation.getParam('user_name', 'some default name');
+        const email = navigation.getParam('email', 'NO-ID');
+        const esummit_id = navigation.getParam('esummit_id', 'NO-ID');
+
+        // this.setState({
+        //     user_name:user_name,
+        //     user_id: user_id,
+        //     email:email,
+        //     esummit_id:esummit_id,
+        // });
+        
+        return (
+            <AppDrawerNavigator screenProps={{ navigation: this.props.navigation,
+                                                user_id:user_id,
+                                                user_name:user_name
+                                             }} />
+        )
+    }
+}
+
+// export default AppDrawerNavigator;
 
 const styles = StyleSheet.create({
     container: {

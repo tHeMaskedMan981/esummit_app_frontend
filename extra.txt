@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage  } from 'react-native';
 
 
-export default class SignUpScreen extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
     
@@ -18,28 +18,26 @@ export default class SignUpScreen extends Component {
     };
   }
   
-
   _storeData = async () => {
   
   let data = this.state.myeventid;
-//   this.setState({myeventid:data});
+  this.setState({myeventid:data});
   data+=1;
   // data+=1;
   this.setState({myeventid:data});
 
-//   var event1 = {id:data, name:'speaker1', venue:'pcsa'};
-//   data+=1;
-//   var event2 = {id:data, name:'speaker2', venue:'pcsa2'};
+  var event1 = {id:data, name:'speaker1', venue:'pcsa'};
+  data+=1;
+  var event2 = {id:data, name:'speaker2', venue:'pcsa2'};
 
-//   this.setState({myevents:event1.name});
-//   var events = [];
-//   events.push(event1);
-//   this.setState({myevents:events[0].name});
-//   events.push(event2);
+  this.setState({myevents:event1.name});
+  var events = [];
+  events.push(event1);
+  this.setState({myevents:events[0].name});
+  events.push(event2);
 
   try {
-    // await AsyncStorage.setItem('myevents',JSON.stringify(events));
-    await AsyncStorage.setItem('myeventid',JSON.stringify(data));
+    await AsyncStorage.setItem('myevents',JSON.stringify(events));
   } catch (error) {
     // Error saving data
       this.setState({email_err:"problem with storage"});
@@ -49,19 +47,15 @@ export default class SignUpScreen extends Component {
 _retrieveData = async () => {
   try {
     this.setState({email_err:"retrieving"});
-    // const value = await AsyncStorage.getItem('myevents');
-    const value = await AsyncStorage.getItem('myeventid');
-    // let retrivedevents = JSON.parse(value);
-    let retrivedid = JSON.parse(value);
+    const value = await AsyncStorage.getItem('myevents');
+    let retrivedevents = JSON.parse(value);
     this.setState({email_err:"retrieving from below"});
     // this.setState({retrieved:retrivedevents[1].name});
     if (!(value == null)) {
       // We have data!!
       // console.log(value);
-    //   this.setState({retrieved:retrivedevents[1].name});
-    this.setState({retrieved:retrivedid});
-    this.setState({myeventid:retrivedid});
-    this.setState({email_err:"retrieving inside function"});
+      this.setState({retrieved:retrivedevents[1].name});
+      this.setState({email_err:"retrieving inside function"});
     }
    } catch (error) {
      // Error retrieving data
@@ -95,16 +89,10 @@ _retrieveData = async () => {
   }
   
   render() {
-    const { navigation } = this.props;
-    const itemId = navigation.getParam('itemId', 'NO-ID');
-    const name = navigation.getParam('name', 'some default value');
-
     return (
       <View style={styles.container}>
       <View>
         <Text> {this.state.myeventid} </Text>
-        <Text>itemId: {JSON.stringify(itemId)}</Text>
-            <Text>name: {JSON.stringify(name)}</Text>
       </View>
       <View>
         <Text> {this.state.myevents} </Text>
@@ -170,5 +158,3 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-
-
