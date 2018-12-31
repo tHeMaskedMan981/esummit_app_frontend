@@ -12,8 +12,6 @@ import {
     Modal,
     Linking,
     CheckBox,
-    TouchableNativeFeedback,
-    Platform,
 } from "react-native";
 import { Constants, WebBrowser } from 'expo';
  var Arr = [];
@@ -101,9 +99,9 @@ class ScreenOne extends Component {
         // let result = await WebBrowser.openBrowserAsync(url);
         // this.setState({ result });
     };
-    toggleModal(visible){
-        this.setState({modalVisible:visible});
-    }
+    // toggleModal(visible){
+    //     this.setState({modalVisible:visible});
+    // }
     componentDidMount(){
         fetch('http://esummit.ecell.in/v1/api/events')
         .then((response) => response.json())
@@ -144,61 +142,8 @@ class ScreenOne extends Component {
         );
     };
     customRenderFunction(item){
+        console.log(item.name);
         if(item.updated == true){
-            return(
-                <View elevation={10} style={styles.customitem}>
-                    <Modal animationType = {'slide'}
-                        transparent = {false}
-                        visible = {this.state.modalVisible}
-                        onRequestClose={()=>{console.log('model has been closed')}}>
-                        <TouchableHighlight onPress={()=>{this.toggleModal(!this.state.modalVisible)}}>    
-                            <View style={styles.modal}>
-                                <Text>
-                                    Model is open!
-                                </Text>
-                            </View>
-                        </TouchableHighlight>
-                    </Modal>
-                    <View style={styles.touchableContainer}> 
-                      <TouchableHighlight onPress = {() => {this.toggleModal(true)}}>    
-                          <View style={{flex:2}}>  
-                            <View style={styles.heading}>
-                                <View style={styles.titleFlex}>
-                                    <Text style={styles.itemText}>{item.name}</Text>
-                                </View>
-                                <View style={styles.checkBoxFlex}>
-                                    <CheckBox
-                                        center
-                                        title=''
-                                        // checkedIcon='dot-circle-o' can add images here
-                                        // uncheckedIcon='circle-o'
-                                        value = {this.state.isChecked}
-                                        //onchange function has to be changed
-                                        onChange={()=>{this.setState({isChecked: !this.state.isChecked});this.CallMyEventsApi(item.event_id);}}
-                                    />
-                                </View>
-                            </View>
-                            <View>
-                                <Text style={styles.itemInfoText}>{item.event_type}</Text>
-                            </View>
-                          </View>
-                      </TouchableHighlight>
-                    </View>    
-                        <View style={styles.footer}>
-                            <TouchableNativeFeedback
-                                onPress={()=>this._handlePressButtonAsync(item.venue)}
-                                background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}>
-                                <View style={styles.innerFooter}>
-                                    <Text style={{color:'white'}}>{item.venue}</Text>    
-                                </View>
-                            </TouchableNativeFeedback>
-                            <View style={styles.innerFooterInvisible}>
-                            </View>    
-                        </View>
-                </View>
-            )
-        }
-        else{
             return(
                 <View elevation={10} style={styles.item}>
                     <Modal animationType = {'slide'}
@@ -239,20 +184,22 @@ class ScreenOne extends Component {
                       </TouchableHighlight>
                     </View>    
                         <View style={styles.footer}>
-                            <TouchableNativeFeedback
-                                onPress={()=>this._handlePressButtonAsync(item.venue)}
-                                background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}>
-                                <View style={styles.innerFooter}>
-                                    <Text style={{color:'white'}}>{item.venue}</Text>    
-                                </View>
-                            </TouchableNativeFeedback>
-                            <View style={styles.innerFooterInvisible}>
+                            <View style={styles.innerFooter}>
+                                <Button
+                                    title={String(item.venue)}
+                                    color="#841584"
+                                    accessibilityLabel="Learn more about this purple button"
+                                    style={{width:180,height:40}}
+                                    onPress={() => this._handlePressButtonAsync(item.venue)}
+                                />    
+                            </View>
+                            <View style={styles.innerFooter}>
                             </View>    
                         </View>
                 </View>
-            )
+            );
         }
-    }
+    };
     render() {
         if(this.state.isLoading){
             return(
@@ -288,7 +235,10 @@ class ScreenOne extends Component {
                 numColumns= {numColumns}
                 refreshing = {this.state.refreshing}
                 onRefresh = {this.handleRefresh}
-                renderItem = {({item}) => this.customRenderFunction(item)    
+                renderItem = {({item}) => this.customRenderFunction(item)
+                // if(item.empty === true){
+                //     <View style = {[styles.item,styles.itemInvisible]}/>
+                // }    
             }/>
         );
     }
@@ -333,14 +283,8 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         marginLeft:5,
         padding:5,
-        borderRadius:25,
+        borderRadius:20,
         borderWidth: 1,
-        borderColor: 'rgb(93,173,226)',
-        backgroundColor: 'rgb(93,173,226)',
-        shadowColor: 'black',
-        shadowOpacity: 1.0,
-        shadowRadius: 1,
-        elevation:4,
     },
     buttonContainer:{
         height:40,
@@ -354,21 +298,6 @@ const styles = StyleSheet.create({
         color: 'black',
         fontWeight:'bold',
         fontSize: 20,
-    },
-    customitem:{
-        marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
-        marginLeft:15,
-        marginRight:15,
-        backgroundColor:'rgba(255,165,0,0.2)',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#fff',
-        shadowOffset:{width: 0,  height: 3,},
-        shadowColor: 'black',
-        shadowOpacity: 1.0,
-        shadowRadius: 2,
     },
     item:{
         marginTop:10,
@@ -405,10 +334,5 @@ const styles = StyleSheet.create({
         flex:0.5,
         marginRight: 3,
         marginTop: 1,
-    },
-    innerFooterInvisible:{
-        flex:1,
-        justifyContent:'center',
-        flexDirection:'row',
-    },
+    }
 });

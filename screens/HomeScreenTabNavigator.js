@@ -10,6 +10,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import ScreenOne from './TabNavigator/ScreenOne'
 import ScreenTwo from './TabNavigator/ScreenTwo'
+import ScreenThree from './TabNavigator/ScreenThree'
 
 
 export default class AppTabNavigator extends Component {
@@ -36,7 +37,7 @@ const HomeScreenTabNavigator = new createBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Highlight Events',
             tabBarIcon: () => (
-                <Ionicons name="md-compass" size={24} />
+                <Ionicons name="md-compass" size={16} />
             )
         }
     },
@@ -45,7 +46,16 @@ const HomeScreenTabNavigator = new createBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'My Events',
             tabBarIcon: () => (
-                <Ionicons name="md-compass" size={24} />
+                <Ionicons name="md-compass" size={16} />
+            )
+        }
+    },
+    ScreenThree:{
+        screen: ScreenThree,
+        navigationOptions:{
+            tabBarLabel:'Updated Events',
+            tabBarIcon:()=>(
+                <Ionicons name='md-compass' size={16}/>
             )
         }
     }
