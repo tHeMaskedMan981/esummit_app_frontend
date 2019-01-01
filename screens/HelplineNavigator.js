@@ -4,13 +4,13 @@ import {
     Text,
     StyleSheet
 } from "react-native";
+import { Constants, WebBrowser } from 'expo';
+import { createBottomTabNavigator,createStackNavigator } from 'react-navigation';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+// import HelplineScreen from './HelplineScreen';
 
-import { createBottomTabNavigator,createStackNavigator } from 'react-navigation'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import HelplineScreen from './HelplineScreen'
-
-export default class AppTabNavigator extends Component {
-
+export default class HelplineScreen extends Component {
+    
     static navigationOptions = ({ navigation }) => {
         return {
             headerLeft: (
@@ -22,20 +22,14 @@ export default class AppTabNavigator extends Component {
     }
     render() {
         return (
-            <HelplineNavigator screenProps={{ navigation: this.props.navigation }} />
-        )
+            <View style={styles.container}>
+                <Text>HelplineScreen </Text>
+                <Text>the clan is {this.props.screenProps.clan}</Text>
+            </View>
+        );
     }
 }
-
-
-const HelplineNavigator = new createStackNavigator({
-    SponsorScreen: {
-        screen: HelplineScreen,
-        navigationOptions:{
-            header:null
-        }
-    }
-})
+// export default HelplineScreen;
 
 const styles = StyleSheet.create({
     container: {
@@ -44,3 +38,4 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     }
 });
+

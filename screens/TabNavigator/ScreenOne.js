@@ -11,12 +11,14 @@ import {
     TouchableHighlight,
     Modal,
     Linking,
-    CheckBox,
     TouchableNativeFeedback,
     Platform,
+    Image,
 } from "react-native";
 import { Constants, WebBrowser } from 'expo';
+import {CheckBox} from 'react-native-elements';
  var Arr = [];
+ var checkDict = {};
  var url;
  let numColumns = 1;
 // const formatData = (dataSource,numColumns) =>{
@@ -37,7 +39,9 @@ class ScreenOne extends Component {
             modalVisible:false,
             refreshing:false,
             seed:1,
-            isChecked: false,
+            trackHighlightEvents:false,
+            trackMyEvents:false,
+            Dict:{},
         };
     }
     venueFetch = (venue_id)=>{
@@ -111,12 +115,67 @@ class ScreenOne extends Component {
             this.setState({
                 isLoading:false,
                 dataSource: responseJson,
-                refreshing:false},
-                function(){
-
-                });
+                refreshing:false,
+                trackHighlightEvents:true,});
+                console.log('highlight entered');
+        }).then(
+            ()=>{this.initializeCheckDict();
+                console.log(this.state.trackHighlightEvents);
+                console.log(this.state.trackMyEvents);
+            }
+        )
+        // while(true){
+        //     if(this.state.trackHighlightEvents && this.state.trackMyEvents){
+        //         console.log('inside if');
+        //         break;
+        //     }
+        //     console.log('outside if');
+        //     break;
+            
+        // }
+        // console.log('loop break');
+    }
+    initializeCheckDict(){
+        fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
+        .then((response) => response.json())
+        .then((responseJson)=>{
+            this.setState({
+                myEventsSource: responseJson,
+                trackMyEvents:true,
+            });
+            console.log('myevents checked');
+        }).then(()=>{
+            // console.log(JSON.stringify(this.state.myEventsSource));
+            // console.log(JSON.stringify(this.state.dataSource));
+            console.log(JSON.stringify(this.state.myEventsSource[0]));
+            for(let i=0;i<this.state.myEventsSource.length;++i){
+                checkDict[String(this.state.myEventsSource[i].event_id)] = true;
+                console.log(this.state.myEventsSource[i].event_id);
+            }
+            for(let i=0;i<this.state.dataSource.length;++i){
+                if(!(String(this.state.dataSource[i].event_id) in checkDict)){
+                checkDict[String(this.state.dataSource[i].event_id)] = false;
+                console.log(this.state.dataSource[i].event_id);
+                }
+            }
+            // for(let obj in this.state.dataSource){
+            //     if(!(String(obj.event_id) in checkDict)){
+            //         checkDict[String(obj.event_id)] = false;
+            //         console.log(obj.event_id);
+            //     }
+            // }
+            this.setState({
+                Dict: checkDict,
+            })
         })
     }
+    // checkBoxCondition(evt_id){
+    //     for(var obj in checkArray){
+    //         if(evt_id == obj.event_id){
+    //             return(obj.isChecked);
+    //         }
+    //     }
+    // }
     CallMyEventsApi(evt_id){
         fetch('http://esummit.ecell.in/v1/api/events/myevent_add', {
         method: 'POST',
@@ -126,11 +185,13 @@ class ScreenOne extends Component {
         },
         body: JSON.stringify({
             event_id: evt_id,
-            user_id: 1,
+            user_id: 2,
         }),
         }).then()
     .catch((error) => {
         console.error(error);
+    }).then(()=>{
+        console.log(String(this.props.screenProps.user_name));
     });
     }
     handleRefresh = () => {
@@ -143,6 +204,15 @@ class ScreenOne extends Component {
         }
         );
     };
+    _handleCheckBoxEvent(event_id){
+        checkDict[String(event_id)] = !(checkDict[String(event_id)]);
+        this.setState({
+            Dict:checkDict,
+        });
+        if(this.state.Dict[String(event_id)]){
+            this.CallMyEventsApi(event_id);
+        }
+    }
     customRenderFunction(item){
         if(item.updated == true){
             return(
@@ -172,9 +242,17 @@ class ScreenOne extends Component {
                                         title=''
                                         // checkedIcon='dot-circle-o' can add images here
                                         // uncheckedIcon='circle-o'
-                                        value = {this.state.isChecked}
+                                        checkedIcon={<Image source={require('./checkboxicons/checked.png')}/>}
+                                        uncheckedIcon={<Image source={require('./checkboxicons/unchecked.png')}/>}
+                                        value = {this.state.Dict[String(item.event_id)]}
                                         //onchange function has to be changed
-                                        onChange={()=>{this.setState({isChecked: !this.state.isChecked});this.CallMyEventsApi(item.event_id);}}
+                                        onChange={()=>{checkDict[String(item.event_id)]=!checkDict[String(item.event_id)];
+                                        this.setState({
+                                            Dict:checkDict,
+                                        });
+                                        if(this.state.Dict[String(item.event_id)]){
+                                            this.CallMyEventsApi(item.event_id);
+                                        }}}
                                     />
                                 </View>
                             </View>
@@ -186,10 +264,11 @@ class ScreenOne extends Component {
                     </View>    
                         <View style={styles.footer}>
                             <TouchableNativeFeedback
-                                onPress={()=>this._handlePressButtonAsync(item.venue)}
+                                onPress ={()=>{Linking.openURL(String(item.venue_url))}}
+                                //onPress={()=>this._handlePressButtonAsync(item.venue)}
                                 background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}>
                                 <View style={styles.innerFooter}>
-                                    <Text style={{color:'white'}}>{item.venue}</Text>    
+                                    <Text style={{color:'white'}}>{item.venue_name}</Text>    
                                 </View>
                             </TouchableNativeFeedback>
                             <View style={styles.innerFooterInvisible}>
@@ -226,9 +305,18 @@ class ScreenOne extends Component {
                                         title=''
                                         // checkedIcon='dot-circle-o' can add images here
                                         // uncheckedIcon='circle-o'
-                                        value = {this.state.isChecked}
+                                        value = {this.state.Dict[String(item.event_id)]}
+                                        checkedIcon={<Image source={require('./checkboxicons/checked.png')}/>}
+                                        uncheckedIcon={<Image source={require('./checkboxicons/unchecked.png')}/>}
                                         //onchange function has to be changed
-                                        onChange={()=>{this.setState({isChecked: !this.state.isChecked});this.CallMyEventsApi(item.event_id);}}
+                                        //onChange={()=>{this.state._handleCheckBoxEvent(item.event_id)}}
+                                        onChange={()=>{checkDict[String(item.event_id)]=!checkDict[String(item.event_id)];
+                                            this.setState({
+                                                Dict:checkDict,
+                                            });
+                                            if(this.state.Dict[String(item.event_id)]){
+                                                this.CallMyEventsApi(item.event_id);
+                                            }}}
                                     />
                                 </View>
                             </View>
@@ -240,10 +328,11 @@ class ScreenOne extends Component {
                     </View>    
                         <View style={styles.footer}>
                             <TouchableNativeFeedback
-                                onPress={()=>this._handlePressButtonAsync(item.venue)}
+                                onPress = {()=>{Linking.openURL(String(item.venue_url))}}
+                                //onPress={()=>this._handlePressButtonAsync(item.venue)}
                                 background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}>
                                 <View style={styles.innerFooter}>
-                                    <Text style={{color:'white'}}>{item.venue}</Text>    
+                                    <Text style={{color:'white'}}>{item.venue_name}</Text>    
                                 </View>
                             </TouchableNativeFeedback>
                             <View style={styles.innerFooterInvisible}>

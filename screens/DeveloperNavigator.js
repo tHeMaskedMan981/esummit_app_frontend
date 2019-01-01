@@ -7,9 +7,9 @@ import {
 
 import { createBottomTabNavigator,createStackNavigator } from 'react-navigation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import DeveloperScreen from './DeveloperScreen'
+// import DeveloperScreen from './DeveloperScreen'
 
-export default class AppTabNavigator extends Component {
+class DeveloperScreen extends Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
@@ -20,22 +20,16 @@ export default class AppTabNavigator extends Component {
             )
         }
     }
+
     render() {
         return (
-            <DeveloperNavigator screenProps={{ navigation: this.props.navigation }} />
-        )
+            <View style={styles.container}>
+                <Text>DeveloperScreen</Text>
+            </View>
+        );
     }
 }
-
-
-const DeveloperNavigator = new createStackNavigator({
-    DeveloperScreen: {
-        screen: DeveloperScreen,
-        navigationOptions:{
-            header:null
-        }
-    }
-})
+export default DeveloperScreen;
 
 const styles = StyleSheet.create({
     container: {

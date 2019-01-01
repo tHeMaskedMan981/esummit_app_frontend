@@ -2,45 +2,49 @@ import React, { Component } from "react";
 import {
     View,
     Text,
-    StyleSheet
+    StyleSheet, 
+    WebView
 } from "react-native";
-
+import {Permissions} from 'expo';
 import { createBottomTabNavigator,createStackNavigator } from 'react-navigation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import SponsorScreen from './SponsorScreen'
+import { Header, Left, Icon } from "native-base";
+// import SponsorScreen from './SponsorScreen';
 
-export default class AppTabNavigator extends Component {
-
+class SponsorScreen extends Component {
+    
     static navigationOptions = ({ navigation }) => {
-        return {
-            headerLeft: (
-                <View style={{ padding: 10 }}>
-                    <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
-                </View>
-            )
-        }
-    }
+        
+                return {
+                    title:'Sponsors',
+                    headerLeft: (
+                        <View style={{ padding: 10 }}>
+                            <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
+                        </View>
+                    )
+                }
+            }
     render() {
         return (
-            <SponsorNavigator screenProps={{ navigation: this.props.navigation }} />
-        )
+
+            <View style={styles.container}>
+                <Text>SponsorScreen</Text>
+            </View>
+          
+        );
     }
 }
-
-
-const SponsorNavigator = new createStackNavigator({
-    SponsorScreen: {
-        screen: SponsorScreen,
-        navigationOptions:{
-            header:null
-        }
-    }
-})
+export default SponsorScreen;
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    header: {
+        flex: 1,
+        marginTop:10,
+        backgroundColor:'#fff',
     }
 });

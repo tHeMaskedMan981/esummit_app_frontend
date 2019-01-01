@@ -36,7 +36,7 @@ class ScreenTwo extends Component {
         this.setState({modalVisible:visible});
     }
     componentDidMount(){
-        return fetch('http://esummit.ecell.in/v1/api/events/myevents/1')
+        return fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
         .then((response) => response.json())
         .then((responseJson)=>{
             this.setState({
