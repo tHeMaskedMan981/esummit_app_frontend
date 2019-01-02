@@ -123,6 +123,29 @@ _retrieveData = async () => {
       console.error(error);
     });
   }
+
+async onGoogleLogin() {
+  console.log("called GoogleLogin")
+  try {
+    const result = await Expo.Google.logInAsync({
+      androidClientId:
+        "402561594320-eeuu2tnpqdouc96dcgjtkf124q5bgtet.apps.googleusercontent.com",
+      //iosClientId: YOUR_CLIENT_ID_HERE,  <-- if you use iOS
+      scopes: ["profile", "email"]
+    })
+
+    if (result.type === "success") {
+      /*
+      1. Call api to create user object using result object 
+      2. Navigate to drawerNavigation after creating user object
+      */
+    } else {
+      console.log("cancelled")
+    }
+  } catch (e) {
+    console.log("error", e)
+  }
+}
   
   render() {
     return (
@@ -165,6 +188,11 @@ _retrieveData = async () => {
           style={styles.input}
           onPress={this.onLogin.bind(this)
         }
+        />
+        <Button
+          title={'Login With Google'}
+          style={styles.input}
+          onPress={this.onGoogleLogin.bind(this)}
         />
         <Button
           title={'Retrieve data'}
