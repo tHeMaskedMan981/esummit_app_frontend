@@ -12,6 +12,7 @@ export default class WelcomeScreen extends Component {
       email_err:'',
       user_name:null,
       user_id:null,
+      photo_url:null,
       get_username:null,
       get_email:null,
       get_esummitid:null,
@@ -104,6 +105,7 @@ _retrieveData = async () => {
     this._storeData('user_id',JSON.stringify(this.state.user_id)); 
     this._storeData('user_name',JSON.stringify(this.state.user_name)); 
     this._storeData('email',JSON.stringify(this.state.email)); 
+    this._storeData('photo_url',JSON.stringify(this.state.photo_url));
     this._storeData('esummit_id',JSON.stringify(this.state.esummit_id)); 
     
     this.props.navigation.navigate('DrawerNavigator', {
@@ -135,10 +137,58 @@ async onGoogleLogin() {
     })
 
     if (result.type === "success") {
+      
       /*
       1. Call api to create user object using result object 
       2. Navigate to drawerNavigation after creating user object
       */
+      value = fetch('http://esummit.ecell.in/v1/user/register/google/', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_name: result.user.name,
+          email: result.user.email,
+          photo_url: result.user.photoUrl,
+        }),
+      }).then((response) => response.json())
+      .then((responseJson) => {
+
+        try
+          {
+            this.setState({
+                user_name: responseJson.profile.user_name,
+                user_id: responseJson.profile.user_id,
+                email: responseJson.profile.email,
+                photo_url: responseJson.profile.photo_url,
+            });
+        //   this._storeData(); 
+        this._storeData('user_id',JSON.stringify(this.state.user_id)); 
+        this._storeData('user_name',JSON.stringify(this.state.user_name)); 
+        this._storeData('email',JSON.stringify(this.state.email)); 
+        this._storeData('photo_url',JSON.stringify(this.state.photo_url)); 
+        this._storeData('esummit_id',JSON.stringify("")); 
+        
+        this.props.navigation.navigate('DrawerNavigator', {
+            user_id: this.state.user_id,
+            user_name: this.state.user_name,
+            photo_url:this.state.photo_url,
+            email:this.state.email,
+          });
+    
+          }
+          catch (error) {
+            Alert.alert('Credentials', "The entered email or E-Summit ID is not correct. Please verify the details.");
+          }
+          
+        })
+      .catch((error) => {
+        console.error(error);
+      });
+      //console.log(responseJson);
+     
     } else {
       console.log("cancelled")
     }
