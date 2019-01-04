@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
 import { Container, Content, Icon, Header, Body } from 'native-base'
 // import { createStackNavigator } from 'react-navigation'
 import DrawerNavigator from './screens/DrawerNavigator'
-import {StackNavigator,createStackNavigator, DrawerItems, SafeAreaView } from 'react-navigation'
+import {StackNavigator,createStackNavigator, DrawerItems} from 'react-navigation'
 import WelcomeScreen from './screens/login/WelcomeScreen'
 import LoginScreen from './screens/login/LoginScreen'
 import SignUpScreen from './screens/login/SignUpScreen'

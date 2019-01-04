@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import {
     View,
     Text,
-    StyleSheet
+    StyleSheet,
+    Image
 } from "react-native";
 
-import { createBottomTabNavigator } from 'react-navigation'
+import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import ScreenOne from './TabNavigator/ScreenOne'
@@ -13,10 +14,12 @@ import ScreenTwo from './TabNavigator/ScreenTwo'
 import ScreenThree from './TabNavigator/ScreenThree'
 
 
+
 export default class AppTabNavigator extends Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
+            
             headerLeft: (
                 <View style={{ padding: 10 }}>
                     <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
@@ -62,6 +65,9 @@ const HomeScreenTabNavigator = new createBottomTabNavigator({
         }
     }
 })
+// const HomeScreen = new createStackNavigator({
+//     HomeScreen: { screen: HomeScreen },
+// })
 
 const styles = StyleSheet.create({
     container: {

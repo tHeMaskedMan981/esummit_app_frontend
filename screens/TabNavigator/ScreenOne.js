@@ -217,7 +217,7 @@ class ScreenOne extends Component {
         if(item.updated == true){
             return(
                 <View elevation={10} style={styles.customitem}>
-                    <Modal animationType = {'slide'}
+                    {/* <Modal animationType = {'slide'}
                         transparent = {false}
                         visible = {this.state.modalVisible}
                         onRequestClose={()=>{console.log('model has been closed')}}>
@@ -228,14 +228,17 @@ class ScreenOne extends Component {
                                 </Text>
                             </View>
                         </TouchableHighlight>
-                    </Modal>
+                    </Modal> */}
                     <View style={styles.touchableContainer}> 
-                      <TouchableHighlight onPress = {() => {this.toggleModal(true)}}>    
+                          
                           <View style={{flex:2}}>  
                             <View style={styles.heading}>
-                                <View style={styles.titleFlex}>
+                           
+                                <View style={styles.titleFlex} >
                                     <Text style={styles.itemText}>{item.name}</Text>
                                 </View>
+                                
+                                
                                 <View style={styles.checkBoxFlex}>
                                     <CheckBox
                                         center
@@ -260,7 +263,7 @@ class ScreenOne extends Component {
                                 <Text style={styles.itemInfoText}>{item.event_type}</Text>
                             </View>
                           </View>
-                      </TouchableHighlight>
+                     
                     </View>    
                         <View style={styles.footer}>
                             <TouchableNativeFeedback

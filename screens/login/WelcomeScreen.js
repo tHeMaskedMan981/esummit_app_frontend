@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage  } from 'react-native';
+import GradientButton from "react-native-gradient-buttons";
 
 
 export default class WelcomeScreen extends Component {
@@ -128,7 +129,7 @@ _retrieveData = async () => {
     return (
       <View style={styles.container}>
       
-        <Text> {this.state.user_name} </Text>
+        {/* <Text> {this.state.user_name} </Text>
         <Text> {this.state.user_id} </Text>
         <Text> {this.state.esummit_id}</Text>
         <Text> {this.state.retrieved}</Text>
@@ -136,7 +137,7 @@ _retrieveData = async () => {
         <Text> {this.state.get_username} </Text>
         <Text> {this.state.get_esummitid} </Text>
         <Text> {this.state.get_email}</Text>
-        <Text> {this.state.get_userid}</Text>
+        <Text> {this.state.get_userid}</Text> */}
   
         <TextInput
           value={this.state.email}
@@ -148,7 +149,7 @@ _retrieveData = async () => {
           placeholder={'email'}
           style={styles.input}
         />
-        <View>
+        <View style={styles.err} >
         <Text> {this.state.email_err} </Text>
       </View>
 
@@ -160,20 +161,28 @@ _retrieveData = async () => {
           style={styles.input}
         />
         
-        <Button
-          title={'Login'}
-          style={styles.input}
-          onPress={this.onLogin.bind(this)
-        }
+        <GradientButton
+          style= {styles.binput1}
+          textStyle={{ fontSize: 24 }}
+          text="SIGN UP"
+          height={60}
+          gradientBegin="#e1306c"
+          gradientEnd="#275d8e"
+          impact
+          onPress={this.onLogin.bind(this)}
         />
-        <Button
-          title={'Retrieve data'}
-          style={styles.input}
-          onPress={this._retrieveData.bind(this)}
-        />
-        <Button
-          title={'Continue as Guest'}
-          style={styles.input}
+        <View style={styles.or}>
+          <Text style={{fontSize:24}}>OR</Text>
+        </View>
+        
+        <GradientButton
+          text="Continue as Guest"
+          style={styles.binput}
+          textStyle={{ fontSize: 24 }}
+          height={60}
+          gradientBegin="#e1306c"
+          gradientEnd="#275d8e"
+          impact
           onPress={() => {
             /* 1. Navigate to the Details route with params */
             this.props.navigation.navigate('DrawerNavigator', {
@@ -184,6 +193,19 @@ _retrieveData = async () => {
             });
           }}
         />
+        <View style={{flexDirection:'row'}}>
+        <View>
+          <Text>
+            Try 
+          </Text>
+          </View>
+          <View>
+          <Button title='Google Sign In'
+           style={{backgroundColor: '#000' , paddingBottom:0, paddingLeft:0,
+           paddingRight:0, paddingTop:0, borderWidth:0,
+           }} />
+          </View>
+        </View>
       </View>
     );
   }
@@ -197,11 +219,34 @@ const styles = StyleSheet.create({
     backgroundColor: '#ecf0f1',
   },
   input: {
-    width: 200,
-    height: 44,
-    padding: 10,
+    width: 350,
+    height: 65,
+    paddingTop: 15,
+    paddingBottom: 15,
+    paddingRight: 15,
+    paddingLeft: 15,
     borderWidth: 1,
     borderColor: 'black',
-    marginBottom: 10,
+    marginTop:0,
+    // marginBottom: 15,
+    borderRadius: 30,
+    fontSize: 30,
   },
+  binput: {
+  
+  width: 300,
+  paddingBottom: 0,
+  
+  },
+  binput1: {
+    marginTop:15,
+    width: 300,
+    paddingBottom: 0,
+    
+    },
+  err: {
+    marginBottom: 20,
+  },
+  or:{
+  }
 });
