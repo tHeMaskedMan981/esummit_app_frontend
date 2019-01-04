@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage  } from 'react-native';
-import GradientButton from "react-native-gradient-buttons";
+
 
 
 export default class WelcomeScreen extends Component {
@@ -161,29 +161,30 @@ _retrieveData = async () => {
           style={styles.input}
         />
         
-        <GradientButton
+        <Button
           style= {styles.binput1}
-          textStyle={{ fontSize: 24 }}
-          text="SIGN UP"
-          height={60}
-          gradientBegin="#e1306c"
-          gradientEnd="#275d8e"
-          impact
+          // textStyle={{ fontSize: 24 }}
+          title="Sign In"
+          // height={60}
+          // gradientBegin="#e1306c"
+          // gradientEnd="#275d8e"
+          // impact
           onPress={this.onLogin.bind(this)}
         />
-        <View style={styles.or}>
+        {/* <View style={styles.or}>
           <Text style={{fontSize:24}}>OR</Text>
-        </View>
+        </View> */}
         
-        <GradientButton
-          text="Continue as Guest"
+        <Button
+          title="Continue as Guest"
           style={styles.binput}
-          textStyle={{ fontSize: 24 }}
-          height={60}
-          gradientBegin="#e1306c"
-          gradientEnd="#275d8e"
-          impact
+          // textStyle={{ fontSize: 24 }}
+          // height={60}
+          // gradientBegin="#e1306c"
+          // gradientEnd="#275d8e"
+          // impact
           onPress={() => {
+            console.log("Pressed");
             /* 1. Navigate to the Details route with params */
             this.props.navigation.navigate('DrawerNavigator', {
               user_id: this.state.user_id,
@@ -193,19 +194,20 @@ _retrieveData = async () => {
             });
           }}
         />
-        <View style={{flexDirection:'row'}}>
+        {/* <View style={{flexDirection:'row'}}>
         <View>
           <Text>
             Try 
           </Text>
           </View>
-          <View>
+          <View> */}
           <Button title='Google Sign In'
            style={{backgroundColor: '#000' , paddingBottom:0, paddingLeft:0,
            paddingRight:0, paddingTop:0, borderWidth:0,
-           }} />
-          </View>
-        </View>
+           }} 
+           />
+          {/* </View>
+        </View> */}
       </View>
     );
   }
