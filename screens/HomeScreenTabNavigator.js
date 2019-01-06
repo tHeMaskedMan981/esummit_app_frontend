@@ -42,7 +42,7 @@ const HomeScreenTabNavigator = new createBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Highlight Events',
             tabBarIcon: () => (
-                <Ionicons name="md-compass" size={16} />
+                <Ionicons name="ios-star" size={16} />
             )
         }
     },
@@ -51,7 +51,7 @@ const HomeScreenTabNavigator = new createBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'My Events',
             tabBarIcon: () => (
-                <Ionicons name="md-compass" size={16} />
+                <Ionicons name="md-person" size={16} />
             )
         }
     },
@@ -60,7 +60,7 @@ const HomeScreenTabNavigator = new createBottomTabNavigator({
         navigationOptions:{
             tabBarLabel:'Updated Events',
             tabBarIcon:()=>(
-                <Ionicons name='md-compass' size={16}/>
+                <Ionicons name='md-notifications' size={16}/>
             )
         }
     }
