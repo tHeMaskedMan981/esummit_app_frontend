@@ -11,12 +11,18 @@ import {
     TouchableHighlight,
     Modal,
     Linking,
+    TouchableNativeFeedback,
+    Platform,
+    Image,
     CheckBox,
 } from "react-native";
 import { Constants, WebBrowser } from 'expo';
  var Arr = [];
+ var checkDict = {};
+ var styleCheckBox = {};
  var url;
  let numColumns = 1;
+ var no_renders=0;
 // const formatData = (dataSource,numColumns) =>{
 //     const numberOfFullRows = Math.floor(dataSource.length/numColumns);
 //     let numberOfElementsLastRow = dataSource.length - (numberOfFullRows*numColumns);
@@ -36,6 +42,8 @@ class ScreenOne extends Component {
             refreshing:false,
             seed:1,
             isChecked: false,
+            Dict:{},
+            CheckBoxStyle:{},
         };
     }
     venueFetch = (venue_id)=>{
@@ -113,6 +121,47 @@ class ScreenOne extends Component {
                 function(){
 
                 });
+        }).then(
+            ()=>{this.initializeCheckDict();
+                console.log(this.state.trackHighlightEvents);
+                console.log(this.state.trackMyEvents);
+            }
+        )
+    }
+    initializeCheckDict(){
+        fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
+        .then((response) => response.json())
+        .then((responseJson)=>{
+            this.setState({
+                myEventsSource: responseJson,
+                trackMyEvents:true,
+            });
+            console.log('myevents checked');
+        }).then(()=>{
+            // console.log(JSON.stringify(this.state.myEventsSource));
+            // console.log(JSON.stringify(this.state.dataSource));
+            console.log(JSON.stringify(this.state.myEventsSource[0]));
+            for(let i=0;i<this.state.myEventsSource.length;++i){
+                checkDict[String(this.state.myEventsSource[i].event_id)] = true;
+                styleCheckBox[String(this.state.myEventsSource[i].event_id)] = styles.onCheckBox;
+                console.log(this.state.myEventsSource[i].event_id);
+            }
+            for(let i=0;i<this.state.dataSource.length;++i){
+                if(!(String(this.state.dataSource[i].event_id) in checkDict)){
+                checkDict[String(this.state.dataSource[i].event_id)] = false;
+                styleCheckBox[String(this.state.dataSource[i].event_id)] = styles.offCheckBox;
+                console.log(this.state.dataSource[i].event_id);
+                }
+            }
+            // for(let obj in this.state.dataSource){
+            //     if(!(String(obj.event_id) in checkDict)){
+            //         checkDict[String(obj.event_id)] = false;
+            //         console.log(obj.event_id);
+            //     }
+            // }
+            this.setState({
+                Dict: checkDict,
+            })
         })
     }
     CallMyEventsApi(evt_id){
@@ -124,11 +173,13 @@ class ScreenOne extends Component {
         },
         body: JSON.stringify({
             event_id: evt_id,
-            user_id: 1,
+            user_id: 2,
         }),
         }).then()
     .catch((error) => {
         console.error(error);
+    }).then(()=>{
+        console.log(String(this.props.screenProps.user_name));
     });
     }
     handleRefresh = () => {
@@ -141,12 +192,42 @@ class ScreenOne extends Component {
         }
         );
     };
+    _handleCheckBoxEvent(event_id){
+        checkDict[String(event_id)] = !(checkDict[String(event_id)]);
+        console.log(String(checkDict[String(event_id)]));
+        console.log(String(this.state.Dict[String(event_id)]));
+        this.CallMyEventsApi(event_id);
+        styleCheckBox[String(event_id)] = checkDict[String(event_id)]?styles.onCheckBox:styles.offCheckBox;
+        this.setState({
+            Dict:checkDict,
+            CheckBoxStyle:styleCheckBox,
+        });
+        //console.log(JSON.stringify(this.CheckBoxStyle[String(event_id)]));
+    }
+    getTime(time,date){
+        //extract the day from date
+        let str = date.slice(8,10);
+        console.log(str);
+        let res = '';
+        if(str == '17'){
+            res = 'Day 1';
+        }
+        else if(str == '18'){
+            res = 'Day 2';
+        }
+        if(time[0]=='0'){
+            return String(time.slice(1,5) + ' , ' + res);
+        }
+        else{
+            return String(time.slice(0,5) + ' , ' + res);
+        }
+    }
     customRenderFunction(item){
         console.log(item.name);
         if(item.updated == true){
             return(
                 <View elevation={10} style={styles.item}>
-                    <Modal animationType = {'slide'}
+                    {/* <Modal animationType = {'slide'}
                         transparent = {false}
                         visible = {this.state.modalVisible}
                         onRequestClose={()=>{console.log('model has been closed')}}>
@@ -157,24 +238,21 @@ class ScreenOne extends Component {
                                 </Text>
                             </View>
                         </TouchableHighlight>
-                    </Modal>
+                    </Modal> */}
                     <View style={styles.touchableContainer}> 
-                      <TouchableHighlight onPress = {() => {this.toggleModal(true)}}>    
+                      <TouchableHighlight>    
                           <View style={{flex:2}}>  
                             <View style={styles.heading}>
                                 <View style={styles.titleFlex}>
                                     <Text style={styles.itemText}>{item.name}</Text>
                                 </View>
                                 <View style={styles.checkBoxFlex}>
-                                    <CheckBox
-                                        center
-                                        title=''
-                                        // checkedIcon='dot-circle-o' can add images here
-                                        // uncheckedIcon='circle-o'
-                                        value = {this.state.isChecked}
-                                        //onchange function has to be changed
-                                        onChange={()=>{this.setState({isChecked: !this.state.isChecked});this.CallMyEventsApi(item.event_id);}}
-                                    />
+                                    <TouchableNativeFeedback onPress = {()=>{this._handleCheckBoxEvent(item.event_id);
+                                                                            this.setState({seed:2});}}>
+                                                                            
+                                        {/* <View style={this.state.CheckBoxStyle[String(item.event_id)]}></View> */}
+                                        <View style={checkDict[String(item.event_id)]?styles.onCheckBox:styles.offCheckBox}></View>
+                                    </TouchableNativeFeedback>
                                 </View>
                             </View>
                             <View>
@@ -184,16 +262,26 @@ class ScreenOne extends Component {
                       </TouchableHighlight>
                     </View>    
                         <View style={styles.footer}>
-                            <View style={styles.innerFooter}>
-                                <Button
-                                    title={String(item.venue)}
-                                    color="#841584"
-                                    accessibilityLabel="Learn more about this purple button"
-                                    style={{width:180,height:40}}
-                                    onPress={() => this._handlePressButtonAsync(item.venue)}
-                                />    
-                            </View>
-                            <View style={styles.innerFooter}>
+                            <TouchableNativeFeedback
+                                onPress ={()=>{Linking.openURL(String(item.venue_url))}}
+                                //onPress={()=>this._handlePressButtonAsync(item.venue)}
+                                background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}>
+                                <View style={styles.innerFooter}>
+                                    <View style={{flex:1}}>
+                                        <Image style={{height:20,width:20,marginTop:2}}source={require('./icons/image.png')}/>
+                                    </View>
+                                    <View style={{flex:8}}>
+                                        <Text style={{color:'white',textAlign:'center'}}>{item.venue_name}</Text>
+                                    </View>    
+                                </View>
+                            </TouchableNativeFeedback>
+                            <View style={styles.innerFooterInvisible}>
+                                <View style={{flex:1}}>
+                                    <Image style={{height:20,width:20,marginTop:2,marginLeft:15,}}source={require('./icons/imagetime.png')}/>
+                                </View>
+                                <View style={{flex:8}}>
+                                    <Text style={{color:'white',textAlign:'center'}}>{this.getTime(String(item.start_time),String(item.date))}</Text>
+                                </View>
                             </View>    
                         </View>
                 </View>
@@ -230,6 +318,7 @@ class ScreenOne extends Component {
             //     </ScrollView>}/>
             // </View>
                 <FlatList 
+                extraData = {this.data}
                 data = {this.state.dataSource}
                 style = {styles.container}
                 numColumns= {numColumns}
@@ -269,12 +358,13 @@ const styles = StyleSheet.create({
         padding:5,
         borderRadius:30,
         borderWidth: 1,
-        borderColor:'black',
+        borderColor:'rgba(93,173,226,0.6)',
         shadowOffset:{width: 0,  height: 3,},
         shadowColor: 'black',
         shadowOpacity: 1.0,
         shadowRadius: 5,
         overflow: 'hidden',
+        backgroundColor: 'rgba(93,173,226,0.45)',
         
     },
     innerFooter:{
@@ -283,8 +373,14 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         marginLeft:5,
         padding:5,
-        borderRadius:20,
+        borderRadius:25,
         borderWidth: 1,
+        borderColor: 'rgb(93,173,226)',
+        backgroundColor: 'rgb(93,173,226)',
+        shadowColor: 'black',
+        shadowOpacity: 1.0,
+        shadowRadius: 1,
+        elevation:4,
     },
     buttonContainer:{
         height:40,
@@ -298,6 +394,21 @@ const styles = StyleSheet.create({
         color: 'black',
         fontWeight:'bold',
         fontSize: 20,
+    },
+    customitem:{
+        marginTop:10,
+        paddingTop:15,
+        paddingBottom:15,
+        marginLeft:15,
+        marginRight:15,
+        backgroundColor:'rgba(255,165,0,0.2)',
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#fff',
+        shadowOffset:{width: 0,  height: 3,},
+        shadowColor: 'black',
+        shadowOpacity: 1.0,
+        shadowRadius: 2,
     },
     item:{
         marginTop:10,
@@ -331,8 +442,30 @@ const styles = StyleSheet.create({
         flex:5,
     },
     checkBoxFlex:{
-        flex:0.5,
-        marginRight: 3,
+        flex:0.55,
         marginTop: 1,
+    },
+    innerFooterInvisible:{
+        flex:1,
+        justifyContent:'center',
+        flexDirection:'row',
+    },
+    onCheckBox:{
+        borderColor:'rgba(93,173,226,1)',
+        borderRadius: 15,
+        borderWidth: 1,
+        backgroundColor: 'rgba(93,173,226,0.45)',
+        height:30,
+        width:30,
+        marginRight:10,
+    },
+    offCheckBox:{
+        borderColor: 'rgba(0,0,0,0.5)',
+        borderRadius: 15,
+        borderWidth: 1,
+        backgroundColor:'rgba(120,120,120,0.15)',
+        height: 30,
+        width: 30,
+        marginRight:10,
     }
 });

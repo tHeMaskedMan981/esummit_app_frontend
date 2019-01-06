@@ -63,7 +63,7 @@ const EventTabNavigator = new createBottomTabNavigator({
     NetworkingEvents: {
         screen: NetworkingEvents,
         navigationOptions: {
-            tabBarLabel: 'Networking',
+            tabBarLabel: 'Others',
             tabBarIcon: () => (
                 <Ionicons name="md-compass" size={24} />
             )
