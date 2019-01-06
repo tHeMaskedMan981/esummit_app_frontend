@@ -187,14 +187,10 @@ class ScreenOne extends Component {
             console.log(JSON.stringify(this.state.myEventsSource[0]));
             for(let i=0;i<this.state.myEventsSource.length;++i){
                 checkDict[String(this.state.myEventsSource[i].event_id)] = true;
-                styleCheckBox[String(this.state.myEventsSource[i].event_id)] = styles.onCheckBox;
-                console.log(this.state.myEventsSource[i].event_id);
             }
             for(let i=0;i<this.state.dataSource.length;++i){
                 if(!(String(this.state.dataSource[i].event_id) in checkDict)){
                 checkDict[String(this.state.dataSource[i].event_id)] = false;
-                styleCheckBox[String(this.state.dataSource[i].event_id)] = styles.offCheckBox;
-                console.log(this.state.dataSource[i].event_id);
                 }
             }
             // for(let obj in this.state.dataSource){
@@ -348,7 +344,7 @@ class ScreenOne extends Component {
                             </TouchableNativeFeedback>
                             <View style={styles.innerFooterInvisible}>
                                 <View style={{flex:1}}>
-                                    <Image style={{height:20,width:20,marginTop:2,marginLeft:15,}}source={require('./icons/imagetime.png')}/>
+                                    <Image style={{height:20,width:20,marginTop:2,marginLeft:15,fontFamily:'latoRegular'}}source={require('./icons/imagetime.png')}/>
                                 </View>
                                 <View style={{flex:8}}>
                                     <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{this.getTime(String(item.start_time),String(item.date))}</Text>
