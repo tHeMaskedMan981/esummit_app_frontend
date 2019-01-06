@@ -2,9 +2,8 @@ import React, { Component } from "react";
 import {
     View,
     Text,
-    StyleSheet
+    StyleSheet,
 } from "react-native";
-
 class HomeScreen extends Component {
     render() {
         return (

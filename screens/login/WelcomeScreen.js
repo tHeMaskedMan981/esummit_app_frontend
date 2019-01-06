@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage  } from 'react-native';
-
+import GradientButton from "react-native-gradient-buttons";
 
 export default class WelcomeScreen extends Component {
   constructor(props) {
@@ -148,7 +148,7 @@ _retrieveData = async () => {
           placeholder={'email'}
           style={styles.input}
         />
-        <View>
+        <View style={styles.err}>
         <Text> {this.state.email_err} </Text>
       </View>
 
@@ -160,8 +160,13 @@ _retrieveData = async () => {
           style={styles.input}
         />
         
-        <Button
-          title={'Login'}
+        <GradientButton
+          style={styles.binput1}
+          textStyle={{fontSize:24}}
+          text={'SIGN UP'}
+          height={60}
+          gradientBegin="#e1306c"
+          gradientEnd="#275d8e"
           style={styles.input}
           onPress={this.onLogin.bind(this)
         }
@@ -197,11 +202,28 @@ const styles = StyleSheet.create({
     backgroundColor: '#ecf0f1',
   },
   input: {
-    width: 200,
-    height: 44,
-    padding: 10,
+    width: 350,
+    height: 65,
+    paddingTop: 15,
+    paddingBottom: 15,
+    padding: 15,
     borderWidth: 1,
     borderColor: 'black',
-    marginBottom: 10,
+    marginTop: 0,
+    marginBottom: 15,
+    borderRadius: 30,
+    fontSize:30,
+  },
+  binput:{
+    width: 300,
+    paddingBottom: 0,
+  },
+  binput1:{
+    marginTop:15,
+    width:300,
+    paddingBottom:0,
+  },
+  err:{
+    marginBottom:20,
   },
 });
