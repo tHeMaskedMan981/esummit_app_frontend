@@ -5,7 +5,6 @@ import {
     StyleSheet,
     Image,
 } from "react-native";
-
 class HomeScreen extends Component {
 
 //    static navigationOptions = {

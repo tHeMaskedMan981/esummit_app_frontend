@@ -15,16 +15,27 @@ import {
     Platform,
     Image,
     
+    
 } from "react-native";
 import { WebView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import GradientButton from 'react-native-gradient-buttons';
 import { Constants, WebBrowser } from 'expo';
 import {CheckBox, Icon} from 'react-native-elements';
+
+import {HomeScreen} from '../HomeScreen';
+import {Font} from 'expo';
+import onCheckBoxImage from './icons/checked.png';
+import offCheckBoxImage from './icons/unchecked.png';
+import {ToastAndroid} from 'react-native';
+
  var Arr = [];
  var checkDict = {};
+ var styleCheckBox = {};
  var url;
  let numColumns = 1;
+ var no_renders=0;
+ 
 // const formatData = (dataSource,numColumns) =>{
 //     const numberOfFullRows = Math.floor(dataSource.length/numColumns);
 //     let numberOfElementsLastRow = dataSource.length - (numberOfFullRows*numColumns);
@@ -46,6 +57,7 @@ class ScreenOne extends Component {
             trackHighlightEvents:false,
             trackMyEvents:false,
             Dict:{},
+
             screen:0,
             event_name:'',
             event_desc:'',
@@ -53,7 +65,11 @@ class ScreenOne extends Component {
             event_web:'',
             event_type:'',
             event_id:'',
-            likes:''
+            likes:'',
+
+            CheckBoxStyle:{},
+            fontLoading:true,
+
         };
     }
     venueFetch = (venue_id)=>{
@@ -120,32 +136,60 @@ class ScreenOne extends Component {
     toggleModal(visible){
         this.setState({modalVisible:visible});
     }
-    componentDidMount(){
-        fetch('http://esummit.ecell.in/v1/api/events')
-        .then((response) => response.json())
-        .then((responseJson)=>{
+    // componentDidMount(){
+    //     fetch('http://esummit.ecell.in/v1/api/events')
+    //     .then((response) => response.json())
+    //     .then((responseJson)=>{
+    //         this.setState({
+    //             isLoading:false,
+    //             dataSource: responseJson,
+    //             refreshing:false,
+    //             trackHighlightEvents:true,});
+    //             console.log('highlight entered');
+    //     }).then(
+    //         ()=>{this.initializeCheckDict();
+    //             console.log(this.state.trackHighlightEvents);
+    //             console.log(this.state.trackMyEvents);
+    //         }
+    //     ).then(()=>{
+    //         Font.loadAsync({
+    //             'latoRegular':require('../../assets/fonts/Lato-Regular.ttf')
+    //         })
+    //     }).then(()=>{
+    //         this.setState({
+    //             fontLoading:false,
+    //         })
+    //     })
+    // }
+    async componentDidMount(){
+        await Font.loadAsync({
+            'latoRegular':require('../../assets/fonts/Lato-Regular.ttf')
+        }).then(()=>{
             this.setState({
-                isLoading:false,
-                dataSource: responseJson,
-                refreshing:false,
-                trackHighlightEvents:true,});
-                console.log('highlight entered');
-        }).then(
-            ()=>{this.initializeCheckDict();
-                console.log(this.state.trackHighlightEvents);
-                console.log(this.state.trackMyEvents);
-            }
-        )
-        // while(true){
-        //     if(this.state.trackHighlightEvents && this.state.trackMyEvents){
-        //         console.log('inside if');
-        //         break;
-        //     }
-        //     console.log('outside if');
-        //     break;
-            
-        // }
-        // console.log('loop break');
+                fontLoading:false,
+            })
+        }).then(()=>{
+            fetch('http://esummit.ecell.in/v1/api/events')
+            .then((response)=>response.json())
+            .then((responseJson)=>{
+                this.setState({
+                    isLoading:false,
+                    dataSource: responseJson,
+                    refreshing: false,
+                })
+            })
+            .catch(()=>{
+                ToastAndroid.showWithGravityAndOffset(
+                    "Unable to connect to internet",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.TOP,
+                    0,
+                    40);
+            })
+            .then(()=>{
+                this.initializeCheckDict();
+            })
+        })
     }
     initializeCheckDict(){
         fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
@@ -162,11 +206,13 @@ class ScreenOne extends Component {
             console.log(JSON.stringify(this.state.myEventsSource[0]));
             for(let i=0;i<this.state.myEventsSource.length;++i){
                 checkDict[String(this.state.myEventsSource[i].event_id)] = true;
+                styleCheckBox[String(this.state.myEventsSource[i].event_id)] = styles.onCheckBox;
                 console.log(this.state.myEventsSource[i].event_id);
             }
             for(let i=0;i<this.state.dataSource.length;++i){
                 if(!(String(this.state.dataSource[i].event_id) in checkDict)){
                 checkDict[String(this.state.dataSource[i].event_id)] = false;
+                styleCheckBox[String(this.state.dataSource[i].event_id)] = styles.offCheckBox;
                 console.log(this.state.dataSource[i].event_id);
                 }
             }
@@ -179,6 +225,8 @@ class ScreenOne extends Component {
             this.setState({
                 Dict: checkDict,
             })
+        }).catch((error)=>{
+            console.log(error);
         })
     }
     // checkBoxCondition(evt_id){
@@ -201,9 +249,15 @@ class ScreenOne extends Component {
         }),
         }).then()
     .catch((error) => {
-        console.error(error);
+       // ToastAndriod.show(error,ToastAndriod.SHORT);
+        ToastAndroid.showWithGravityAndOffset(
+            String(error),
+            ToastAndroid.SHORT,
+            ToastAndroid.TOP,
+            0,
+            40);
     }).then(()=>{
-        console.log(String(this.props.screenProps.user_name));
+        // this.ref.toast.show('hello world');
     });
     }
     handleRefresh = () => {
@@ -354,17 +408,39 @@ class ScreenOne extends Component {
     }
     _handleCheckBoxEvent(event_id){
         checkDict[String(event_id)] = !(checkDict[String(event_id)]);
+        console.log(String(checkDict[String(event_id)]));
+        console.log(String(this.state.Dict[String(event_id)]));
+        this.CallMyEventsApi(event_id);
+        styleCheckBox[String(event_id)] = checkDict[String(event_id)]?styles.onCheckBox:styles.offCheckBox;
         this.setState({
             Dict:checkDict,
+            CheckBoxStyle:styleCheckBox,
         });
-        if(this.state.Dict[String(event_id)]){
-            this.CallMyEventsApi(event_id);
+        //console.log(JSON.stringify(this.CheckBoxStyle[String(event_id)]));
+    }
+    getTime(time,date){
+        //extract the day from date
+        let str = date.slice(8,10);
+        console.log(str);
+        let res = '';
+        if(str == '17'){
+            res = 'Day 1';
+        }
+        else if(str == '18'){
+            res = 'Day 2';
+        }
+        if(time[0]=='0'){
+            return String(time.slice(1,5) + ' , ' + res);
+        }
+        else{
+            return String(time.slice(0,5) + ' , ' + res);
         }
     }
     customRenderFunction(item){
-        if(item.updated == true){
+        console.log("custom render called");
             return(
-                <View elevation={10} style={styles.customitem}>
+                
+                <View elevation={10} style={item.updated?styles.customitem:styles.item}>
                     {/* <Modal animationType = {'slide'}
                         transparent = {false}
                         visible = {this.state.modalVisible}
@@ -377,41 +453,39 @@ class ScreenOne extends Component {
                             </View>
                         </TouchableHighlight>
                     </Modal> */}
-                    <View style={styles.touchableContainer}> 
-                          
+                    <View style={styles.touchableContainer}>  
                           <View style={{flex:2}}>  
                             <View style={styles.heading}>
-                           
-                                <View style={styles.titleFlex} >
-                                    <Text style={styles.itemText}>{item.name}</Text>
-                                </View>
-                                
-                                
+                                <TouchableNativeFeedback onPress = {()=>{
+                                    this.settingstate(item)
+                                }}>
+                                    <View style={styles.titleFlex}>
+                                        <Text style={styles.itemText}>{item.name}</Text>
+                                    </View>
+                                </TouchableNativeFeedback>
                                 <View style={styles.checkBoxFlex}>
-                                    <CheckBox
-                                        center
-                                        title=''
-                                        // checkedIcon='dot-circle-o' can add images here
-                                        // uncheckedIcon='circle-o'
-                                        checkedIcon={<Image source={require('./checkboxicons/checked.png')}/>}
-                                        uncheckedIcon={<Image source={require('./checkboxicons/unchecked.png')}/>}
-                                        value = {this.state.Dict[String(item.event_id)]}
-                                        //onchange function has to be changed
-                                        onChange={()=>{checkDict[String(item.event_id)]=!checkDict[String(item.event_id)];
-                                        this.setState({
-                                            Dict:checkDict,
-                                        });
-                                        if(this.state.Dict[String(item.event_id)]){
-                                            this.CallMyEventsApi(item.event_id);
-                                        }}}
-                                    />
+                                    <TouchableNativeFeedback onPress = {()=>{this._handleCheckBoxEvent(item.event_id);
+                                                                            this.setState({seed:2});
+                                                                            ToastAndroid.showWithGravityAndOffset(
+                                                                                checkDict[String(item.event_id)]?'Added':'Removed',
+                                                                                ToastAndroid.SHORT,
+                                                                                ToastAndroid.TOP,
+                                                                                0,
+                                                                                40,
+                                                                            )}}>
+                                                                            
+                                        {/* <View style={this.state.CheckBoxStyle[String(item.event_id)]}></View> */}
+                                        {/* <View style={checkDict[String(item.event_id)]?styles.onCheckBox:styles.offCheckBox}></View> */}
+                                        <View>
+                                            <Image style={{height:30,width:30}} source={checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                                        </View>
+                                    </TouchableNativeFeedback>
                                 </View>
                             </View>
                             <View>
                                 <Text style={styles.itemInfoText}>{item.event_type}</Text>
                             </View>
                           </View>
-                     
                     </View>    
                         <View style={styles.footer}>
                             <TouchableNativeFeedback
@@ -419,84 +493,30 @@ class ScreenOne extends Component {
                                 //onPress={()=>this._handlePressButtonAsync(item.venue)}
                                 background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}>
                                 <View style={styles.innerFooter}>
-                                    <Text style={{color:'white'}}>{item.venue_name}</Text>    
+                                    <View style={{flex:1}}>
+                                        <Image style={{height:20,width:20,marginTop:2}}source={require('./icons/image.png')}/>
+                                    </View>
+                                    <View style={{flex:8}}>
+                                        <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{item.venue_name}</Text>
+                                    </View>    
                                 </View>
                             </TouchableNativeFeedback>
                             <View style={styles.innerFooterInvisible}>
+                                <View style={{flex:1}}>
+                                    <Image style={{height:20,width:20,marginTop:2,marginLeft:15,}}source={require('./icons/imagetime.png')}/>
+                                </View>
+                                <View style={{flex:8}}>
+                                    <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{this.getTime(String(item.start_time),String(item.date))}</Text>
+                                </View>
                             </View>    
                         </View>
                 </View>
             )
-        }
-        else{
-            return(
-                <View elevation={10} style={styles.item}>
-                    <Modal animationType = {'slide'}
-                        transparent = {false}
-                        visible = {this.state.modalVisible}
-                        onRequestClose={()=>{console.log('model has been closed')}}>
-                        <TouchableHighlight onPress={()=>{this.toggleModal(!this.state.modalVisible)}}>    
-                            <View style={styles.modal}>
-                                <Text>
-                                    Model is open!
-                                </Text>
-                            </View>
-                        </TouchableHighlight>
-                    </Modal>
-                    <View style={styles.touchableContainer}> 
-                      <TouchableHighlight onPress = {() => {this.toggleModal(true)}}>    
-                          <View style={{flex:2}}>  
-                            <View style={styles.heading}>
-                            <TouchableNativeFeedback  onPress={() => {this.settingstate(item)}}>
-                                <View style={styles.titleFlex}>
-                                    <Text style={styles.itemText}>{item.name}</Text>
-                                </View>
-                            </TouchableNativeFeedback>
-                                <View style={styles.checkBoxFlex}>
-                                    <CheckBox
-                                        center
-                                        title=''
-                                        // checkedIcon='dot-circle-o' can add images here
-                                        // uncheckedIcon='circle-o'
-                                        value = {this.state.Dict[String(item.event_id)]}
-                                        checkedIcon={<Image source={require('./checkboxicons/checked.png')}/>}
-                                        uncheckedIcon={<Image source={require('./checkboxicons/unchecked.png')}/>}
-                                        //onchange function has to be changed
-                                        //onChange={()=>{this.state._handleCheckBoxEvent(item.event_id)}}
-                                        onChange={()=>{checkDict[String(item.event_id)]=!checkDict[String(item.event_id)];
-                                            this.setState({
-                                                Dict:checkDict,
-                                            });
-                                            if(this.state.Dict[String(item.event_id)]){
-                                                this.CallMyEventsApi(item.event_id);
-                                            }}}
-                                    />
-                                </View>
-                            </View>
-                            <View>
-                                <Text style={styles.itemInfoText}>{item.event_type}</Text>
-                            </View>
-                          </View>
-                      </TouchableHighlight>
-                    </View>    
-                        <View style={styles.footer}>
-                            <TouchableNativeFeedback
-                                onPress = {()=>{Linking.openURL(String(item.venue_url))}}
-                                //onPress={()=>this._handlePressButtonAsync(item.venue)}
-                                background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}>
-                                <View style={styles.innerFooter}>
-                                    <Text style={{color:'white'}}>{item.venue_name}</Text>    
-                                </View>
-                            </TouchableNativeFeedback>
-                            <View style={styles.innerFooterInvisible}>
-                            </View>    
-                        </View>
-                </View>
-            )
-        }
     }
     render() {
-        if(this.state.isLoading){
+        no_renders+=1;
+        console.log(no_renders);
+        if(this.state.isLoading||this.state.fontLoading){
             return(
                 <View style={{flex:1}}>
                     <ActivityIndicator/>
@@ -524,13 +544,16 @@ class ScreenOne extends Component {
             //     </View>
             //     </ScrollView>}/>
             // </View>
-            <View style={styles.container} >
+
+            <View style={{flex:1}}>
+
                 <FlatList 
                 data = {this.state.dataSource}
                 style = {styles.container}
                 numColumns= {numColumns}
                 refreshing = {this.state.refreshing}
                 onRefresh = {this.handleRefresh}
+                extraData = {this.state}
                 renderItem = {({item}) => this.customRenderFunction(item)}   
             />
             
@@ -538,6 +561,9 @@ class ScreenOne extends Component {
         
             </View>
             
+
+                
+                
         );
     }
 }
@@ -557,6 +583,8 @@ const styles = StyleSheet.create({
     itemInfoText:{
         marginLeft:10,
         marginBottom:10,
+        fontFamily:'latoRegular',
+        color: "#221d3d",
     },
     footer:{
         flex:1,
@@ -567,12 +595,13 @@ const styles = StyleSheet.create({
         padding:5,
         borderRadius:30,
         borderWidth: 1,
-        borderColor:'black',
+        borderColor:'#6674a3',
         shadowOffset:{width: 0,  height: 3,},
         shadowColor: 'black',
         shadowOpacity: 1.0,
         shadowRadius: 5,
         overflow: 'hidden',
+        backgroundColor: '#6674a3',
         
     },
     innerFooter:{
@@ -583,8 +612,8 @@ const styles = StyleSheet.create({
         padding:5,
         borderRadius:25,
         borderWidth: 1,
-        borderColor: 'rgb(93,173,226)',
-        backgroundColor: 'rgb(93,173,226)',
+        borderColor: '#93a0cc',
+        backgroundColor: '#93a0cc',
         shadowColor: 'black',
         shadowOpacity: 1.0,
         shadowRadius: 1,
@@ -599,9 +628,10 @@ const styles = StyleSheet.create({
         alignItems:'center',
     },
     itemText:{
-        color: 'black',
         fontWeight:'bold',
         fontSize: 20,
+        fontFamily:'latoRegular',
+        color: "#221d3d",
     },
     customitem:{
         marginTop:10,
@@ -650,8 +680,7 @@ const styles = StyleSheet.create({
         flex:5,
     },
     checkBoxFlex:{
-        flex:0.5,
-        marginRight: 3,
+        flex:0.55,
         marginTop: 1,
     },
     innerFooterInvisible:{
@@ -711,5 +740,24 @@ const styles = StyleSheet.create({
         flexDirection:'row-reverse',
         textAlign:'right',
         width:'100%'
+    },
+    onCheckBox:{
+        borderColor:'rgba(93,173,226,1)',
+        borderRadius: 15,
+        borderWidth: 1,
+        backgroundColor: 'rgba(93,173,226,0.45)',
+        height:30,
+        width:30,
+        marginRight:10,
+    },
+    offCheckBox:{
+        borderColor: 'rgba(0,0,0,0.5)',
+        borderRadius: 15,
+        borderWidth: 1,
+        backgroundColor:'rgba(120,120,120,0.15)',
+        height: 30,
+        width: 30,
+        marginRight:10,
+
     }
 });

@@ -7,7 +7,7 @@ import {StackNavigator,createStackNavigator, DrawerItems} from 'react-navigation
 import WelcomeScreen from './screens/login/WelcomeScreen'
 import LoginScreen from './screens/login/LoginScreen'
 import SignUpScreen from './screens/login/SignUpScreen'
-
+import HomeScreen from './screens/HomeScreen'
 
 
 export default class App extends React.Component {
@@ -22,6 +22,7 @@ const AppStackNavigator = new createStackNavigator({
   WelcomeScreen: { screen: WelcomeScreen },
   LoginScreen: { screen: LoginScreen },
   SignUpScreen: { screen: SignUpScreen },
+  HomeScreen: { screen: HomeScreen },
   DrawerNavigator: {
     screen: DrawerNavigator,
     navigationOptions: {

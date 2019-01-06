@@ -63,7 +63,7 @@ const EventTabNavigator = new createBottomTabNavigator({
     NetworkingEvents: {
         screen: NetworkingEvents,
         navigationOptions: {
-            tabBarLabel: 'Networking',
+            tabBarLabel: 'Others',
             tabBarIcon: () => (
                 <Ionicons name="ios-people" size={24} />
             )
