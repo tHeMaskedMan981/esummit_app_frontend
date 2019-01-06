@@ -55,7 +55,7 @@ class SponsorScreen extends Component {
     
         return (
             <View style={styles.container}>
-                <Text>SponsorScreen</Text>
+                <Text>SponsorScreeeen</Text>
                 <Text>itemId: {JSON.stringify(itemId)}</Text>
                 <Text>name: {JSON.stringify(name)}</Text>
 

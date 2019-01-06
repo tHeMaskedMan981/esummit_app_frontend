@@ -22,7 +22,7 @@ import { Header, Left, Icon } from "native-base";
 import { stringify } from "qs";
 // import SponsorScreen from './SponsorScreen';
 
-class SponsorScreen extends Component {
+class SpeakerScreen extends Component {
     constructor(props){
         super(props);
         this.state ={ isLoading: true}
@@ -31,7 +31,7 @@ class SponsorScreen extends Component {
     static navigationOptions = ({ navigation }) => {
         
                 return {
-                    title:'Sponsors',
+                    title:'Speakers',
                     headerLeft: (
                         <View style={{ padding: 10 }}>
                             <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
@@ -41,7 +41,7 @@ class SponsorScreen extends Component {
             }
 
             componentDidMount(){
-                return fetch('http://esummit.ecell.in/v1/api/sponsors')
+                return fetch('http://esummit.ecell.in/v1/api/speakers')
                   .then((response) => response.json())
                   .then((responseJson) => {
             
@@ -75,13 +75,13 @@ class SponsorScreen extends Component {
                 
                 renderItem={({item}) =>{
                 return( 
-                    <View style={{flex:1, justifyContent:"center", alignItems:"center", paddingBottom:10,}}>
-                <TouchableNativeFeedback onPress={() => Linking.openURL(item.link.toString())}>
+                <View style={{flex:1, justifyContent:"center", alignItems:"center", paddingBottom:15,}}>
+                <TouchableNativeFeedback onPress={() => Linking.openURL(item.limkedin_link.toString())}>
 
-                <Image style={{width: 150, aspectRatio: 1,}} source={{uri: item.photo.toString()}}/>   
+                <Image style={{width: 150, aspectRatio: 1,}} source={{uri: item.photo_url.toString()}}/>   
                 </TouchableNativeFeedback>     
-                <Text style={{ color:'black',fontSize:30, fontWeight:'bold',textAlign:"center"}}>{item.name}</Text>
-                <Text style={{ color:'grey',fontSize:15,fontWeight:'normal', textAlign:'center'}}>{item.category}</Text>
+                <Text style={{ color:'black',fontSize:25, fontWeight:'bold',textAlign:"center", paddingBottom:5}}>{item.name}</Text>
+                <Text style={{ color:'grey',fontSize:15,fontWeight:'normal', textAlign:'center', paddingBottom:20}}>{item.designation}, {item.company}</Text>
                 </View>) }}
                 numColumns={2}
                 keyExtractor={({id}, index) => id}
@@ -103,7 +103,7 @@ class SponsorScreen extends Component {
           );
     }
 }
-export default SponsorScreen;
+export default SpeakerScreen;
 
 const styles = StyleSheet.create({
     container: {

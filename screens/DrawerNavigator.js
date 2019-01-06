@@ -19,6 +19,7 @@ import SponsorNavigator from './SponsorNavigator'
 import HelplineNavigator from './HelplineNavigator'
 import DeveloperNavigator from './DeveloperNavigator'
 import MapNavigator from './MapNavigator'
+import SpeakerNavigator from './SpeakerNavigator'
 
 const InnerStackNavigator = new createStackNavigator({
     TabNavigator: {
@@ -35,6 +36,12 @@ const EventStackNavigator = new createStackNavigator({
 const SponsorStackNavigator = new createStackNavigator({
     SponsorNavigator: {
         screen: SponsorNavigator
+    }
+})
+
+const SpeakerStackNavigator = new createStackNavigator({
+    SpeakerNavigator: {
+        screen: SpeakerNavigator
     }
 })
 
@@ -81,6 +88,7 @@ const AppDrawerNavigator = new createDrawerNavigator({
     HomeScreen: { screen: InnerStackNavigator },
     Schedule: { screen: EventStackNavigator },
     Sponsors: {screen : SponsorStackNavigator},
+    Speakers: {screen: SpeakerStackNavigator},
     Helpline: {screen : HelplineStackNavigator},
     Developer: {screen : DeveloperStackNavigator},
     Map: {screen : MapStackNavigator}
