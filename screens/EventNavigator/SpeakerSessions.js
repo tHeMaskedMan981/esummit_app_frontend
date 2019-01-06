@@ -17,6 +17,10 @@ import {
     CheckBox,
 } from "react-native";
 import { Constants, WebBrowser } from 'expo';
+import {Font} from 'expo';
+import onCheckBoxImage from '../TabNavigator/icons/checked.png';
+import offCheckBoxImage from '../TabNavigator/icons/unchecked.png';
+import {ToastAndroid} from 'react-native';
  var Arr = [];
  var checkDict = {};
  var styleCheckBox = {};
@@ -45,6 +49,7 @@ class SpeakerSessions extends Component {
             trackMyEvents:false,
             Dict:{},
             CheckBoxStyle:{},
+            fontLoading:true,
         };
     }
     venueFetch = (venue_id)=>{
@@ -113,31 +118,26 @@ class SpeakerSessions extends Component {
     }
     componentDidMount(){
         fetch('http://esummit.ecell.in/v1/api/events/speaker')
-        .then((response) => response.json())
+        .then((response)=>response.json())
         .then((responseJson)=>{
             this.setState({
                 isLoading:false,
                 dataSource: responseJson,
-                refreshing:false,
-                trackHighlightEvents:true,});
-                console.log('highlight entered');
-        }).then(
-            ()=>{this.initializeCheckDict();
-                console.log(this.state.trackHighlightEvents);
-                console.log(this.state.trackMyEvents);
-            }
-        )
-        // while(true){
-        //     if(this.state.trackHighlightEvents && this.state.trackMyEvents){
-        //         console.log('inside if');
-        //         break;
-        //     }
-        //     console.log('outside if');
-        //     break;
-            
-        // }
-        // console.log('loop break');
-    }
+                refreshing: false,
+            })
+        })
+            .catch(()=>{
+                ToastAndroid.showWithGravityAndOffset(
+                    "Unable to connect to internet",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.TOP,
+                    0,
+                    40);
+            })
+            .then(()=>{
+                this.initializeCheckDict();
+            })
+        }
     initializeCheckDict(){
         fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
         .then((response) => response.json())
@@ -193,11 +193,17 @@ class SpeakerSessions extends Component {
             user_id: 2,
         }),
         }).then()
-    .catch((error) => {
-        console.error(error);
-    }).then(()=>{
-        console.log(String(this.props.screenProps.user_name));
-    });
+        .catch((error) => {
+        // ToastAndriod.show(error,ToastAndriod.SHORT);
+            ToastAndroid.showWithGravityAndOffset(
+                String(error),
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+                0,
+                40);
+        }).then(()=>{
+            // this.ref.toast.show('hello world');
+        });
     }
     handleRefresh = () => {
         this.setState({
@@ -265,10 +271,20 @@ class SpeakerSessions extends Component {
                                 </View>
                                 <View style={styles.checkBoxFlex}>
                                     <TouchableNativeFeedback onPress = {()=>{this._handleCheckBoxEvent(item.event_id);
-                                                                            this.setState({seed:2});}}>
+                                                                            this.setState({seed:2});
+                                                                            ToastAndroid.showWithGravityAndOffset(
+                                                                                checkDict[String(item.event_id)]?'Added':'Removed',
+                                                                                ToastAndroid.SHORT,
+                                                                                ToastAndroid.TOP,
+                                                                                0,
+                                                                                40,
+                                                                            )}}>
                                                                             
                                         {/* <View style={this.state.CheckBoxStyle[String(item.event_id)]}></View> */}
-                                        <View style={checkDict[String(item.event_id)]?styles.onCheckBox:styles.offCheckBox}></View>
+                                        {/* <View style={checkDict[String(item.event_id)]?styles.onCheckBox:styles.offCheckBox}></View> */}
+                                        <View>
+                                            <Image style={{height:30,width:30}} source={checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                                        </View>
                                     </TouchableNativeFeedback>
                                 </View>
                             </View>
@@ -288,7 +304,7 @@ class SpeakerSessions extends Component {
                                         <Image style={{height:20,width:20,marginTop:2}}source={require('./icons1/image.png')}/>
                                     </View>
                                     <View style={{flex:8}}>
-                                        <Text style={{color:'white',textAlign:'center'}}>{item.venue_name}</Text>
+                                        <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular',}}>{item.venue_name}</Text>
                                     </View>    
                                 </View>
                             </TouchableNativeFeedback>
@@ -297,7 +313,7 @@ class SpeakerSessions extends Component {
                                     <Image style={{height:20,width:20,marginTop:2,marginLeft:15,}}source={require('./icons1/imagetime.png')}/>
                                 </View>
                                 <View style={{flex:8}}>
-                                    <Text style={{color:'white',textAlign:'center'}}>{this.getTime(String(item.start_time),String(item.date))}</Text>
+                                    <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular',}}>{this.getTime(String(item.start_time),String(item.date))}</Text>
                                 </View>
                             </View>    
                         </View>
@@ -366,6 +382,8 @@ const styles = StyleSheet.create({
     itemInfoText:{
         marginLeft:10,
         marginBottom:10,
+        fontFamily:'latoRegular',
+        color: "#221d3d",
     },
     footer:{
         flex:1,
@@ -376,13 +394,13 @@ const styles = StyleSheet.create({
         padding:5,
         borderRadius:30,
         borderWidth: 1,
-        borderColor:'rgba(93,173,226,0.6)',
+        borderColor:'#6674a3',
         shadowOffset:{width: 0,  height: 3,},
         shadowColor: 'black',
         shadowOpacity: 1.0,
         shadowRadius: 5,
         overflow: 'hidden',
-        backgroundColor: 'rgba(93,173,226,0.45)',
+        backgroundColor: '#6674a3',
         
     },
     innerFooter:{
@@ -393,8 +411,8 @@ const styles = StyleSheet.create({
         padding:5,
         borderRadius:25,
         borderWidth: 1,
-        borderColor: 'rgb(93,173,226)',
-        backgroundColor: 'rgb(93,173,226)',
+        borderColor: '#93a0cc',
+        backgroundColor: '#93a0cc',
         shadowColor: 'black',
         shadowOpacity: 1.0,
         shadowRadius: 1,
@@ -409,9 +427,10 @@ const styles = StyleSheet.create({
         alignItems:'center',
     },
     itemText:{
-        color: 'black',
         fontWeight:'bold',
         fontSize: 20,
+        fontFamily:'latoRegular',
+        color: "#221d3d",
     },
     customitem:{
         marginTop:10,

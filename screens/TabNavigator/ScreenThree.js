@@ -17,6 +17,10 @@ import {
     CheckBox,
 } from "react-native";
 import { Constants, WebBrowser } from 'expo';
+import {Font} from 'expo';
+import onCheckBoxImage from './icons/checked.png';
+import offCheckBoxImage from './icons/unchecked.png';
+import {ToastAndroid} from 'react-native';
  var Arr = [];
  var checkDict = {};
  var styleCheckBox = {};
@@ -41,9 +45,11 @@ class ScreenOne extends Component {
             modalVisible:false,
             refreshing:false,
             seed:1,
-            isChecked: false,
+            trackHighlightEvents:false,
+            trackMyEvents:false,
             Dict:{},
             CheckBoxStyle:{},
+            fontLoading:true,
         };
     }
     venueFetch = (venue_id)=>{
@@ -121,12 +127,15 @@ class ScreenOne extends Component {
                 function(){
 
                 });
-        }).then(
-            ()=>{this.initializeCheckDict();
-                console.log(this.state.trackHighlightEvents);
-                console.log(this.state.trackMyEvents);
-            }
-        )
+        }).catch(()=>{
+            ToastAndroid.showWithGravityAndOffset(
+                "Unable to connect to internet",
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+                0,
+                40);
+        })
+        .then(()=>{this.initializeCheckDict()})
     }
     initializeCheckDict(){
         fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
@@ -143,14 +152,10 @@ class ScreenOne extends Component {
             console.log(JSON.stringify(this.state.myEventsSource[0]));
             for(let i=0;i<this.state.myEventsSource.length;++i){
                 checkDict[String(this.state.myEventsSource[i].event_id)] = true;
-                styleCheckBox[String(this.state.myEventsSource[i].event_id)] = styles.onCheckBox;
-                console.log(this.state.myEventsSource[i].event_id);
             }
             for(let i=0;i<this.state.dataSource.length;++i){
                 if(!(String(this.state.dataSource[i].event_id) in checkDict)){
                 checkDict[String(this.state.dataSource[i].event_id)] = false;
-                styleCheckBox[String(this.state.dataSource[i].event_id)] = styles.offCheckBox;
-                console.log(this.state.dataSource[i].event_id);
                 }
             }
             // for(let obj in this.state.dataSource){
@@ -248,10 +253,20 @@ class ScreenOne extends Component {
                                 </View>
                                 <View style={styles.checkBoxFlex}>
                                     <TouchableNativeFeedback onPress = {()=>{this._handleCheckBoxEvent(item.event_id);
-                                                                            this.setState({seed:2});}}>
+                                                                            this.setState({seed:2});
+                                                                            ToastAndroid.showWithGravityAndOffset(
+                                                                                checkDict[String(item.event_id)]?'Added':'Removed',
+                                                                                ToastAndroid.SHORT,
+                                                                                ToastAndroid.TOP,
+                                                                                0,
+                                                                                40,
+                                                                            )}}>
                                                                             
                                         {/* <View style={this.state.CheckBoxStyle[String(item.event_id)]}></View> */}
-                                        <View style={checkDict[String(item.event_id)]?styles.onCheckBox:styles.offCheckBox}></View>
+                                        {/* <View style={checkDict[String(item.event_id)]?styles.onCheckBox:styles.offCheckBox}></View> */}
+                                        <View>
+                                            <Image style={{height:30,width:30}} source={checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                                        </View>
                                     </TouchableNativeFeedback>
                                 </View>
                             </View>
@@ -271,7 +286,7 @@ class ScreenOne extends Component {
                                         <Image style={{height:20,width:20,marginTop:2}}source={require('./icons/image.png')}/>
                                     </View>
                                     <View style={{flex:8}}>
-                                        <Text style={{color:'white',textAlign:'center'}}>{item.venue_name}</Text>
+                                        <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{item.venue_name}</Text>
                                     </View>    
                                 </View>
                             </TouchableNativeFeedback>
@@ -280,7 +295,7 @@ class ScreenOne extends Component {
                                     <Image style={{height:20,width:20,marginTop:2,marginLeft:15,}}source={require('./icons/imagetime.png')}/>
                                 </View>
                                 <View style={{flex:8}}>
-                                    <Text style={{color:'white',textAlign:'center'}}>{this.getTime(String(item.start_time),String(item.date))}</Text>
+                                    <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{this.getTime(String(item.start_time),String(item.date))}</Text>
                                 </View>
                             </View>    
                         </View>
@@ -318,7 +333,7 @@ class ScreenOne extends Component {
             //     </ScrollView>}/>
             // </View>
                 <FlatList 
-                extraData = {this.data}
+                extraData = {this.state}
                 data = {this.state.dataSource}
                 style = {styles.container}
                 numColumns= {numColumns}
@@ -348,6 +363,8 @@ const styles = StyleSheet.create({
     itemInfoText:{
         marginLeft:10,
         marginBottom:10,
+        fontFamily:'latoRegular',
+        color: "#221d3d",
     },
     footer:{
         flex:1,
@@ -358,13 +375,13 @@ const styles = StyleSheet.create({
         padding:5,
         borderRadius:30,
         borderWidth: 1,
-        borderColor:'rgba(93,173,226,0.6)',
+        borderColor:'#6674a3',
         shadowOffset:{width: 0,  height: 3,},
         shadowColor: 'black',
         shadowOpacity: 1.0,
         shadowRadius: 5,
         overflow: 'hidden',
-        backgroundColor: 'rgba(93,173,226,0.45)',
+        backgroundColor: '#6674a3',
         
     },
     innerFooter:{
@@ -375,8 +392,8 @@ const styles = StyleSheet.create({
         padding:5,
         borderRadius:25,
         borderWidth: 1,
-        borderColor: 'rgb(93,173,226)',
-        backgroundColor: 'rgb(93,173,226)',
+        borderColor: '#93a0cc',
+        backgroundColor: '#93a0cc',
         shadowColor: 'black',
         shadowOpacity: 1.0,
         shadowRadius: 1,
@@ -391,9 +408,10 @@ const styles = StyleSheet.create({
         alignItems:'center',
     },
     itemText:{
-        color: 'black',
         fontWeight:'bold',
         fontSize: 20,
+        fontFamily:'latoRegular',
+        color: "#221d3d",
     },
     customitem:{
         marginTop:10,
