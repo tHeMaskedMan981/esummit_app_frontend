@@ -24,7 +24,7 @@ export default class HelplineScreen extends Component {
         return (
 
             <View style={{flex: 1, flexDirection:'column'}}>
-       <View style={{height:50, flexDirection:'row', justifyContent:'center', marginTop:5,  backgroundColor: '#639fff',}}><Text style={{fontSize: 30,}}> Hospital</Text></View>
+       <View style={{height:50, flexDirection:'row', justifyContent:'center', marginTop:5,  backgroundColor: '#639fff',marginHorizontal: 20}}><Text style={{fontSize: 30,}}> Hospital</Text></View>
             <View style={{flex: 0.5,  flexDirection:'row', justifyContent: "space-around"}}>
                 
                <View style={{ flex:0.5, justifyContent: 'flex-start',paddingLeft:8}}>
@@ -45,7 +45,7 @@ export default class HelplineScreen extends Component {
             </View>
             </View>
 
-            <View style={{height:50, flexDirection:'row', justifyContent:'center', backgroundColor: '#639fff',}}><Text style={{fontSize: 30}}> Security Section</Text></View>
+            <View style={{height:50, flexDirection:'row', justifyContent:'center', backgroundColor: '#639fff', marginHorizontal: 20}}><Text style={{fontSize: 30}}> Security Section</Text></View>
             <View style={{flex: 0.5,  flexDirection:'row', justifyContent: "space-around"}}>
                 
                <View style={{ flex:0.5, justifyContent: 'flex-start',paddingLeft:8}}>

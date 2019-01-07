@@ -20,6 +20,7 @@ import HelplineNavigator from './HelplineNavigator'
 import DeveloperNavigator from './DeveloperNavigator'
 import MapNavigator from './MapNavigator'
 import SpeakerNavigator from './SpeakerNavigator'
+import ContactNavigator from './ContactNavigator'
 
 const InnerStackNavigator = new createStackNavigator({
     TabNavigator: {
@@ -54,6 +55,12 @@ const HelplineStackNavigator = new createStackNavigator({
 const DeveloperStackNavigator = new createStackNavigator({
     DeveloperNavigator: {
         screen: DeveloperNavigator
+    }
+}) 
+
+const ContactStackNavigator = new createStackNavigator({
+    ContactNavigator: {
+        screen: ContactNavigator
     }
 })
 
@@ -91,6 +98,7 @@ const AppDrawerNavigator = new createDrawerNavigator({
     Speakers: {screen: SpeakerStackNavigator},
     Helpline: {screen : HelplineStackNavigator},
     Developer: {screen : DeveloperStackNavigator},
+    Contacts: {screen: ContactStackNavigator},
     Map: {screen : MapStackNavigator}
 
     },
