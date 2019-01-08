@@ -12,6 +12,7 @@ import HomeScreen from './HomeScreen';
 // import SpeakerSessions from './SpeakerSessions';
 // import NetworkingEvents from './NetworkingEvents';
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import HomeScreenTabNavigator from './HomeScreenTabNavigator'
 import EventTabNavigator from './EventTabNavigator'
@@ -76,7 +77,7 @@ const CustomDrawerContentComponent = (props) => (
             source={require('../assets/images/robot-dev.png')} />
         </Body>
       </Header>
-      <Content>
+      <Content style={styles.screenContainer}>
         <DrawerItems {...props} />
       </Content>
   
@@ -85,13 +86,54 @@ const CustomDrawerContentComponent = (props) => (
   );
   
 const AppDrawerNavigator = new createDrawerNavigator({
-    HomeScreen: { screen: InnerStackNavigator },
-    Schedule: { screen: EventStackNavigator },
-    Sponsors: {screen : SponsorStackNavigator},
-    Speakers: {screen: SpeakerStackNavigator},
-    Helpline: {screen : HelplineStackNavigator},
-    Developer: {screen : DeveloperStackNavigator},
-    Map: {screen : MapStackNavigator}
+    HomeScreen: { 
+        screen: InnerStackNavigator, 
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-home" size={16} />
+            )
+        }
+    },
+    Schedule: { 
+        screen: EventStackNavigator, 
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-compass" size={16} />
+            )
+        }
+    },
+    Sponsors: {
+        screen : SponsorStackNavigator,
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-compass" size={16} />
+            )
+        }
+    },
+    Helpline: {
+        screen : HelplineStackNavigator,
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-compass" size={16} />
+            )
+        }
+    },
+    Developer: {
+        screen : DeveloperStackNavigator,
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-compass" size={16} />
+            )
+        }    
+    },
+    Map: {
+        screen : MapStackNavigator,
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-compass" size={16} />
+            )
+        }
+    }
 
     },
     {
@@ -157,6 +199,8 @@ const styles = StyleSheet.create({
       height: 100,
       width: 100,
       borderRadius: 75
+    },
+    screenContainer: {
+        paddingTop: 20
     }
-  
 });
