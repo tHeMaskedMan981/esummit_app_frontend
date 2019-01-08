@@ -173,7 +173,7 @@ class ScreenOne extends Component {
         })
     }
     initializeCheckDict(){
-        fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
+        fetch('http://esummit.ecell.in/v1/api/events/myevents/' + String(this.props.screenProps.user_id))
         .then((response) => response.json())
         .then((responseJson)=>{
             this.setState({
@@ -222,7 +222,7 @@ class ScreenOne extends Component {
         },
         body: JSON.stringify({
             event_id: evt_id,
-            user_id: 2,
+            user_id: this.props.screenProps.user_id,
         }),
         }).then()
     .catch((error) => {
