@@ -84,7 +84,7 @@ class ScreenTwo extends Component {
     })
     .then(charData => {
         //console.log(`inside: ${JSON.stringify(charData, null, 2)}`);
-        console.log('inside chardata');
+        //console.log('inside chardata');
         charData.map(entry => {
             console.log(JSON.stringify(entry));
             return Arr.push(entry);
@@ -94,7 +94,7 @@ class ScreenTwo extends Component {
         for(let i=0;i<Arr.length;++i){
             if(venue_id==Arr[i].venue_id){
                 url = Arr[i].url;
-                console.log(String(url));
+                //console.log(String(url));
                 Linking.openURL(String(url));
             }
         }
