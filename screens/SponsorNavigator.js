@@ -78,7 +78,7 @@ class SponsorScreen extends Component {
                     <View style={{flex:1, justifyContent:"center", alignItems:"center", paddingBottom:10,}}>
                 <TouchableNativeFeedback onPress={() => Linking.openURL(item.link.toString())}>
 
-                <Image style={{width: 150, aspectRatio: 1,}} source={{uri: item.photo.toString()}}/>   
+                <Image style={{width: 150, aspectRatio: 1,}} source={{uri: item.photo_url.toString()}}/>   
                 </TouchableNativeFeedback>     
                 <Text style={{ color:'black',fontSize:30, fontWeight:'bold',textAlign:"center"}}>{item.name}</Text>
                 <Text style={{ color:'grey',fontSize:15,fontWeight:'normal', textAlign:'center'}}>{item.category}</Text>
