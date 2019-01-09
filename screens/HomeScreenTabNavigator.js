@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import {
     View,
     Text,
-    StyleSheet
+    StyleSheet,
+    Image
 } from "react-native";
 
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
@@ -13,6 +14,7 @@ import ScreenTwo from './TabNavigator/ScreenTwo'
 import ScreenThree from './TabNavigator/ScreenThree'
 //import HomeScreen from './HomeScreen' 
 //var globalCheckBoxDict = {};
+
 
 export default class AppTabNavigator extends Component {
     // constructor(props){
@@ -38,6 +40,7 @@ export default class AppTabNavigator extends Component {
     
     static navigationOptions = ({ navigation }) => {
         return {
+            
             headerLeft: (
                 <View style={{ padding: 10 }}>
                     <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
@@ -92,7 +95,7 @@ const HomeScreenTabNavigator = new createBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Highlight Events',
             tabBarIcon: () => (
-                <Ionicons name="md-compass" size={16} />
+                <Ionicons name="ios-star" size={16} />
             )
         }
     },
@@ -101,7 +104,7 @@ const HomeScreenTabNavigator = new createBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'My Events',
             tabBarIcon: () => (
-                <Ionicons name="md-compass" size={16} />
+                <Ionicons name="md-person" size={16} />
             )
         }
     },
@@ -110,23 +113,13 @@ const HomeScreenTabNavigator = new createBottomTabNavigator({
         navigationOptions:{
             tabBarLabel:'Updated Events',
             tabBarIcon:()=>(
-                <Ionicons name='md-compass' size={16}/>
+                <Ionicons name='md-notifications' size={16}/>
             )
         }
     }
 })
-// const HomeScreen = new createStackNavigator({
-//     HomeScreen:{
-//         screen:HomeScreen
-//     },
-// })
-// export class StackNavigator extends Component{
-//     render(){
-//         return(
-//             <HomeScreen></HomeScreen>
-//         )
-//     }
-// }
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,

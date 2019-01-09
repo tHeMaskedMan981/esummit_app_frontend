@@ -76,7 +76,7 @@ class SponsorScreen extends Component {
                 renderItem={({item}) =>{
                 return( 
                     <View style={{flex:1, justifyContent:"center", alignItems:"center", paddingBottom:10,}}>
-                <TouchableNativeFeedback onPress={() => Linking.openURL(item.link.toString())}>
+                <TouchableNativeFeedback onPress={() => Linking.openURL(item.website.toString())}>
 
                 <Image style={{width: 150, aspectRatio: 1,}} source={{uri: item.photo_url.toString()}}/>   
                 </TouchableNativeFeedback>     

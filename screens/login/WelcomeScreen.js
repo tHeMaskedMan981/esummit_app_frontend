@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage  } from 'react-native';
-import GradientButton from "react-native-gradient-buttons";
+import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage, Image  } from 'react-native';
+import GradientButton from 'react-native-gradient-buttons'
+
 
 export default class WelcomeScreen extends Component {
   constructor(props) {
@@ -12,7 +13,6 @@ export default class WelcomeScreen extends Component {
       email_err:'',
       user_name:null,
       user_id:null,
-      photo_url:null,
       get_username:null,
       get_email:null,
       get_esummitid:null,
@@ -105,7 +105,6 @@ _retrieveData = async () => {
     this._storeData('user_id',JSON.stringify(this.state.user_id)); 
     this._storeData('user_name',JSON.stringify(this.state.user_name)); 
     this._storeData('email',JSON.stringify(this.state.email)); 
-    this._storeData('photo_url',JSON.stringify(this.state.photo_url));
     this._storeData('esummit_id',JSON.stringify(this.state.esummit_id)); 
     
     this.props.navigation.navigate('DrawerNavigator', {
@@ -125,83 +124,82 @@ _retrieveData = async () => {
       console.error(error);
     });
   }
-
-async onGoogleLogin() {
-  console.log("called GoogleLogin")
-  try {
-    const result = await Expo.Google.logInAsync({
-      androidClientId:
-        "402561594320-eeuu2tnpqdouc96dcgjtkf124q5bgtet.apps.googleusercontent.com",
-      //iosClientId: YOUR_CLIENT_ID_HERE,  <-- if you use iOS
-      scopes: ["profile", "email"]
-    })
-
-    if (result.type === "success") {
-      
-      /*
-      1. Call api to create user object using result object 
-      2. Navigate to drawerNavigation after creating user object
-      */
-      value = fetch('http://esummit.ecell.in/v1/user/register/google/', {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          user_name: result.user.name,
-          email: result.user.email,
-          photo_url: result.user.photoUrl,
-        }),
-      }).then((response) => response.json())
-      .then((responseJson) => {
-
-        try
-          {
-            this.setState({
-                user_name: responseJson.profile.user_name,
-                user_id: responseJson.profile.user_id,
-                email: responseJson.profile.email,
-                photo_url: responseJson.profile.photo_url,
-            });
-        //   this._storeData(); 
-        this._storeData('user_id',JSON.stringify(this.state.user_id)); 
-        this._storeData('user_name',JSON.stringify(this.state.user_name)); 
-        this._storeData('email',JSON.stringify(this.state.email)); 
-        this._storeData('photo_url',JSON.stringify(this.state.photo_url)); 
-        this._storeData('esummit_id',JSON.stringify("")); 
+  async onGoogleLogin() {
+    console.log("called GoogleLogin")
+    try {
+      const result = await Expo.Google.logInAsync({
+        androidClientId:
+          "402561594320-eeuu2tnpqdouc96dcgjtkf124q5bgtet.apps.googleusercontent.com",
+        //iosClientId: YOUR_CLIENT_ID_HERE,  <-- if you use iOS
+        scopes: ["profile", "email"]
+      })
+  
+      if (result.type === "success") {
         
-        this.props.navigation.navigate('DrawerNavigator', {
-            user_id: this.state.user_id,
-            user_name: this.state.user_name,
-            photo_url:this.state.photo_url,
-            email:this.state.email,
-          });
-    
-          }
-          catch (error) {
-            Alert.alert('Credentials', "The entered email or E-Summit ID is not correct. Please verify the details.");
-          }
+        /*
+        1. Call api to create user object using result object 
+        2. Navigate to drawerNavigation after creating user object
+        */
+        value = fetch('http://esummit.ecell.in/v1/user/register/google/', {
+          method: 'POST',
+          headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_name: result.user.name,
+            email: result.user.email,
+            photo_url: result.user.photoUrl,
+          }),
+        }).then((response) => response.json())
+        .then((responseJson) => {
+  
+          try
+            {
+              this.setState({
+                  user_name: responseJson.profile.user_name,
+                  user_id: responseJson.profile.user_id,
+                  email: responseJson.profile.email,
+                  photo_url: responseJson.profile.photo_url,
+              });
+          //   this._storeData(); 
+          this._storeData('user_id',JSON.stringify(this.state.user_id)); 
+          this._storeData('user_name',JSON.stringify(this.state.user_name)); 
+          this._storeData('email',JSON.stringify(this.state.email)); 
+          this._storeData('photo_url',JSON.stringify(this.state.photo_url)); 
+          this._storeData('esummit_id',JSON.stringify("")); 
           
-        })
-      .catch((error) => {
-        console.error(error);
-      });
-      //console.log(responseJson);
-     
-    } else {
-      console.log("cancelled")
+          this.props.navigation.navigate('DrawerNavigator', {
+              user_id: this.state.user_id,
+              user_name: this.state.user_name,
+              photo_url:this.state.photo_url,
+              email:this.state.email,
+            });
+      
+            }
+            catch (error) {
+              Alert.alert('Credentials', "The entered email or E-Summit ID is not correct. Please verify the details.");
+            }
+            
+          })
+        .catch((error) => {
+          console.error(error);
+        });
+        //console.log(responseJson);
+       
+      } else {
+        console.log("cancelled")
+      }
+    } catch (e) {
+      console.log("error", e)
     }
-  } catch (e) {
-    console.log("error", e)
   }
-}
   
   render() {
     return (
       <View style={styles.container}>
       
-        <Text> {this.state.user_name} </Text>
+        {/* <Text> {this.state.user_name} </Text>
         <Text> {this.state.user_id} </Text>
         <Text> {this.state.esummit_id}</Text>
         <Text> {this.state.retrieved}</Text>
@@ -209,8 +207,14 @@ async onGoogleLogin() {
         <Text> {this.state.get_username} </Text>
         <Text> {this.state.get_esummitid} </Text>
         <Text> {this.state.get_email}</Text>
-        <Text> {this.state.get_userid}</Text>
-  
+        <Text> {this.state.get_userid}</Text> */}
+        {/* <View style={{height:'30%',width:'100%',padding:10,justifyContent:'center',alignItems:'center'}}>
+        <Image
+        source={require(`../../assets/images/robot-dev.png`)}
+        style={{width:'100%', marginBottom:15, height:'100%'}}
+        />
+        </View> */}
+        <View style={{height:'30%',width:'100%',justifyContent:'center',alignItems:'center'}}>
         <TextInput
           value={this.state.email}
           onChangeText={ (email) => {
@@ -218,46 +222,51 @@ async onGoogleLogin() {
               if (email.search('@')>=0) this.setState({ email_err:"" });
               else this.setState({ email_err:"Enter a valid E-Mail Address" }); 
               }}
-          placeholder={'email'}
+          placeholder={'Email'}
           style={styles.input}
         />
-        <View style={styles.err}>
+        <View style={styles.err} >
         <Text> {this.state.email_err} </Text>
       </View>
 
         <TextInput
           value={this.state.esummit_id}
           onChangeText={(esummit_id) => this.setState({ esummit_id })}
-          placeholder={'esummit_id'}
+          placeholder={'Esummit_id'}
           secureTextEntry={true}
           style={styles.input}
         />
-        
+        </View>
+        <View style={{height:'40%',width:'100%',alignItems:'center'}}>
         <GradientButton
-          style={styles.binput1}
-          textStyle={{fontSize:24}}
-          text={'SIGN UP'}
-          height={60}
-          gradientBegin="#e1306c"
-          gradientEnd="#275d8e"
-          style={styles.input}
-          onPress={this.onLogin.bind(this)
-        }
+          style= {styles.binput1}
+          textStyle={{ fontSize: 24 }}
+          text="Sign In"
+          height={40}
+          gradientBegin="#6673a4"
+           gradientEnd="#6673a4"
+          impact='True'
+          impactStyle = 'Light'
+          onPressAction={this.onLogin.bind(this)}
         />
-        <Button
-          title={'Login With Google'}
-          style={styles.input}
-          onPress={this.onGoogleLogin.bind(this)}
-        />
-        <Button
-          title={'Retrieve data'}
-          style={styles.input}
-          onPress={this._retrieveData.bind(this)}
-        />
-        <Button
-          title={'Continue as Guest'}
-          style={styles.input}
-          onPress={() => {
+        {/* <View style={styles.or}>
+          <Text style={{fontSize:24}}>OR</Text>
+        </View> */}
+        {/* <GradientButton 
+        style={styles.binput} 
+        gradientBegin="#e1306c" 
+        gradientEnd="#275d8e" /> */}
+        <GradientButton
+          text="Continue as Guest"
+          style={styles.binput}
+          textStyle={{ fontSize: 24 }}
+          height={40}
+          gradientBegin="#6673a4"
+           gradientEnd="#6673a4"
+          impact='True'
+          impactStyle = 'Light'
+          onPressAction={() => {
+            console.log("Pressed");
             /* 1. Navigate to the Details route with params */
             this.props.navigation.navigate('DrawerNavigator', {
               user_id: this.state.user_id,
@@ -267,6 +276,32 @@ async onGoogleLogin() {
             });
           }}
         />
+        {/* </GradientButton> */}
+        {/* <View style={{flexDirection:'row'}}>
+        <View>
+          <Text>
+            Try 
+          </Text>
+          </View>
+          <View> */}
+          {/* <LinearGradient
+          colors = {['#e1306c', '#275d8e']}
+          style={{width:300}}
+          > */}
+          <GradientButton text='Google Sign In'
+           textStyle={{ fontSize: 24 }}
+           height={40}
+           style={styles.binput}
+           gradientBegin="#6673a4"
+           gradientEnd="#6673a4"
+           impact='True'
+           impactStyle = 'Light'
+           onPressAction={this.onGoogleLogin.bind(this)} 
+           />
+           </View>
+           {/* </LinearGradient> */}
+          {/* </View>
+        </View> */}
       </View>
     );
   }
@@ -277,31 +312,36 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#ecf0f1',
+    backgroundColor: 'white',
+    flexDirection:'column'
   },
   input: {
     width: 350,
-    height: 65,
-    paddingTop: 15,
-    paddingBottom: 15,
-    padding: 15,
+    height: 55,
+    padding:'4%',
     borderWidth: 1,
     borderColor: 'black',
-    marginTop: 0,
-    marginBottom: 15,
+    marginTop:0,
+    // marginBottom: 15,
     borderRadius: 30,
-    fontSize:30,
+    fontSize: 20,
   },
-  binput:{
-    width: 300,
-    paddingBottom: 0,
-  },
-  binput1:{
+  binput: {
     marginTop:15,
-    width:300,
-    paddingBottom:0,
+    width: '70%',
+    paddingBottom:'auto',
+    marginTop:15
   },
-  err:{
-    marginBottom:20,
+  binput1: {
+    marginTop:15,
+    width: '50%',
+    paddingBottom:'auto',
+    marginTop:15
+    
+    },
+  err: {
+    marginBottom: 20,
   },
+  or:{
+  }
 });
