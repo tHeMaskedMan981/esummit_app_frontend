@@ -16,6 +16,8 @@ import {
     Image,
     CheckBox,
 } from "react-native";
+import GradientButton from 'react-native-gradient-buttons';
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import {Font} from 'expo';
 import onCheckBoxImage from './icons/checked.png';
 import offCheckBoxImage from './icons/unchecked.png';
@@ -46,6 +48,15 @@ class ScreenTwo extends Component {
             Dict:{},
             CheckBoxStyle:{},
             ontLoading:true,
+
+            screen:0,
+            event_name:'',
+            event_desc:'',
+            event_photo_url:'',
+            event_web:'',
+            event_type:'',
+            event_id:'',
+            likes:'',
         };
     }
     // toggleModal(visible){
@@ -113,6 +124,129 @@ class ScreenTwo extends Component {
         // let result = await WebBrowser.openBrowserAsync(url);
         // this.setState({ result });
     };
+    settingstate(item){
+        fetch('http://esummit.ecell.in/v1/api/events/likes',{
+                method:'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body:JSON.stringify({
+                    event_id : String(item.event_id),
+                }),
+            }).then((response)=>response.json())
+            .then((responseJson) => {
+                
+            this.setState({
+                likes:responseJson.people_going,
+                screen:1,
+                event_desc:item.description,
+                event_name:item.name,
+                // event_photo_url:String(item.image_url),
+                event_web:String(item.website_url),
+                event_type:String(item.event_type),
+                event_id:String(item.event_id),                        
+            })
+                
+
+            console.log(this.state.likes);
+            
+            })
+        // {this.setState({ 
+        //     // screen:1,
+        //     event_desc:item.description,
+        //     event_name:item.name,
+        //     // event_photo_url:String(item.image_url),
+        //     event_web:String(item.website_url),
+        //     event_type:String(item.event_type),
+        //     event_id:String(item.event_id)
+        //     })}
+            if (this.state.event_type == 'competitions') {
+                this.setState({
+                    event_photo_url:'../../assets/images/Compi.png'
+                })
+            } 
+            else if(this.state.event_type == 'speaker'){
+                this.setState({
+                    event_photo_url:'../../assets/images/robot-dev.png'
+                })
+            }
+            else {
+                this.setState({
+                    event_photo_url:'../../assets/images/robot-prod.png'
+                })
+            }
+            
+            
+
+    }
+    screen(){
+        console.log('inside screen');
+        console.log(this.state.event_photo_url);
+        console.log(this.state.likes);
+        console.log(this.state.event_id);
+        // if (this.state.event_type == 'competitions') {
+        //     this.setState({
+        //         event_photo_url:'../../assets/images/Compi.png'
+        //     })
+        // } 
+        // else if(this.state.event_type == 'speaker'){
+        //     this.setState({
+        //         event_photo_url:'../../assets/images/robot-dev.png'
+        //     })
+        // }
+        // else {
+        //     this.setState({
+        //         event_photo_url:'../../assets/images/robot-prod.png'
+        //     })
+        // }
+        return(
+            <View style={styles.screen}>
+            <View style={styles.screen_box}>
+            <View style={styles.vcross}>
+            <TouchableNativeFeedback onPress={()=>{this.setState({
+                screen:0,
+            })}}>
+                <Ionicons name='md-close' size={24}/>
+            </TouchableNativeFeedback>
+            </View>
+            <View style={styles.screen_image}>
+                <Image 
+                // source={{uri:this.state.event_photo_url.toString(), isStatic:'False'}}
+                source={require('../../assets/images/Compi.png')}
+                
+                style={styles.image}
+                />
+            </View>
+            
+            {/* <View style={styles.screen_name}>
+                <Text>{this.state.event_name}</Text>
+            </View> */}
+            <View style={styles.screen_desc}>
+                <Text style={styles.screen_name}>{this.state.event_name}</Text>
+                <View style={{flexDirection:'row'}}>
+                <Ionicons name="ios-heart" size={29} style={{color:"#e24f6f"}}/>
+                <Text style={{fontSize:22,marginLeft:10}}>{this.state.likes}</Text>
+                </View>
+                <Text>{this.state.event_desc}</Text>
+            </View>
+            <View style={styles.vbutn}>
+            <GradientButton 
+                text='Learn More'
+                gradientBegin="#6673a4"
+                gradientEnd="#6673a4"
+                textStyle={{ fontSize: 14 }}
+                height={'70%'}
+                width={'34%'}
+                impact='True'
+                impactStyle = 'Light'
+                onPressAction={()=>{Linking.openURL(this.state.event_web)}}
+            />
+           </View>
+            </View>
+            </View>
+        )
+    }
     getTime(time,date){
         //extract the day from date
         let str = date.slice(8,10);
@@ -144,6 +278,7 @@ class ScreenTwo extends Component {
         //console.log(JSON.stringify(this.CheckBoxStyle[String(event_id)]));
         this.handleRefresh();
     }
+    
     async componentDidMount(){
             fetch('http://esummit.ecell.in/v1/api/events/myevents/'+String(this.props.screenProps.user_id))
             .then((response)=>response.json())
@@ -203,6 +338,7 @@ class ScreenTwo extends Component {
         console.log(String(this.props.screenProps.user_name));
     });
     }
+    
     handleRefresh = () => {
         this.setState({
             refreshing:true,
@@ -213,6 +349,7 @@ class ScreenTwo extends Component {
         }
         );
     };
+    
     render() {
         if(this.state.isLoading){
             return(
@@ -242,6 +379,7 @@ class ScreenTwo extends Component {
             //     </View>
             //     </ScrollView>}/>
             // </View>
+            <View style={{flex:1}}>
                 <FlatList 
                 data = {this.state.dataSource}
                 extraData = {this.state}
@@ -266,13 +404,18 @@ class ScreenTwo extends Component {
                             </View>
                         </TouchableHighlight>
                     </Modal> */}
+                    
                     <View style={styles.touchableContainer}> 
                       <TouchableHighlight>    
                           <View style={{flex:2}}>  
                             <View style={styles.heading}>
+                            <TouchableNativeFeedback onPress = {()=>{
+                                    this.settingstate(item)
+                                }}>
                                 <View style={styles.titleFlex}>
                                     <Text style={styles.itemText}>{item.name}</Text>
                                 </View>
+                                </TouchableNativeFeedback>
                                 <View style={styles.checkBoxFlex}>
                                     <TouchableNativeFeedback onPress = {()=>{this._handleCheckBoxEvent(item.event_id);
                                                                             this.setState({seed:2});
@@ -323,6 +466,14 @@ class ScreenTwo extends Component {
                         </View>
                 </View> 
                 }/>
+
+                 {this.state.screen == 1? this.screen(): null }
+
+                </View>
+
+                
+
+                
         );
     }
 }
@@ -465,5 +616,62 @@ const styles = StyleSheet.create({
         height: 30,
         width: 30,
         marginRight:10,
-    }
+    },
+    myevent:{
+        backgroundColor:'transparent',
+        flex:1,
+    },
+    screen:{
+        position:'absolute',
+        flex:1,
+        height:'100%',
+        width:'100%',
+        backgroundColor:'rgba(68, 69, 71, 0.5)',
+        justifyContent: 'center',
+        alignItems:'center'
+        
+    },
+    screen_image:{
+        // flex:1,
+        justifyContent:'center',
+        width:'100%',
+        height:'40%',
+
+    },
+    image:{
+        flex:1,
+        width:null,
+        height:null,
+        resizeMode:'contain',
+    },
+    screen_box:{
+        width:'80%',
+        padding:10,
+        backgroundColor:'white',
+        borderRadius:10,
+        
+    },
+    screen_name:{
+       fontSize:24,
+    },
+    screen_desc:{
+        width:'100%',
+        // height:'40%',
+        textAlign:'left',
+        
+    },
+    vbutn:{
+        width:'100%',
+        height:65,
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor:'white',
+        marginTop:10,
+    },
+    vcross:{
+        // height:'10%',
+        flexDirection:'row-reverse',
+        textAlign:'right',
+        width:'100%'
+    },
 });

@@ -49,7 +49,7 @@ const EventTabNavigator = new createBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Speakers',
             tabBarIcon: () => (
-                <Ionicons name="md-compass" size={24} />
+                <Ionicons name="md-person" size={24} />
             )
         }
     },
@@ -58,7 +58,7 @@ const EventTabNavigator = new createBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Competitions',
             tabBarIcon: () => (
-                <Ionicons name="md-compass" size={24} />
+                <Ionicons name="md-trophy" size={24} />
             )
         }
     },
@@ -67,7 +67,7 @@ const EventTabNavigator = new createBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Others',
             tabBarIcon: () => (
-                <Ionicons name="md-compass" size={24} />
+                <Ionicons name="ios-people" size={24} />
             )
         }
     }

@@ -66,6 +66,9 @@ const MapStackNavigator = new createStackNavigator({
     }
 })
 
+// const { navigation } = this.props;
+// const user_name = navigation.getParam('user_name', 'some default name');
+
 const CustomDrawerContentComponent = (props) => (
 
     <Container>
@@ -74,6 +77,9 @@ const CustomDrawerContentComponent = (props) => (
           <Image
             style={styles.drawerImage}
             source={require('../assets/images/robot-dev.png')} />
+            <View style={styles.welcome}>
+                <Text>Hi User</Text>
+            </View>
         </Body>
       </Header>
       <Content>
@@ -100,9 +106,16 @@ const AppDrawerNavigator = new createDrawerNavigator({
       contentComponent: CustomDrawerContentComponent,
       drawerOpenRoute: 'DrawerOpen',
       drawerCloseRoute: 'DrawerClose',
-      drawerToggleRoute: 'DrawerToggle'
+      drawerToggleRoute: 'DrawerToggle',
+      drawerIcon: ({tintColor}) => (
+        <Image 
+            source={require('../assets/images/robot-prod.png')}
+            style={{height:24, width:24, tintColor: tintColor}}
+        />
+      )
   }
 )
+
 
 export default class AppTabNavigator extends Component {
 
@@ -146,7 +159,7 @@ export default class AppTabNavigator extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
+        alignItems: 'stretch',
         justifyContent: 'center'
     },
     drawerHeader: {
@@ -156,7 +169,14 @@ const styles = StyleSheet.create({
     drawerImage: {
       height: 100,
       width: 100,
-      borderRadius: 75
+      borderRadius: 75,
+      marginBottom:15,
+    },
+    welcome: {
+        flex:1,
+        textAlign: 'left',
+        padding: 10,
+        marginBottom:15,
     }
   
 });
