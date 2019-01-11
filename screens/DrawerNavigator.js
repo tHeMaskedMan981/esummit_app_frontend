@@ -3,7 +3,8 @@ import {
     View,
     Text,
     StyleSheet,
-    Image
+    Image,
+    AsyncStorage
 } from "react-native";
 import {StackNavigator, DrawerItems, SafeAreaView } from 'react-navigation'
 import { Container, Content, Icon, Header, Body } from 'native-base'
@@ -117,6 +118,8 @@ const AppDrawerNavigator = new createDrawerNavigator({
 )
 
 var checkDict = {};
+var allEvents = {};
+var myEvents = {};
 
 export default class AppTabNavigator extends Component {
 
@@ -129,31 +132,46 @@ export default class AppTabNavigator extends Component {
           user_name:'',
           user_id:'',
           count:0,
-          isLoading:true,
-          modalVisible:false,
-          refreshing:false,
-          seed:1,
-          trackHighlightEvents:false,
-          trackMyEvents:false,
           Dict:{},
-
-          screen:0,
-          event_name:'',
-          event_desc:'',
-          event_photo_url:'',
-          event_web:'',
-          event_type:'',
-          event_id:'',
-          likes:'',
-
-          CheckBoxStyle:{},
-          fontLoading:true,
-
-    
         };
       }
+
+      _storeData = async (key, value) => {
+
+        try {
+          await AsyncStorage.setItem(key,JSON.stringify(value));
+        //   console.log("the stored value is : " + JSON.stringify(value));
+    
+        } catch (error) {
+            this.setState({email_err:"problem with storage"});
+        }
+      }
+    _retrieveData = async (key) => {
+        try {
+          const value = await AsyncStorage.getItem(key);
+        //   console.log("the retrieved data is : "+ (value));
+    
+          if (!(value == null)) {
+            this.setState({key:value});
+          }
+         } catch (error) {
+           // Error retrieving data
+           console.log(error);
+           return "cant retrieve data";
+         }
+      }
+
+
       async componentDidMount(){
-        
+          
+        // get the data from the phone storage, use it to load the components, then download the data
+        //  and update state and storage
+
+        this._retrieveData("myEventsSource");
+        this._retrieveData("checkDict");
+        this._retrieveData("allEvents");
+        this._retrieveData("dataSource");
+
         fetch('http://esummit.ecell.in/v1/api/events')
             .then((response)=>response.json())
             .then((responseJson)=>{
@@ -161,7 +179,9 @@ export default class AppTabNavigator extends Component {
                     isLoading:false,
                     dataSource: responseJson,
                     refreshing: false,
-                })
+                });
+                // update phone storage dataSource
+                this._storeData("dataSource", responseJson);
             })
             .catch(()=>{
                 ToastAndroid.showWithGravityAndOffset(
@@ -175,7 +195,53 @@ export default class AppTabNavigator extends Component {
                 this.initializeCheckDict();
             });
     }
+
+
+    initializeCheckDict = () => {
+        // get the myevents data, make a dictionary to facilitate the highlighting of Events, store in storage,
+        // update the state 
+
+        fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
+        .then((response) => response.json())
+        .then((responseJson)=>{
+            this.setState({
+                myEventsSource: responseJson,
+                trackMyEvents:true,
+            });
+            this._storeData("myEventsSource", responseJson);
+            console.log('myevents checked from drawer navigator');
+        }).then(()=>{
+            checkDict={};
+            // settings all the events in my events as true
+            for(let i=0;i<this.state.myEventsSource.length;++i){
+                myEvents[String(this.state.myEventsSource[i].event_id)] =this.state.myEventsSource[i];
+                checkDict[String(this.state.myEventsSource[i].event_id)] = true;
+            }
+            // settings all the events not in my events as false
+            for(let i=0;i<this.state.dataSource.length;++i){
+                allEvents[String(this.state.dataSource[i].event_id)] =this.state.dataSource[i];
+                if(!(String(this.state.dataSource[i].event_id) in checkDict)){
+                checkDict[String(this.state.dataSource[i].event_id)] = false;
+                }
+            }
+            this.setState({
+                Dict: checkDict,
+                allEvents:allEvents,
+                myEvents:myEvents,
+            });
+            this._storeData("myEvents", myEvents);
+            this._storeData("allEvents", allEvents);
+            this._storeData("checkDict", checkDict);
+
+            console.log("this is inside drawer navigator"+JSON.stringify(this.state.Dict));
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }
+
     CallMyEventsApi(evt_id){
+        // add the event in myevents field of the User
+
         fetch('http://esummit.ecell.in/v1/api/events/myevent_add', {
         method: 'POST',
         headers: {
@@ -187,137 +253,55 @@ export default class AppTabNavigator extends Component {
             user_id: 2,
         }),
         }).then(()=>{
-            checkDict[String(evt_id)]!=checkDict[String(evt_id)];
-            this.setState({
-                Dict:checkDict,
-            })
-        })
-    .catch((error) => {
-        ToastAndroid.showWithGravityAndOffset(
-            String(error),
-            ToastAndroid.SHORT,
-            ToastAndroid.TOP,
-            0,
-            40);
-    }).then(()=>{
-        console.log(String(this.props.screenProps.user_name));
-    });
-    }
-
-    initializeCheckDict = () => {
-        fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
-        .then((response) => response.json())
-        .then((responseJson)=>{
-            this.setState({
-                myEventsSource: responseJson,
-                trackMyEvents:true,
-            });
-            console.log('myevents checked from drawer navigator');
-        }).then(()=>{
-            // console.log(JSON.stringify(this.state.myEventsSource));
-            // console.log(JSON.stringify(this.state.dataSource));
-            checkDict={};
-            console.log(JSON.stringify(this.state.myEventsSource[0]));
-            for(let i=0;i<this.state.myEventsSource.length;++i){
-                checkDict[String(this.state.myEventsSource[i].event_id)] = true;
-            }
-            for(let i=0;i<this.state.dataSource.length;++i){
-                if(!(String(this.state.dataSource[i].event_id) in checkDict)){
-                checkDict[String(this.state.dataSource[i].event_id)] = false;
-                }
-            }
-            // for(let obj in this.state.dataSource){
-            //     if(!(String(obj.event_id) in checkDict)){
-            //         checkDict[String(obj.event_id)] = false;
-            //         console.log(obj.event_id);
-            //     }
-            // }
-            this.setState({
-                Dict: checkDict,
-            });
-            console.log("this is inside drawer navigator"+JSON.stringify(this.state.Dict));
-        }).catch((error)=>{
-            console.log(error);
-        })
-    }
-
-        handleClick = (event_id) => {
-            // console.log("handle click reached");
-            var data = this.state.count;
-            data = data+1;
-            console.log("updated count: " + this.state.count.toString());
-            checkDict[String(event_id)] = !checkDict[String(event_id)];
-            fetch('http://esummit.ecell.in/v1/api/events/myevent_add', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                event_id: event_id,
-                user_id: 2,
-            }),
-            })
-            .catch((error)=>{
-                console.log(error);
-            })
-            .then(()=>{
-                fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
-            })
-            .catch((error)=>{
-                console.log(error);
-            })
-            .then((response)=>response.json())
-            .then((responseJson)=>{
-                this.setState({
-                    isLoadiyng:false,
-                    myEventsSource: responseJson,
-                    refreshing: false,
-                    Dict:checkDict,
-                    count:data,
-                });
-                console.log("inside handle click function : "+event_id.toString()+JSON.stringify(this.state.Dict));
-            })
-            this.componentDidMount();
-        }
-
-        CallMyEventsApi(evt_id){
-            fetch('http://esummit.ecell.in/v1/api/events/myevent_add', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                event_id: evt_id,
-                user_id: 2,
-            }),
-            }).then()
-        .catch((error) => {
-           // ToastAndriod.show(error,ToastAndriod.SHORT);
-            ToastAndroid.showWithGravityAndOffset(
-                String(error),
-                ToastAndroid.SHORT,
-                ToastAndroid.TOP,
-                0,
-                40);
-        }).then(()=>{
-            // this.ref.toast.show('hello world');
         });
+    }
+
+    handleClick = (event_id) => {
+        
+        // var data = this.state.count;
+        // data = data+1;
+        // console.log("the updated data is  : " + JSON.stringify(data));
+        var myEventsSource = this.state.myEventsSource;
+        var allEvents = this.state.allEvents;
+        
+        // console.log("the old dict is  : " + JSON.stringify(checkDict));
+        checkDict[String(event_id)] = !checkDict[String(event_id)];
+        // console.log("the new dict is  : " + JSON.stringify(checkDict));
+        var len = myEventsSource.length;
+        var found = 0;
+        for(let i=0; i<len; ++i){
+            if (myEventsSource[i].event_id == event_id)
+            {   
+                // console.log("myevents old array  : " + JSON.stringify(myEventsSource));
+                var removed = myEventsSource.splice(i, 1);
+                // console.log("myevents new array  : " + JSON.stringify(myEventsSource));
+                found =1;
+                break; 
+            }
         }
+        if (found==0){
+            var event = allEvents[String(event_id)];
+            // console.log("the event to be aadded : " + JSON.stringify(event));
+            myEventsSource.push(event);
+        }
+
+        this.setState({
+            myEventsSource: myEventsSource,
+            Dict:checkDict,
+            count:data,
+        });
+        this.CallMyEventsApi(event_id);
+        this._storeData("myEventsSource", myEventsSource);
+        this._storeData("checkDict", checkDict);
+        // this.componentDidMount();
+    }
+
     render() {
         const { navigation } = this.props;
         const user_id = navigation.getParam('user_id', 'NO-ID');
         const user_name = navigation.getParam('user_name', 'some default name');
         const email = navigation.getParam('email', 'NO-ID');
         const esummit_id = navigation.getParam('esummit_id', 'NO-ID');
-
-        // this.setState({
-        //     user_name:user_name,
-        //     user_id: user_id,
-        //     email:email,
-        //     esummit_id:esummit_id,
-        // });
         
         return (
             <AppDrawerNavigator screenProps={{ navigation: this.props.navigation,

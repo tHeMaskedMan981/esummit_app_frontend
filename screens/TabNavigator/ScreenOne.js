@@ -189,7 +189,7 @@ class ScreenOne extends Component {
             .then(()=>{
                 // this.initializeCheckDict();
                 checkDict = this.props.screenProps.checkDict;
-                console.log("this is inside screen one component did mount function: "+ JSON.stringify(this.props.screenProps.checkDict));
+                // console.log("this is inside screen one component did mount function: "+ JSON.stringify(this.props.screenProps.checkDict));
             })
         })
     }
@@ -435,7 +435,7 @@ class ScreenOne extends Component {
         }
     }
     customRenderFunction(item){
-        console.log("custom render called");
+        // console.log("custom render called");
             return(
                 
                 <View elevation={10} style={item.updated?styles.customitem:styles.item}>
@@ -515,9 +515,9 @@ class ScreenOne extends Component {
     render() {
 
         checkDict = this.props.screenProps.checkDict;
-        console.log("this is inside screen one render function: "+ JSON.stringify(this.props.screenProps.checkDict));
+        // console.log("this is inside screen one render function: "+ JSON.stringify(this.props.screenProps.checkDict));
         no_renders+=1;
-        console.log(no_renders);
+        // console.log(no_renders);
         if(this.state.isLoading||this.state.fontLoading){
             return(
                 <View style={{flex:1}}>
