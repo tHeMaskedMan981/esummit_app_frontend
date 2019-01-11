@@ -83,7 +83,9 @@ export default class AppTabNavigator extends Component {
         return (
             <HomeScreenTabNavigator screenProps={{  navigation: this.props.navigation,
                                                     user_name:this.props.screenProps.user_name,
-                                                    user_id:this.props.screenProps.user_id,}} />
+                                                    user_id:this.props.screenProps.user_id,
+                                                    count:this.props.screenProps.count,
+                                                    handleClick:this.props.screenProps.handleClick,}} />
         )
     }
 }

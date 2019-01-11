@@ -543,6 +543,7 @@ class ScreenOne extends Component {
 
             <View style={{flex:1}}>
 
+                <Text> the value of count is : { this.props.screenProps.count}</Text>
                 <FlatList 
                 data = {this.state.dataSource}
                 style = {styles.container}

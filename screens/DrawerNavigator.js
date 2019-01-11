@@ -127,10 +127,18 @@ export default class AppTabNavigator extends Component {
           esummit_id: '',
           user_name:'',
           user_id:'',
+          count:0,
     
         };
       }
 
+        handleClick = () => {
+            console.log("handle click reached");
+            data = this.state.count;
+            data = data+1;
+            this.setState({count:data});
+            console.log("updated count: " + this.state.count.toString());
+        }
     render() {
         const { navigation } = this.props;
         const user_id = navigation.getParam('user_id', 'NO-ID');
@@ -148,7 +156,9 @@ export default class AppTabNavigator extends Component {
         return (
             <AppDrawerNavigator screenProps={{ navigation: this.props.navigation,
                                                 user_id:user_id,
-                                                user_name:user_name
+                                                user_name:user_name,
+                                                count:this.state.count,
+                                                handleClick:this.handleClick,
                                              }} />
         )
     }
