@@ -85,6 +85,7 @@ export default class AppTabNavigator extends Component {
                                                     user_name:this.props.screenProps.user_name,
                                                     user_id:this.props.screenProps.user_id,
                                                     count:this.props.screenProps.count,
+                                                    checkDict:this.props.screenProps.checkDict,
                                                     handleClick:this.props.screenProps.handleClick,}} />
         )
     }

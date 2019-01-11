@@ -145,11 +145,11 @@ class ScreenOne extends Component {
                 myEventsSource: responseJson,
                 trackMyEvents:true,
             });
-            console.log('myevents checked');
+            console.log('myevents checked from screen 3 ');
         }).then(()=>{
             // console.log(JSON.stringify(this.state.myEventsSource));
             // console.log(JSON.stringify(this.state.dataSource));
-            console.log(JSON.stringify(this.state.myEventsSource[0]));
+            // console.log(JSON.stringify(this.state.myEventsSource[0]));
             for(let i=0;i<this.state.myEventsSource.length;++i){
                 checkDict[String(this.state.myEventsSource[i].event_id)] = true;
             }

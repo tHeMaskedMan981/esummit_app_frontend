@@ -187,7 +187,9 @@ class ScreenOne extends Component {
                     40);
             })
             .then(()=>{
-                this.initializeCheckDict();
+                // this.initializeCheckDict();
+                checkDict = this.props.screenProps.checkDict;
+                console.log("this is inside screen one component did mount function: "+ JSON.stringify(this.props.screenProps.checkDict));
             })
         })
     }
@@ -199,11 +201,11 @@ class ScreenOne extends Component {
                 myEventsSource: responseJson,
                 trackMyEvents:true,
             });
-            console.log('myevents checked');
+            console.log('myevents checked from screen one ');
         }).then(()=>{
             // console.log(JSON.stringify(this.state.myEventsSource));
             // console.log(JSON.stringify(this.state.dataSource));
-            console.log(JSON.stringify(this.state.myEventsSource[0]));
+            // console.log(JSON.stringify(this.state.myEventsSource[0]));
             for(let i=0;i<this.state.myEventsSource.length;++i){
                 checkDict[String(this.state.myEventsSource[i].event_id)] = true;
             }
@@ -461,6 +463,7 @@ class ScreenOne extends Component {
                                 </TouchableNativeFeedback>
                                 <View style={styles.checkBoxFlex}>
                                     <TouchableNativeFeedback onPress = {()=>{this._handleCheckBoxEvent(item.event_id);
+                                                                            this.props.screenProps.handleClick(item.event_id);
                                                                             this.setState({seed:2});
                                                                             ToastAndroid.showWithGravityAndOffset(
                                                                                 checkDict[String(item.event_id)]?'Added':'Removed',
@@ -473,7 +476,7 @@ class ScreenOne extends Component {
                                         {/* <View style={this.state.CheckBoxStyle[String(item.event_id)]}></View> */}
                                         {/* <View style={checkDict[String(item.event_id)]?styles.onCheckBox:styles.offCheckBox}></View> */}
                                         <View>
-                                            <Image style={{height:30,width:30}} source={checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                                            <Image style={{height:30,width:30}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
                                         </View>
                                     </TouchableNativeFeedback>
                                 </View>
@@ -510,6 +513,9 @@ class ScreenOne extends Component {
             )
     }
     render() {
+
+        checkDict = this.props.screenProps.checkDict;
+        console.log("this is inside screen one render function: "+ JSON.stringify(this.props.screenProps.checkDict));
         no_renders+=1;
         console.log(no_renders);
         if(this.state.isLoading||this.state.fontLoading){
