@@ -1,16 +1,18 @@
 import React, { Component } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet,Button } from 'react-native';
 import { Constants, MapView, Location, Permissions } from 'expo'; 
 
 export default class App extends Component {
   state = {
     mapRegion: null,
     hasLocationPermissions: false,
-    locationResult: null
+    locationResult: null,
+    test:100,
   };
 
   componentDidMount() {
     this._getLocationAsync();
+    console.log('again called');
   }
 
   _handleMapRegionChange = mapRegion => {
@@ -49,16 +51,20 @@ export default class App extends Component {
           //   <Text>Location permissions are not granted.</Text> :
           //   this.state.mapRegion === null ?
           //   <Text>Map region doesn't exist.</Text> :
-            <MapView
-              style={{ alignSelf: 'stretch', flex:1 }}
-              region={this.state.mapRegion}
-              onRegionChange={this._handleMapRegionChange}
-            />
+            // <MapView
+            //   style={{ alignSelf: 'stretch', flex:1 }}
+            //   region={this.state.mapRegion}
+            //   onRegionChange={this._handleMapRegionChange}
+            // />
+            
         }
-        
-        {/* <Text>
-          Location: {this.state.locationResult}
-        </Text> */}
+        <Button
+          onPress={()=>this.props.screenProps.onClick()}
+          title="{this.props.newVar}"
+        />
+        <Text>
+        {this.props.newVar}
+        </Text>
       </View>
         
     );

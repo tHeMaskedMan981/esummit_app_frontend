@@ -194,7 +194,7 @@ class ScreenOne extends Component {
         })
     }
     initializeCheckDict(){
-        fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
+        fetch('http://esummit.ecell.in/v1/api/events/myevents/' + String(this.props.screenProps.user_id))
         .then((response) => response.json())
         .then((responseJson)=>{
             this.setState({
@@ -405,15 +405,15 @@ class ScreenOne extends Component {
         )
     }
     _handleCheckBoxEvent(event_id){
+        this.CallMyEventsApi(event_id)
         checkDict[String(event_id)] = !(checkDict[String(event_id)]);
         console.log(String(checkDict[String(event_id)]));
         console.log(String(this.state.Dict[String(event_id)]));
-        this.CallMyEventsApi(event_id);
-        styleCheckBox[String(event_id)] = checkDict[String(event_id)]?styles.onCheckBox:styles.offCheckBox;
         this.setState({
             Dict:checkDict,
             CheckBoxStyle:styleCheckBox,
         });
+        this.handleRefresh();
         //console.log(JSON.stringify(this.CheckBoxStyle[String(event_id)]));
     }
     getTime(time,date){
@@ -462,11 +462,11 @@ class ScreenOne extends Component {
                                     </View>
                                 </TouchableNativeFeedback>
                                 <View style={styles.checkBoxFlex}>
-                                    <TouchableNativeFeedback onPress = {()=>{this._handleCheckBoxEvent(item.event_id);
+                                    <TouchableNativeFeedback onPress = {()=>{
                                                                             this.props.screenProps.handleClick(item.event_id);
                                                                             this.setState({seed:2});
                                                                             ToastAndroid.showWithGravityAndOffset(
-                                                                                checkDict[String(item.event_id)]?'Added':'Removed',
+                                                                                this.props.screenProps.checkDict[String(item.event_id)]?'Added':'Removed',
                                                                                 ToastAndroid.SHORT,
                                                                                 ToastAndroid.TOP,
                                                                                 0,
@@ -556,7 +556,7 @@ class ScreenOne extends Component {
                 numColumns= {numColumns}
                 refreshing = {this.state.refreshing}
                 onRefresh = {this.handleRefresh}
-                extraData = {this.state}
+                extraData = {this.props}
                 renderItem = {({item}) => this.customRenderFunction(item)}   
             />
             

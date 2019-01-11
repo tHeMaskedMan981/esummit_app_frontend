@@ -138,7 +138,7 @@ class ScreenOne extends Component {
         .then(()=>{this.initializeCheckDict()})
     }
     initializeCheckDict(){
-        fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
+        fetch('http://esummit.ecell.in/v1/api/events/myevents/'+String(this.props.screenProps.user_id))
         .then((response) => response.json())
         .then((responseJson)=>{
             this.setState({
@@ -178,7 +178,7 @@ class ScreenOne extends Component {
         },
         body: JSON.stringify({
             event_id: evt_id,
-            user_id: 2,
+            user_id: this.props.screenProps.user_id,
         }),
         }).then()
     .catch((error) => {
@@ -198,15 +198,15 @@ class ScreenOne extends Component {
         );
     };
     _handleCheckBoxEvent(event_id){
+        this.CallMyEventsApi(event_id)
         checkDict[String(event_id)] = !(checkDict[String(event_id)]);
         console.log(String(checkDict[String(event_id)]));
         console.log(String(this.state.Dict[String(event_id)]));
-        this.CallMyEventsApi(event_id);
-        styleCheckBox[String(event_id)] = checkDict[String(event_id)]?styles.onCheckBox:styles.offCheckBox;
         this.setState({
             Dict:checkDict,
             CheckBoxStyle:styleCheckBox,
         });
+        this.handleRefresh();
         //console.log(JSON.stringify(this.CheckBoxStyle[String(event_id)]));
     }
     getTime(time,date){
