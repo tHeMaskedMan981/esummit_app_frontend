@@ -145,32 +145,17 @@ class ScreenOne extends Component {
                 myEventsSource: responseJson,
                 trackMyEvents:true,
             });
-            console.log('myevents checked');
+            console.log('myevents checked from screen 3 ');
         }).then(()=>{
             // console.log(JSON.stringify(this.state.myEventsSource));
             // console.log(JSON.stringify(this.state.dataSource));
-            console.log(JSON.stringify(this.state.myEventsSource[0]));
-            // for(let i=0;i<this.state.myEventsSource.length;++i){
-            //     checkDict[String(this.state.myEventsSource[i].event_id)] = true;
-            // }
-            // for(let i=0;i<this.state.dataSource.length;++i){
-            //     if(!(String(this.state.dataSource[i].event_id) in checkDict)){
-            //     checkDict[String(this.state.dataSource[i].event_id)] = false;
-            //     }
-            // }
-            for(let i = 0;i<this.state.dataSource.length;++i){
-                let track = false;
-                for(let j = 0;j<this.state.myEventsSource.length;++i){
-                    if(this.state.dataSource[i].event_id == this.state.myEventsSource[j].event_id){
-                        track = true;
-                        break;
-                    }
-                }
-                if(track){
-                    checkDict[String(this.state.dataSource[i].event_id)] = true;
-                }
-                else{
-                    checkDict[String(this.state.dataSource[i].event_id)] = false;
+            // console.log(JSON.stringify(this.state.myEventsSource[0]));
+            for(let i=0;i<this.state.myEventsSource.length;++i){
+                checkDict[String(this.state.myEventsSource[i].event_id)] = true;
+            }
+            for(let i=0;i<this.state.dataSource.length;++i){
+                if(!(String(this.state.dataSource[i].event_id) in checkDict)){
+                checkDict[String(this.state.dataSource[i].event_id)] = false;
                 }
             }
             // for(let obj in this.state.dataSource){

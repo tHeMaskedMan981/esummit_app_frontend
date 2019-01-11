@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import {
     View,
     Text,
-    StyleSheet
+    StyleSheet,
+     Button
 } from "react-native";
 
 import { createBottomTabNavigator,createStackNavigator } from 'react-navigation'
@@ -25,6 +26,8 @@ class DeveloperScreen extends Component {
         return (
             <View style={styles.container}>
                 <Text>DeveloperScreen</Text>
+                <Text> the value of count is :  {this.props.screenProps.count}</Text>
+                <Button title ="increase the count" onPress={this.props.screenProps.handleClick}></Button>
             </View>
         );
     }

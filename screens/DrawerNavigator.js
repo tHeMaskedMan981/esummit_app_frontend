@@ -116,6 +116,7 @@ const AppDrawerNavigator = new createDrawerNavigator({
   }
 )
 
+var checkDict = {};
 
 export default class AppTabNavigator extends Component {
 
@@ -127,18 +128,126 @@ export default class AppTabNavigator extends Component {
           esummit_id: '',
           user_name:'',
           user_id:'',
-          test:0,
+          count:0,
+          isLoading:true,
+          modalVisible:false,
+          refreshing:false,
+          seed:1,
+          trackHighlightEvents:false,
+          trackMyEvents:false,
+          Dict:{},
+
+          screen:0,
+          event_name:'',
+          event_desc:'',
+          event_photo_url:'',
+          event_web:'',
+          event_type:'',
+          event_id:'',
+          likes:'',
+
+          CheckBoxStyle:{},
+          fontLoading:true,
+
+    
         };
       }
-    handleClick(){
-        let v = Number(this.state.test);
-        v = v + 1;
-        this.setState({
-            test:v,
-        });
-        console.log(this.state.test);
+      async componentDidMount(){
+        
+        fetch('http://esummit.ecell.in/v1/api/events')
+            .then((response)=>response.json())
+            .then((responseJson)=>{
+                this.setState({
+                    isLoading:false,
+                    dataSource: responseJson,
+                    refreshing: false,
+                })
+            })
+            .catch(()=>{
+                ToastAndroid.showWithGravityAndOffset(
+                    "Unable to connect to internet",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.TOP,
+                    0,
+                    40);
+            })
+            .then(()=>{
+                this.initializeCheckDict();
+            });
     }
 
+    initializeCheckDict(){
+        fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
+        .then((response) => response.json())
+        .then((responseJson)=>{
+            this.setState({
+                myEventsSource: responseJson,
+                trackMyEvents:true,
+            });
+            console.log('myevents checked from drawer navigator');
+        }).then(()=>{
+            // console.log(JSON.stringify(this.state.myEventsSource));
+            // console.log(JSON.stringify(this.state.dataSource));
+            console.log(JSON.stringify(this.state.myEventsSource[0]));
+            for(let i=0;i<this.state.myEventsSource.length;++i){
+                checkDict[String(this.state.myEventsSource[i].event_id)] = true;
+            }
+            for(let i=0;i<this.state.dataSource.length;++i){
+                if(!(String(this.state.dataSource[i].event_id) in checkDict)){
+                checkDict[String(this.state.dataSource[i].event_id)] = false;
+                }
+            }
+            // for(let obj in this.state.dataSource){
+            //     if(!(String(obj.event_id) in checkDict)){
+            //         checkDict[String(obj.event_id)] = false;
+            //         console.log(obj.event_id);
+            //     }
+            // }
+            this.setState({
+                Dict: checkDict,
+            });
+            console.log("this is inside drawer navigator"+JSON.stringify(this.state.Dict));
+        }).catch((error)=>{
+            console.log(error);
+        })
+    }
+
+        handleClick = (event_id) => {
+            // console.log("handle click reached");
+            data = this.state.count;
+            data = data+1;
+            this.setState({count:data});
+            // console.log("updated count: " + this.state.count.toString());
+            checkDict[String(event_id)] = !checkDict[String(event_id)];
+            this.setState({
+                Dict:checkDict,
+            });
+        }
+
+        CallMyEventsApi(evt_id){
+            fetch('http://esummit.ecell.in/v1/api/events/myevent_add', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                event_id: evt_id,
+                user_id: 2,
+            }),
+            }).then()
+        .catch((error) => {
+           // ToastAndriod.show(error,ToastAndriod.SHORT);
+            ToastAndroid.showWithGravityAndOffset(
+                String(error),
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+                0,
+                40);
+        }).then(()=>{
+            // this.ref.toast.show('hello world');
+        });
+        }
     render() {
         const { navigation } = this.props;
         const user_id = navigation.getParam('user_id', 'NO-ID');
@@ -157,10 +266,10 @@ export default class AppTabNavigator extends Component {
             <AppDrawerNavigator screenProps={{ navigation: this.props.navigation,
                                                 user_id:user_id,
                                                 user_name:user_name,
-                                                newVar:this.state.test,
-                                                onClick:this.handleClick.bind(this),
-                                             }} 
-                                onClick={()=>this.handleClick()}/>
+                                                count:this.state.count,
+                                                handleClick:this.handleClick,
+                                                checkDict:this.state.Dict,
+                                             }} />
         )
     }
 }

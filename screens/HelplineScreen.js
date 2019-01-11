@@ -11,6 +11,7 @@ class HelplineScreen extends Component {
             <View style={styles.container}>
                 <Text>HelplineScreen </Text>
                 <Text>the clan is {this.props.screenProps.clan}</Text>
+                <Text>the value of count is : {this.props.screenProps.count}</Text>
             </View>
         );
     }
