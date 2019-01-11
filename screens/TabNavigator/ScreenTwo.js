@@ -279,7 +279,8 @@ class ScreenTwo extends Component {
     }
     
     async componentDidMount(){
-            fetch('http://esummit.ecell.in/v1/api/events/myevents/'+String(this.props.screenProps.user_id))
+            //fetch('http://esummit.ecell.in/v1/api/events/myevents/'+String(this.props.screenProps.user_id))
+            fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
             .then((response)=>response.json())
             .then((responseJson)=>{
                 this.setState({
@@ -318,7 +319,7 @@ class ScreenTwo extends Component {
         },
         body: JSON.stringify({
             event_id: evt_id,
-            user_id: this.props.screenProps.user_id,
+            user_id: 2,
         }),
         }).then(()=>{
             checkDict[String(evt_id)]!=checkDict[String(evt_id)];
@@ -380,8 +381,8 @@ class ScreenTwo extends Component {
             // </View>
             <View style={{flex:1}}>
                 <FlatList 
-                data = {this.state.dataSource}
-                extraData = {this.state}
+                data = {this.props.screenProps.myEventsSource}
+                extraData = {this.props}
                 style = {styles.container}
                 numColumns = {numColumns}
                 refreshing = {this.state.refreshing}
@@ -416,10 +417,10 @@ class ScreenTwo extends Component {
                                 </View>
                                 </TouchableNativeFeedback>
                                 <View style={styles.checkBoxFlex}>
-                                    <TouchableNativeFeedback onPress = {()=>{this._handleCheckBoxEvent(item.event_id);
+                                    <TouchableNativeFeedback onPress = {()=>{this.props.screenProps.handleClick(item.event_id);
                                                                             this.setState({seed:2});
                                                                             ToastAndroid.showWithGravityAndOffset(
-                                                                                checkDict[String(item.event_id)]?'Added':'Removed',
+                                                                                this.props.screenProps.checkDict[String(item.event_id)]?'Added':'Removed',
                                                                                 ToastAndroid.SHORT,
                                                                                 ToastAndroid.TOP,
                                                                                 0,
@@ -429,7 +430,7 @@ class ScreenTwo extends Component {
                                         {/* <View style={this.state.CheckBoxStyle[String(item.event_id)]}></View> */}
                                         {/* <View style={checkDict[String(item.event_id)]?styles.onCheckBox:styles.offCheckBox}></View> */}
                                         <View>
-                                            <Image style={{height:30,width:30}} source={checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                                            <Image style={{height:30,width:30}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
                                         </View>
                                     </TouchableNativeFeedback>
                                 </View>

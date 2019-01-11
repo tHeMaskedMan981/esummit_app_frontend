@@ -175,8 +175,36 @@ export default class AppTabNavigator extends Component {
                 this.initializeCheckDict();
             });
     }
+    CallMyEventsApi(evt_id){
+        fetch('http://esummit.ecell.in/v1/api/events/myevent_add', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            event_id: evt_id,
+            user_id: 2,
+        }),
+        }).then(()=>{
+            checkDict[String(evt_id)]!=checkDict[String(evt_id)];
+            this.setState({
+                Dict:checkDict,
+            })
+        })
+    .catch((error) => {
+        ToastAndroid.showWithGravityAndOffset(
+            String(error),
+            ToastAndroid.SHORT,
+            ToastAndroid.TOP,
+            0,
+            40);
+    }).then(()=>{
+        console.log(String(this.props.screenProps.user_name));
+    });
+    }
 
-    initializeCheckDict(){
+    initializeCheckDict = () => {
         fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
         .then((response) => response.json())
         .then((responseJson)=>{
@@ -188,6 +216,7 @@ export default class AppTabNavigator extends Component {
         }).then(()=>{
             // console.log(JSON.stringify(this.state.myEventsSource));
             // console.log(JSON.stringify(this.state.dataSource));
+            checkDict={};
             console.log(JSON.stringify(this.state.myEventsSource[0]));
             for(let i=0;i<this.state.myEventsSource.length;++i){
                 checkDict[String(this.state.myEventsSource[i].event_id)] = true;
@@ -214,14 +243,42 @@ export default class AppTabNavigator extends Component {
 
         handleClick = (event_id) => {
             // console.log("handle click reached");
-            data = this.state.count;
+            var data = this.state.count;
             data = data+1;
-            this.setState({count:data});
-            // console.log("updated count: " + this.state.count.toString());
+            console.log("updated count: " + this.state.count.toString());
             checkDict[String(event_id)] = !checkDict[String(event_id)];
-            this.setState({
-                Dict:checkDict,
-            });
+            fetch('http://esummit.ecell.in/v1/api/events/myevent_add', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                event_id: event_id,
+                user_id: 2,
+            }),
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+            .then(()=>{
+                fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+            .then((response)=>response.json())
+            .then((responseJson)=>{
+                this.setState({
+                    isLoadiyng:false,
+                    myEventsSource: responseJson,
+                    refreshing: false,
+                    Dict:checkDict,
+                    count:data,
+                });
+                console.log("inside handle click function : "+event_id.toString()+JSON.stringify(this.state.Dict));
+            })
+            this.componentDidMount();
         }
 
         CallMyEventsApi(evt_id){
@@ -269,6 +326,7 @@ export default class AppTabNavigator extends Component {
                                                 count:this.state.count,
                                                 handleClick:this.handleClick,
                                                 checkDict:this.state.Dict,
+                                                myEventsSource:this.state.myEventsSource,
                                              }} />
         )
     }

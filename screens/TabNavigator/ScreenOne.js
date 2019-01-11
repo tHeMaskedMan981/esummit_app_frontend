@@ -243,7 +243,7 @@ class ScreenOne extends Component {
         },
         body: JSON.stringify({
             event_id: evt_id,
-            user_id: this.props.screenProps.user_id,
+            user_id: 2,
         }),
         }).then()
     .catch((error) => {
@@ -462,11 +462,11 @@ class ScreenOne extends Component {
                                     </View>
                                 </TouchableNativeFeedback>
                                 <View style={styles.checkBoxFlex}>
-                                    <TouchableNativeFeedback onPress = {()=>{this._handleCheckBoxEvent(item.event_id);
+                                    <TouchableNativeFeedback onPress = {()=>{
                                                                             this.props.screenProps.handleClick(item.event_id);
                                                                             this.setState({seed:2});
                                                                             ToastAndroid.showWithGravityAndOffset(
-                                                                                checkDict[String(item.event_id)]?'Added':'Removed',
+                                                                                this.props.screenProps.checkDict[String(item.event_id)]?'Added':'Removed',
                                                                                 ToastAndroid.SHORT,
                                                                                 ToastAndroid.TOP,
                                                                                 0,
@@ -556,7 +556,7 @@ class ScreenOne extends Component {
                 numColumns= {numColumns}
                 refreshing = {this.state.refreshing}
                 onRefresh = {this.handleRefresh}
-                extraData = {this.state}
+                extraData = {this.props}
                 renderItem = {({item}) => this.customRenderFunction(item)}   
             />
             
