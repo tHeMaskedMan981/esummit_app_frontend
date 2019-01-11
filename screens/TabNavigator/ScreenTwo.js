@@ -266,17 +266,16 @@ class ScreenTwo extends Component {
         }
     }
     _handleCheckBoxEvent(event_id){
+        this.CallMyEventsApi(event_id)
         checkDict[String(event_id)] = !(checkDict[String(event_id)]);
         console.log(String(checkDict[String(event_id)]));
         console.log(String(this.state.Dict[String(event_id)]));
-        this.CallMyEventsApi(event_id);
-        styleCheckBox[String(event_id)] = checkDict[String(event_id)]?styles.onCheckBox:styles.offCheckBox;
         this.setState({
             Dict:checkDict,
             CheckBoxStyle:styleCheckBox,
         });
-        //console.log(JSON.stringify(this.CheckBoxStyle[String(event_id)]));
         this.handleRefresh();
+        //console.log(JSON.stringify(this.CheckBoxStyle[String(event_id)]));
     }
     
     async componentDidMount(){

@@ -204,12 +204,27 @@ class ScreenOne extends Component {
             // console.log(JSON.stringify(this.state.myEventsSource));
             // console.log(JSON.stringify(this.state.dataSource));
             console.log(JSON.stringify(this.state.myEventsSource[0]));
-            for(let i=0;i<this.state.myEventsSource.length;++i){
-                checkDict[String(this.state.myEventsSource[i].event_id)] = true;
-            }
-            for(let i=0;i<this.state.dataSource.length;++i){
-                if(!(String(this.state.dataSource[i].event_id) in checkDict)){
-                checkDict[String(this.state.dataSource[i].event_id)] = false;
+            // for(let i=0;i<this.state.myEventsSource.length;++i){
+            //     checkDict[String(this.state.myEventsSource[i].event_id)] = true;
+            // }
+            // for(let i=0;i<this.state.dataSource.length;++i){
+            //     if(!(String(this.state.dataSource[i].event_id) in checkDict)){
+            //     checkDict[String(this.state.dataSource[i].event_id)] = false;
+            //     }
+            // }
+            for(let i = 0;i<this.state.dataSource.length;++i){
+                let track = false;
+                for(let j = 0;j<this.state.myEventsSource.length;++i){
+                    if(this.state.dataSource[i].event_id == this.state.myEventsSource[j].event_id){
+                        track = true;
+                        break;
+                    }
+                }
+                if(track){
+                    checkDict[String(this.state.dataSource[i].event_id)] = true;
+                }
+                else{
+                    checkDict[String(this.state.dataSource[i].event_id)] = false;
                 }
             }
             // for(let obj in this.state.dataSource){
@@ -403,15 +418,15 @@ class ScreenOne extends Component {
         )
     }
     _handleCheckBoxEvent(event_id){
+        this.CallMyEventsApi(event_id)
         checkDict[String(event_id)] = !(checkDict[String(event_id)]);
         console.log(String(checkDict[String(event_id)]));
         console.log(String(this.state.Dict[String(event_id)]));
-        this.CallMyEventsApi(event_id);
-        styleCheckBox[String(event_id)] = checkDict[String(event_id)]?styles.onCheckBox:styles.offCheckBox;
         this.setState({
             Dict:checkDict,
             CheckBoxStyle:styleCheckBox,
         });
+        this.handleRefresh();
         //console.log(JSON.stringify(this.CheckBoxStyle[String(event_id)]));
     }
     getTime(time,date){

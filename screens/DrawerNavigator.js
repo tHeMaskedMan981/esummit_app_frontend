@@ -127,9 +127,17 @@ export default class AppTabNavigator extends Component {
           esummit_id: '',
           user_name:'',
           user_id:'',
-    
+          test:0,
         };
       }
+    handleClick(){
+        let v = Number(this.state.test);
+        v = v + 1;
+        this.setState({
+            test:v,
+        });
+        console.log(this.state.test);
+    }
 
     render() {
         const { navigation } = this.props;
@@ -148,8 +156,11 @@ export default class AppTabNavigator extends Component {
         return (
             <AppDrawerNavigator screenProps={{ navigation: this.props.navigation,
                                                 user_id:user_id,
-                                                user_name:user_name
-                                             }} />
+                                                user_name:user_name,
+                                                newVar:this.state.test,
+                                                onClick:this.handleClick.bind(this),
+                                             }} 
+                                onClick={()=>this.handleClick()}/>
         )
     }
 }

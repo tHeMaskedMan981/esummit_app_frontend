@@ -150,17 +150,26 @@ class Competitions extends Component {
             // console.log(JSON.stringify(this.state.myEventsSource));
             // console.log(JSON.stringify(this.state.dataSource));
             console.log(JSON.stringify(this.state.myEventsSource[0]));
-            for(let i=0;i<this.state.myEventsSource.length;++i){
-                checkDict[String(this.state.myEventsSource[i].event_id)] = true;
-                styleCheckBox[String(this.state.myEventsSource[i].event_id)] = styles.onCheckBox;
-                console.log(this.state.myEventsSource[i].event_id);
-            }
-            for(let i=0;i<this.state.dataSource.length;++i){
-                if(!(String(this.state.dataSource[i].event_id) in checkDict)){
-                checkDict[String(this.state.dataSource[i].event_id)] = false;
-                styleCheckBox[String(this.state.dataSource[i].event_id)] = styles.offCheckBox;
-                console.log(this.state.dataSource[i].event_id);
+            // for(let i=0;i<this.state.myEventsSource.length;++i){
+            //     checkDict[String(this.state.myEventsSource[i].event_id)] = true;
+            //     styleCheckBox[String(this.state.myEventsSource[i].event_id)] = styles.onCheckBox;
+            //     console.log(this.state.myEventsSource[i].event_id);
+            // }
+            // for(let i=0;i<this.state.dataSource.length;++i){
+            //     if(!(String(this.state.dataSource[i].event_id) in checkDict)){
+            //     checkDict[String(this.state.dataSource[i].event_id)] = false;
+            //     styleCheckBox[String(this.state.dataSource[i].event_id)] = styles.offCheckBox;
+            //     console.log(this.state.dataSource[i].event_id);
+            //     }
+            // }
+            for(let i = 0;i<this.state.dataSource.length;++i){
+                let track = false;
+                for(let j = 0;j<this.state.myEventsSource.length;++i){
+                    if(this.state.dataSource[i].event_id == this.state.myEventsSource[j].event_id){
+                        track = true;
+                    }
                 }
+                checkDict[String(this.state.dataSource[i].event_id)] = track;
             }
             // for(let obj in this.state.dataSource){
             //     if(!(String(obj.event_id) in checkDict)){
@@ -215,15 +224,15 @@ class Competitions extends Component {
         );
     };
     _handleCheckBoxEvent(event_id){
+        this.CallMyEventsApi(event_id)
         checkDict[String(event_id)] = !(checkDict[String(event_id)]);
         console.log(String(checkDict[String(event_id)]));
         console.log(String(this.state.Dict[String(event_id)]));
-        this.CallMyEventsApi(event_id);
-        styleCheckBox[String(event_id)] = checkDict[String(event_id)]?styles.onCheckBox:styles.offCheckBox;
         this.setState({
             Dict:checkDict,
             CheckBoxStyle:styleCheckBox,
         });
+        this.handleRefresh();
         //console.log(JSON.stringify(this.CheckBoxStyle[String(event_id)]));
     }
     getTime(time,date){
