@@ -17,6 +17,7 @@ import {
     
     
 } from "react-native";
+
 import { WebView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import GradientButton from 'react-native-gradient-buttons';
@@ -28,6 +29,7 @@ import {Font} from 'expo';
 import onCheckBoxImage from './icons/checked.png';
 import offCheckBoxImage from './icons/unchecked.png';
 import {ToastAndroid} from 'react-native';
+import LoadingGIF from "../LoadingGIF";
 
  var Arr = [];
  var checkDict = {};
@@ -84,6 +86,7 @@ class ScreenOne extends Component {
         //             }
         //         });
         // })
+        
         fetch('http://esummit.ecell.in/v1/api/venues').then(response => {
         if (response.ok) {
             console.log('fine response');
@@ -169,6 +172,11 @@ class ScreenOne extends Component {
                 fontLoading:false,
             })
         }).then(()=>{
+            this.setState({
+                isLoading:true,
+            })
+            
+            
             fetch('http://esummit.ecell.in/v1/api/events')
             .then((response)=>response.json())
             .then((responseJson)=>{
@@ -512,13 +520,13 @@ class ScreenOne extends Component {
     render() {
         no_renders+=1;
         console.log(no_renders);
-        if(this.state.isLoading||this.state.fontLoading){
-            return(
-                <View style={{flex:1}}>
-                    <ActivityIndicator/>
-                </View>
-            )
-        }
+        // if(this.state.isLoading||this.state.fontLoading){
+        //     return(
+        //         <View style={{flex:1}}>
+        //             <ActivityIndicator/>
+        //         </View>
+        //     )
+        // }
         return (
             // <View style={styles.boxcontainer}>
             //     <FlatList
@@ -542,7 +550,7 @@ class ScreenOne extends Component {
             // </View>
 
             <View style={{flex:1}}>
-
+            <LoadingGIF show={this.state.isLoading} />
                 <FlatList 
                 data = {this.state.dataSource}
                 style = {styles.container}
