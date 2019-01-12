@@ -22,6 +22,7 @@ import {Font} from 'expo';
 import onCheckBoxImage from './icons/checked.png';
 import offCheckBoxImage from './icons/unchecked.png';
 import {ToastAndroid} from 'react-native';
+import styles from '../styles';
 var checkDict = {};
 var styleCheckBox = {};
 var url;
@@ -266,20 +267,20 @@ class ScreenTwo extends Component {
         }
     }
     _handleCheckBoxEvent(event_id){
+        this.CallMyEventsApi(event_id)
         checkDict[String(event_id)] = !(checkDict[String(event_id)]);
         console.log(String(checkDict[String(event_id)]));
         console.log(String(this.state.Dict[String(event_id)]));
-        this.CallMyEventsApi(event_id);
-        styleCheckBox[String(event_id)] = checkDict[String(event_id)]?styles.onCheckBox:styles.offCheckBox;
         this.setState({
             Dict:checkDict,
             CheckBoxStyle:styleCheckBox,
         });
-        //console.log(JSON.stringify(this.CheckBoxStyle[String(event_id)]));
         this.handleRefresh();
+        //console.log(JSON.stringify(this.CheckBoxStyle[String(event_id)]));
     }
     
     async componentDidMount(){
+            //fetch('http://esummit.ecell.in/v1/api/events/myevents/'+String(this.props.screenProps.user_id))
             fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
             .then((response)=>response.json())
             .then((responseJson)=>{
@@ -381,8 +382,8 @@ class ScreenTwo extends Component {
             // </View>
             <View style={{flex:1}}>
                 <FlatList 
-                data = {this.state.dataSource}
-                extraData = {this.state}
+                data = {this.props.screenProps.myEventsSource}
+                extraData = {this.props}
                 style = {styles.container}
                 numColumns = {numColumns}
                 refreshing = {this.state.refreshing}
@@ -417,10 +418,10 @@ class ScreenTwo extends Component {
                                 </View>
                                 </TouchableNativeFeedback>
                                 <View style={styles.checkBoxFlex}>
-                                    <TouchableNativeFeedback onPress = {()=>{this._handleCheckBoxEvent(item.event_id);
+                                    <TouchableNativeFeedback onPress = {()=>{this.props.screenProps.handleClick(item.event_id);
                                                                             this.setState({seed:2});
                                                                             ToastAndroid.showWithGravityAndOffset(
-                                                                                checkDict[String(item.event_id)]?'Added':'Removed',
+                                                                                this.props.screenProps.checkDict[String(item.event_id)]?'Added':'Removed',
                                                                                 ToastAndroid.SHORT,
                                                                                 ToastAndroid.TOP,
                                                                                 0,
@@ -430,7 +431,7 @@ class ScreenTwo extends Component {
                                         {/* <View style={this.state.CheckBoxStyle[String(item.event_id)]}></View> */}
                                         {/* <View style={checkDict[String(item.event_id)]?styles.onCheckBox:styles.offCheckBox}></View> */}
                                         <View>
-                                            <Image style={{height:30,width:30}} source={checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                                            <Image style={{height:30,width:30}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
                                         </View>
                                     </TouchableNativeFeedback>
                                 </View>
@@ -478,200 +479,3 @@ class ScreenTwo extends Component {
     }
 }
 export default ScreenTwo;
-
-const styles = StyleSheet.create({
-    container: {
-        flex:1,
-        marginVertical:20,
-        marginBottom: 30,
-    },
-    heading:{
-        flex:1,
-        marginTop:-10,
-        marginLeft:10,
-        flexDirection:'row',
-    },
-    itemInfoText:{
-        marginLeft:10,
-        marginBottom:10,
-        fontFamily:'latoRegular',
-        color: "#221d3d",
-    },
-    footer:{
-        flex:1,
-        alignItems:'center',
-        flexDirection:'row',
-        marginLeft:5,
-        marginRight:5,
-        padding:5,
-        borderRadius:30,
-        borderWidth: 1,
-        borderColor:'#6674a3',
-        shadowOffset:{width: 0,  height: 3,},
-        shadowColor: 'black',
-        shadowOpacity: 1.0,
-        shadowRadius: 5,
-        overflow: 'hidden',
-        backgroundColor: '#6674a3',
-        
-    },
-    innerFooter:{
-        flex:1,
-        justifyContent:'center',
-        flexDirection:'row',
-        marginLeft:5,
-        padding:5,
-        borderRadius:25,
-        borderWidth: 1,
-        borderColor: '#93a0cc',
-        backgroundColor: '#93a0cc',
-        shadowColor: 'black',
-        shadowOpacity: 1.0,
-        shadowRadius: 1,
-        elevation:4,
-    },
-    buttonContainer:{
-        height:40,
-        width:180,
-        backgroundColor:'rgb(93,173,226)',
-        flexDirection:'row',
-        justifyContent:'center',
-        alignItems:'center',
-    },
-    itemText:{
-        fontWeight:'bold',
-        fontSize: 20,
-        fontFamily:'latoRegular',
-        color: "#221d3d",
-    },
-    customitem:{
-        marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
-        marginLeft:15,
-        marginRight:15,
-        backgroundColor:'rgba(255,165,0,0.2)',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#fff',
-        shadowOffset:{width: 0,  height: 3,},
-        shadowColor: 'black',
-        shadowOpacity: 1.0,
-        shadowRadius: 2,
-    },
-    item:{
-        marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
-        marginLeft:15,
-        marginRight:15,
-        backgroundColor:'white',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#fff',
-        shadowOffset:{width: 0,  height: 3,},
-        shadowColor: 'black',
-        shadowOpacity: 1.0,
-        shadowRadius: 5,
-    },
-    buttonText:{
-        color:'white',
-        textAlign:'center',
-    },
-    modal:{
-        flex:1,
-        alignItems:'center',
-        backgroundColor:'grey',
-        padding:100,
-    },
-    touchableContainer:{
-      flex:2,
-    },
-    titleFlex:{
-        flex:5,
-    },
-    checkBoxFlex:{
-        flex:0.55,
-        marginTop: 1,
-    },
-    innerFooterInvisible:{
-        flex:1,
-        justifyContent:'center',
-        flexDirection:'row',
-    },
-    onCheckBox:{
-        borderColor:'rgba(93,173,226,1)',
-        borderRadius: 15,
-        borderWidth: 1,
-        backgroundColor: 'rgba(93,173,226,0.45)',
-        height:30,
-        width:30,
-        marginRight:10,
-    },
-    offCheckBox:{
-        borderColor: 'rgba(0,0,0,0.5)',
-        borderRadius: 15,
-        borderWidth: 1,
-        backgroundColor:'rgba(120,120,120,0.15)',
-        height: 30,
-        width: 30,
-        marginRight:10,
-    },
-    myevent:{
-        backgroundColor:'transparent',
-        flex:1,
-    },
-    screen:{
-        position:'absolute',
-        flex:1,
-        height:'100%',
-        width:'100%',
-        backgroundColor:'rgba(68, 69, 71, 0.5)',
-        justifyContent: 'center',
-        alignItems:'center'
-        
-    },
-    screen_image:{
-        // flex:1,
-        justifyContent:'center',
-        width:'100%',
-        height:'40%',
-
-    },
-    image:{
-        flex:1,
-        width:null,
-        height:null,
-        resizeMode:'contain',
-    },
-    screen_box:{
-        width:'80%',
-        padding:10,
-        backgroundColor:'white',
-        borderRadius:10,
-        
-    },
-    screen_name:{
-       fontSize:24,
-    },
-    screen_desc:{
-        width:'100%',
-        // height:'40%',
-        textAlign:'left',
-        
-    },
-    vbutn:{
-        width:'100%',
-        height:65,
-        justifyContent:'center',
-        alignItems:'center',
-        backgroundColor:'white',
-        marginTop:10,
-    },
-    vcross:{
-        // height:'10%',
-        flexDirection:'row-reverse',
-        textAlign:'right',
-        width:'100%'
-    },
-});

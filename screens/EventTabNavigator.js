@@ -35,7 +35,9 @@ export default class AppTabNavigator extends Component {
     }
     render() {
         return (
-            <EventTabNavigator screenProps={{ navigation: this.props.navigation }} />
+            <EventTabNavigator screenProps={{ navigation: this.props.navigation,
+                                            user_name:this.props.screenProps.user_name,
+                                            user_id:this.props.screenProps.user_id, }} />
         )
     }
 }

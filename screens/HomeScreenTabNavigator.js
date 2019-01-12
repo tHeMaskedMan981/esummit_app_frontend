@@ -6,7 +6,7 @@ import {
     Image
 } from "react-native";
 
-import { createBottomTabNavigator, createStackNavigator } from 'react-navigation'
+import { createBottomTabNavigator,createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import ScreenOne from './TabNavigator/ScreenOne'
@@ -85,15 +85,57 @@ export default class AppTabNavigator extends Component {
         return (
             <HomeScreenTabNavigator screenProps={{  navigation: this.props.navigation,
                                                     user_name:this.props.screenProps.user_name,
-                                                    user_id:this.props.screenProps.user_id,}} />
+                                                    user_id:this.props.screenProps.user_id,
+                                                    count:this.props.screenProps.count,
+                                                    checkDict:this.props.screenProps.checkDict,
+                                                    handleClick:this.props.screenProps.handleClick,
+                                                    refresh_and_update:this.props.screenProps.refresh_and_update,
+                                                    myEventsSource:this.props.screenProps.myEventsSource,
+                                                    dataSource:this.props.screenProps.dataSource}} />
         )
     }
 }
 
+const ScreenOneTabNavigator = new createMaterialTopTabNavigator({
+    screenOneDay1: {
+        screen: ScreenOne,
+        navigationOptions: {
+            tabBarLabel: 'Day 1'}
+    },
+    screenOneDay2: {
+        screen: ScreenOne,
+        navigationOptions: {
+            tabBarLabel: 'Day 2'}
+    }    
+})
+const ScreenTwoTabNavigator = new createMaterialTopTabNavigator({
+    screenTwoDay1: {
+        screen: ScreenTwo,
+        navigationOptions: {
+            tabBarLabel: 'Day 1'}
+    },
+    screenTwoDay2: {
+        screen: ScreenTwo,
+        navigationOptions: {
+            tabBarLabel: 'Day 2'}
+    }    
+})
+const ScreenThreeTabNavigator = new createMaterialTopTabNavigator({
+    screenThreeDay1: {
+        screen: ScreenThree,
+        navigationOptions: {
+            tabBarLabel: 'Day 1'}
+    },
+    screenThreeDay2: {
+        screen: ScreenThree,
+        navigationOptions: {
+            tabBarLabel: 'Day 2'}
+    }    
+})
 
 const HomeScreenTabNavigator = new createBottomTabNavigator({
     ScreenOne: {
-        screen: ScreenOne,
+        screen: ScreenOneTabNavigator,
         navigationOptions: {
             tabBarLabel: 'Highlight Events',
             tabBarIcon: () => (
@@ -102,7 +144,7 @@ const HomeScreenTabNavigator = new createBottomTabNavigator({
         }
     },
     ScreenTwo: {
-        screen: ScreenTwo,
+        screen: ScreenTwoTabNavigator,
         navigationOptions: {
             tabBarLabel: 'My Events',
             tabBarIcon: () => (
@@ -111,7 +153,7 @@ const HomeScreenTabNavigator = new createBottomTabNavigator({
         }
     },
     ScreenThree:{
-        screen: ScreenThree,
+        screen: ScreenThreeTabNavigator,
         navigationOptions:{
             tabBarLabel:'Updated Events',
             tabBarIcon:()=>(
