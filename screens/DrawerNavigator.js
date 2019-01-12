@@ -7,6 +7,7 @@ import {
     AsyncStorage,
     ToastAndroid
 } from "react-native";
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import {StackNavigator, DrawerItems, SafeAreaView } from 'react-navigation'
 import { Container, Content, Icon, Header, Body } from 'native-base'
 import HomeScreen from './HomeScreen';
@@ -70,7 +71,8 @@ const MapStackNavigator = new createStackNavigator({
 
 // const { navigation } = this.props;
 // const user_name = navigation.getParam('user_name', 'some default name');
-
+// const { navigation } = this.props;
+// var user_name = navigation.getParam('user_name', 'some default name');
 const CustomDrawerContentComponent = (props) => (
 
     <Container>
@@ -80,7 +82,7 @@ const CustomDrawerContentComponent = (props) => (
             style={styles.drawerImage}
             source={require('../assets/images/robot-dev.png')} />
             <View style={styles.welcome}>
-                <Text>Hi User</Text>
+                <Text>Hi ,</Text>
             </View>
         </Body>
       </Header>
@@ -93,12 +95,48 @@ const CustomDrawerContentComponent = (props) => (
   );
   
 const AppDrawerNavigator = new createDrawerNavigator({
-    HomeScreen: { screen: InnerStackNavigator },
-    Schedule: { screen: EventStackNavigator },
-    Sponsors: {screen : SponsorStackNavigator},
-    Speakers: {screen: SpeakerStackNavigator},
-    Helpline: {screen : HelplineStackNavigator},
-    Developer: {screen : DeveloperStackNavigator},
+    HomeScreen: { screen: InnerStackNavigator,
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-home" size={16} />
+            )
+        }
+    },
+    Schedule: { screen: EventStackNavigator, 
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-home" size={16} />
+            )
+        }
+    },
+    Sponsors: {screen : SponsorStackNavigator,
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-home" size={16} />
+            )
+        }
+    },
+    Speakers: {screen: SpeakerStackNavigator,
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-home" size={16} />
+            )
+        }
+    },
+    Helpline: {screen : HelplineStackNavigator,
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-home" size={16} />
+            )
+        }
+    },
+    Developer: {screen : DeveloperStackNavigator,
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-home" size={16} />
+            )
+        }
+    },
     Map: {screen : MapStackNavigator}
 
     },

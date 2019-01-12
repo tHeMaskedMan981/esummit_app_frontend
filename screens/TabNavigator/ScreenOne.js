@@ -17,6 +17,7 @@ import {
     
     
 } from "react-native";
+
 import { WebView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import GradientButton from 'react-native-gradient-buttons';
@@ -28,6 +29,7 @@ import {Font} from 'expo';
 import onCheckBoxImage from './icons/checked.png';
 import offCheckBoxImage from './icons/unchecked.png';
 import {ToastAndroid} from 'react-native';
+import LoadingGIF from "../LoadingGIF";
 import styles from '../styles';
 
  var Arr = [];
@@ -82,6 +84,11 @@ class ScreenOne extends Component {
                 fontLoading:false,
             })
         }).then(()=>{
+            this.setState({
+                isLoading:true,
+            })
+            
+            
             fetch('http://esummit.ecell.in/v1/api/events')
             .then((response)=>response.json())
             .then((responseJson)=>{
@@ -329,21 +336,22 @@ class ScreenOne extends Component {
         checkDict = this.props.screenProps.checkDict;
         // console.log("this is inside screen one render function: "+ JSON.stringify(this.props.screenProps.checkDict));
         no_renders+=1;
-        // console.log(no_renders);
-        if(this.state.isLoading||this.state.fontLoading){
-            return(
-                <View style={{flex:1}}>
-                    <ActivityIndicator/>
-                </View>
-            )
-        }
+        console.log(no_renders);
+        // if(this.state.isLoading||this.state.fontLoading){
+        //     return(
+        //         <View style={{flex:1}}>
+        //             <ActivityIndicator/>
+        //         </View>
+        //     )
+        // }
         return (
 
             <View style={{flex:1}}>
+            <LoadingGIF show={this.state.isLoading} />
 
                 <Text> the value of count is : { this.props.screenProps.count}</Text>
                 <FlatList 
-                data = {dataSource}
+                data = {this.state.dataSource}
                 style = {styles.container}
                 numColumns= {numColumns}
                 refreshing = {this.state.refreshing}
