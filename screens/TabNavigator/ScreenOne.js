@@ -29,11 +29,8 @@ import {Font} from 'expo';
 import onCheckBoxImage from './icons/checked.png';
 import offCheckBoxImage from './icons/unchecked.png';
 import {ToastAndroid} from 'react-native';
-<<<<<<< HEAD
 import LoadingGIF from "../LoadingGIF";
-=======
 import styles from '../styles';
->>>>>>> 42bacf44c38d0044ed43437ef44653f86bc56253
 
  var Arr = [];
  var checkDict = {};
@@ -78,58 +75,6 @@ class ScreenOne extends Component {
 
         };
     }
-<<<<<<< HEAD
-    venueFetch = (venue_id)=>{
-        // fetch('http://esummit.ecell.in/v1/venues')
-        // .then((response) => response.json())
-        // .then((responseJson)=>{
-        //     console.log(responseJson.stringify());
-        //     this.setState({},
-        //         function(){
-        //             for( var i in responseJson){
-        //                 Arr.push(i);
-        //             }
-        //         });
-        // })
-        
-        fetch('http://esummit.ecell.in/v1/api/venues').then(response => {
-        if (response.ok) {
-            console.log('fine response');
-            return response.json();
-        }
-        throw new Error('Network response error.');
-    })
-    .then(charData => {
-        //console.log(`inside: ${JSON.stringify(charData, null, 2)}`);
-        console.log('inside chardata');
-        charData.map(entry => {
-            console.log(JSON.stringify(entry));
-            return Arr.push(entry);
-        });
-        //console.log(`outside: ${JSON.stringify(Arr, null, 2)}`);
-    }).then(()=>{
-        for(let i=0;i<Arr.length;++i){
-            if(venue_id==Arr[i].venue_id){
-                url = Arr[i].url;
-                console.log(String(url));
-                Linking.openURL(String(url));
-            }
-        }
-    })
-//console.log(`outside: ${JSON.stringify(Arr, null, 2)}`);
-    }
-    returnVenueUrl(venue){
-        console.log(Arr.length);
-        for(let i = 0;i<Arr.length;++i){
-            console.log(i);
-            if(venue==(Arr[i]).venue_id){
-                console.log((Arr[i]).venue_id);
-                return (Arr[i]).url;
-            }
-        }
-    }
-=======
->>>>>>> 42bacf44c38d0044ed43437ef44653f86bc56253
 
     async componentDidMount(){
         await Font.loadAsync({
@@ -391,7 +336,6 @@ class ScreenOne extends Component {
         checkDict = this.props.screenProps.checkDict;
         // console.log("this is inside screen one render function: "+ JSON.stringify(this.props.screenProps.checkDict));
         no_renders+=1;
-<<<<<<< HEAD
         console.log(no_renders);
         // if(this.state.isLoading||this.state.fontLoading){
         //     return(
@@ -400,27 +344,14 @@ class ScreenOne extends Component {
         //         </View>
         //     )
         // }
-=======
-        // console.log(no_renders);
-        if(this.state.isLoading||this.state.fontLoading){
-            return(
-                <View style={{flex:1}}>
-                    <ActivityIndicator/>
-                </View>
-            )
-        }
->>>>>>> 42bacf44c38d0044ed43437ef44653f86bc56253
         return (
 
             <View style={{flex:1}}>
-<<<<<<< HEAD
             <LoadingGIF show={this.state.isLoading} />
-=======
 
                 <Text> the value of count is : { this.props.screenProps.count}</Text>
->>>>>>> 42bacf44c38d0044ed43437ef44653f86bc56253
                 <FlatList 
-                data = {dataSource}
+                data = {this.state.dataSource}
                 style = {styles.container}
                 numColumns= {numColumns}
                 refreshing = {this.state.refreshing}
