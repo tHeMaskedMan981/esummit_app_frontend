@@ -175,10 +175,10 @@ export default class AppTabNavigator extends Component {
         this._retrieveData("checkDict");
         this._retrieveData("allEvents");
         this._retrieveData("dataSource");
-        this._retrieveData("speakerSource");
-        this._retrieveData("competitionSource");
-        this._retrieveData("othersSource");
-        this._retrieveData("highlightSource");
+        // this._retrieveData("speakerSource");
+        // this._retrieveData("competitionSource");
+        // this._retrieveData("othersSource");
+        // this._retrieveData("highlightSource");
        
 
         fetch('http://esummit.ecell.in/v1/api/events')
@@ -205,44 +205,44 @@ export default class AppTabNavigator extends Component {
                 this.initializeCheckDict();
             });
 
-            this.refresh_and_update();
+            // this.refresh_and_update();
     }
 
-    refresh_and_update = ()=>{
+    // refresh_and_update = ()=>{
 
-        console.log("refresh and update called");
-        fetch('http://esummit.ecell.in/v1/api/events/speaker/')
-            .then((response)=>response.json())
-            .then((responseJson)=>{
-                this.setState({speakerSource: responseJson});
-                this._storeData("speakerSource", responseJson);
-            });
-            fetch('http://esummit.ecell.in/v1/api/events')
-            .then((response)=>response.json())
-            .then((responseJson)=>{
-                this.setState({dataSource: responseJson});
-                this._storeData("dataSource", responseJson);
-                console.log("all events : " + JSON.stringify(responseJson)); 
-            });
-            fetch('http://esummit.ecell.in/v1/api/events/competition/')
-            .then((response)=>response.json())
-            .then((responseJson)=>{
-                this.setState({competitionSource: responseJson});
-                this._storeData("competitionSource", responseJson);
-            });
-            fetch('http://esummit.ecell.in/v1/api/events/others/')
-            .then((response)=>response.json())
-            .then((responseJson)=>{
-                this.setState({othersSource: responseJson});
-                this._storeData("othersSource", responseJson);
-            });
-            fetch('http://esummit.ecell.in/v1/api/events/highlight/')
-            .then((response)=>response.json())
-            .then((responseJson)=>{
-                this.setState({highlightSource: responseJson});
-                this._storeData("highlightSource", responseJson);
-            });
-    }
+    //     console.log("refresh and update called");
+    //     fetch('http://esummit.ecell.in/v1/api/events/speaker/')
+    //         .then((response)=>response.json())
+    //         .then((responseJson)=>{
+    //             this.setState({speakerSource: responseJson});
+    //             this._storeData("speakerSource", responseJson);
+    //         });
+    //         fetch('http://esummit.ecell.in/v1/api/events')
+    //         .then((response)=>response.json())
+    //         .then((responseJson)=>{
+    //             this.setState({dataSource: responseJson});
+    //             this._storeData("dataSource", responseJson);
+    //             console.log("all events : " + JSON.stringify(responseJson)); 
+    //         });
+    //         fetch('http://esummit.ecell.in/v1/api/events/competition/')
+    //         .then((response)=>response.json())
+    //         .then((responseJson)=>{
+    //             this.setState({competitionSource: responseJson});
+    //             this._storeData("competitionSource", responseJson);
+    //         });
+    //         fetch('http://esummit.ecell.in/v1/api/events/others/')
+    //         .then((response)=>response.json())
+    //         .then((responseJson)=>{
+    //             this.setState({othersSource: responseJson});
+    //             this._storeData("othersSource", responseJson);
+    //         });
+    //         fetch('http://esummit.ecell.in/v1/api/events/highlight/')
+    //         .then((response)=>response.json())
+    //         .then((responseJson)=>{
+    //             this.setState({highlightSource: responseJson});
+    //             this._storeData("highlightSource", responseJson);
+    //         });
+    // }
 
     initializeCheckDict = () => {
         // get the myevents data, make a dictionary to facilitate the highlighting of Events, store in storage,
@@ -318,41 +318,84 @@ export default class AppTabNavigator extends Component {
         var data = this.state.count;
         data = data+1;
         // console.log("the updated data is  : " + JSON.stringify(data));
-        var myEventsSource = this.state.myEventsSource;
-        var allEvents = this.state.allEvents;
+
+        fetch('http://esummit.ecell.in/v1/api/events/myevent_add', {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            event_id: event_id,
+            user_id: 2,
+        }),
+        }).then(()=>{
+            console.log("event with event id "+event_id.toString()+" added to user 2 ");
+            checkDict[String(event_id)] = !checkDict[String(event_id)];
+            ToastAndroid.showWithGravityAndOffset(
+                checkDict[String(event_id)]?'Added':'Removed',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+                0,
+                40,
+            );
+            this.setState({
+                Dict:checkDict,
+                count:data,
+            });
+        })
+        .catch(()=>{
+            ToastAndroid.showWithGravityAndOffset(
+                "Network error",
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+                0,
+                40);
+        });
+    }
+
+    // handleClick = (event_id) => {
+    //     // Update the checkDict, remove the event from myevents if already present, or add it from allEvents.
+    //     // update the local storage, state and call the api 
+
+    //     var data = this.state.count;
+    //     data = data+1;
+    //     // console.log("the updated data is  : " + JSON.stringify(data));
+    //     var myEventsSource = this.state.myEventsSource;
+    //     var allEvents = this.state.allEvents;
         
          
-        console.log("the old dict is  : " + JSON.stringify(checkDict));
-        checkDict[String(event_id)] = !checkDict[String(event_id)];
-        console.log("the new dict is  : " + JSON.stringify(checkDict));
-        var len = myEventsSource.length;
-        var found = 0;
-        for(let i=0; i<len; ++i){
-            if (myEventsSource[i].event_id == event_id)
-            {   
-                // console.log("myevents old array  : " + JSON.stringify(myEventsSource));
-                var removed = myEventsSource.splice(i, 1);
-                // console.log("myevents new array  : " + JSON.stringify(myEventsSource));
-                found =1;
-                break; 
-            }
-        }
-        if (found==0){
-            var event = allEvents[String(event_id)];
-            // console.log("the event to be aadded : " + JSON.stringify(event));
-            myEventsSource.push(event);
-        }
+    //     console.log("the old dict is  : " + JSON.stringify(checkDict));
+    //     checkDict[String(event_id)] = !checkDict[String(event_id)];
+    //     console.log("the new dict is  : " + JSON.stringify(checkDict));
+    //     var len = myEventsSource.length;
+    //     var found = 0;
+    //     for(let i=0; i<len; ++i){
+    //         if (myEventsSource[i].event_id == event_id)
+    //         {   
+    //             // console.log("myevents old array  : " + JSON.stringify(myEventsSource));
+    //             var removed = myEventsSource.splice(i, 1);
+    //             // console.log("myevents new array  : " + JSON.stringify(myEventsSource));
+    //             found =1;
+    //             break; 
+    //         }
+    //     }
+    //     if (found==0){
+    //         var event = allEvents[String(event_id)];
+    //         // console.log("the event to be aadded : " + JSON.stringify(event));
+    //         myEventsSource.push(event);
+    //     }
 
-        this.setState({
-            myEventsSource: myEventsSource,
-            Dict:checkDict,
-            count:data,
-        });
-        this.CallMyEventsApi(event_id);
-        this._storeData("myEventsSource", myEventsSource);
-        this._storeData("checkDict", checkDict);
-        // this.componentDidMount();
-    }
+    //     this.setState({
+    //         myEventsSource: myEventsSource,
+    //         Dict:checkDict,
+    //         count:data,
+    //     });
+    //     this.CallMyEventsApi(event_id);
+    //     this._storeData("myEventsSource", myEventsSource);
+    //     this._storeData("checkDict", checkDict);
+    //     // this.componentDidMount();
+    // }
 
     render() {
         const { navigation } = this.props;
@@ -367,14 +410,11 @@ export default class AppTabNavigator extends Component {
                                                 user_name:user_name,
                                                 count:this.state.count,
                                                 handleClick:this.handleClick,
-                                                refresh_and_update:this.refresh_and_update,
+                                                // refresh_and_update:this.refresh_and_update,
                                                 checkDict:this.state.Dict,
-                                                myEventsSource:this.state.myEventsSource,
+                                                // myEventsSource:this.state.myEventsSource,
                                                 dataSource:this.state.dataSource,
-                                                speakerSource:this.state.speakerSource,
-                                                competitionSource:this.state.competitionSource,
-                                                othersSource:this.state.othersSource,
-                                                highlightSource:this.state.highlightSource,
+                                                
                                              }} />
         )
     }
