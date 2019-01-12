@@ -253,17 +253,21 @@ export default class AppTabNavigator extends Component {
             user_id: 2,
         }),
         }).then(()=>{
+            console.log("event with event id "+evt_id.toString()+" added to user 2 ");
         });
     }
 
     handleClick = (event_id) => {
-        
-        // var data = this.state.count;
-        // data = data+1;
+        // Update the checkDict, remove the event from myevents if already present, or add it from allEvents.
+        // update the local storage, state and call the api 
+
+        var data = this.state.count;
+        data = data+1;
         // console.log("the updated data is  : " + JSON.stringify(data));
         var myEventsSource = this.state.myEventsSource;
         var allEvents = this.state.allEvents;
         
+         
         // console.log("the old dict is  : " + JSON.stringify(checkDict));
         checkDict[String(event_id)] = !checkDict[String(event_id)];
         // console.log("the new dict is  : " + JSON.stringify(checkDict));

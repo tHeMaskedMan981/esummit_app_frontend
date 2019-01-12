@@ -28,6 +28,7 @@ import {Font} from 'expo';
 import onCheckBoxImage from './icons/checked.png';
 import offCheckBoxImage from './icons/unchecked.png';
 import {ToastAndroid} from 'react-native';
+import styles from '../styles';
 
  var Arr = [];
  var checkDict = {};
@@ -72,95 +73,7 @@ class ScreenOne extends Component {
 
         };
     }
-    venueFetch = (venue_id)=>{
-        // fetch('http://esummit.ecell.in/v1/venues')
-        // .then((response) => response.json())
-        // .then((responseJson)=>{
-        //     console.log(responseJson.stringify());
-        //     this.setState({},
-        //         function(){
-        //             for( var i in responseJson){
-        //                 Arr.push(i);
-        //             }
-        //         });
-        // })
-        fetch('http://esummit.ecell.in/v1/api/venues').then(response => {
-        if (response.ok) {
-            console.log('fine response');
-            return response.json();
-        }
-        throw new Error('Network response error.');
-    })
-    .then(charData => {
-        //console.log(`inside: ${JSON.stringify(charData, null, 2)}`);
-        console.log('inside chardata');
-        charData.map(entry => {
-            console.log(JSON.stringify(entry));
-            return Arr.push(entry);
-        });
-        //console.log(`outside: ${JSON.stringify(Arr, null, 2)}`);
-    }).then(()=>{
-        for(let i=0;i<Arr.length;++i){
-            if(venue_id==Arr[i].venue_id){
-                url = Arr[i].url;
-                console.log(String(url));
-                Linking.openURL(String(url));
-            }
-        }
-    })
-//console.log(`outside: ${JSON.stringify(Arr, null, 2)}`);
-    }
-    returnVenueUrl(venue){
-        console.log(Arr.length);
-        for(let i = 0;i<Arr.length;++i){
-            console.log(i);
-            if(venue==(Arr[i]).venue_id){
-                console.log((Arr[i]).venue_id);
-                return (Arr[i]).url;
-            }
-        }
-    }
 
-    _handlePressButtonAsync = async (venue_id) => {
-        if(Arr.length == 0){
-            this.venueFetch(venue_id);
-        }
-        else{
-            url = this.returnVenueUrl(venue_id);
-            Linking.openURL(String(url));
-        }
-        console.log("inside");
-        // let result = await WebBrowser.openBrowserAsync(url);
-        // this.setState({ result });
-    };
-    toggleModal(visible){
-        this.setState({modalVisible:visible});
-    }
-    // componentDidMount(){
-    //     fetch('http://esummit.ecell.in/v1/api/events')
-    //     .then((response) => response.json())
-    //     .then((responseJson)=>{
-    //         this.setState({
-    //             isLoading:false,
-    //             dataSource: responseJson,
-    //             refreshing:false,
-    //             trackHighlightEvents:true,});
-    //             console.log('highlight entered');
-    //     }).then(
-    //         ()=>{this.initializeCheckDict();
-    //             console.log(this.state.trackHighlightEvents);
-    //             console.log(this.state.trackMyEvents);
-    //         }
-    //     ).then(()=>{
-    //         Font.loadAsync({
-    //             'latoRegular':require('../../assets/fonts/Lato-Regular.ttf')
-    //         })
-    //     }).then(()=>{
-    //         this.setState({
-    //             fontLoading:false,
-    //         })
-    //     })
-    // }
     async componentDidMount(){
         await Font.loadAsync({
             'latoRegular':require('../../assets/fonts/Lato-Regular.ttf')
@@ -193,71 +106,6 @@ class ScreenOne extends Component {
             })
         })
     }
-    initializeCheckDict(){
-        fetch('http://esummit.ecell.in/v1/api/events/myevents/' + String(this.props.screenProps.user_id))
-        .then((response) => response.json())
-        .then((responseJson)=>{
-            this.setState({
-                myEventsSource: responseJson,
-                trackMyEvents:true,
-            });
-            console.log('myevents checked from screen one ');
-        }).then(()=>{
-            // console.log(JSON.stringify(this.state.myEventsSource));
-            // console.log(JSON.stringify(this.state.dataSource));
-            // console.log(JSON.stringify(this.state.myEventsSource[0]));
-            for(let i=0;i<this.state.myEventsSource.length;++i){
-                checkDict[String(this.state.myEventsSource[i].event_id)] = true;
-            }
-            for(let i=0;i<this.state.dataSource.length;++i){
-                if(!(String(this.state.dataSource[i].event_id) in checkDict)){
-                checkDict[String(this.state.dataSource[i].event_id)] = false;
-                }
-            }
-            // for(let obj in this.state.dataSource){
-            //     if(!(String(obj.event_id) in checkDict)){
-            //         checkDict[String(obj.event_id)] = false;
-            //         console.log(obj.event_id);
-            //     }
-            // }
-            this.setState({
-                Dict: checkDict,
-            })
-        }).catch((error)=>{
-            console.log(error);
-        })
-    }
-    // checkBoxCondition(evt_id){
-    //     for(var obj in checkArray){
-    //         if(evt_id == obj.event_id){
-    //             return(obj.isChecked);
-    //         }
-    //     }
-    // }
-    CallMyEventsApi(evt_id){
-        fetch('http://esummit.ecell.in/v1/api/events/myevent_add', {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            event_id: evt_id,
-            user_id: 2,
-        }),
-        }).then()
-    .catch((error) => {
-       // ToastAndriod.show(error,ToastAndriod.SHORT);
-        ToastAndroid.showWithGravityAndOffset(
-            String(error),
-            ToastAndroid.SHORT,
-            ToastAndroid.TOP,
-            0,
-            40);
-    }).then(()=>{
-        // this.ref.toast.show('hello world');
-    });
-    }
     handleRefresh = () => {
         this.setState({
             refreshing:true,
@@ -268,19 +116,7 @@ class ScreenOne extends Component {
         }
         );
     };
-    // openwebview(){
-    //     console.log(this.state.event_web);
-    //     return(
-    //         <View>
-    //         <WebView
-    //         style={{marginTop: 20}}
-    //     // source={{uri: this.state.event_web}}
-    //         source={{uri: 'https://opensource.fb.com/'}}
-        
-    //   />
-    //   </View>
-    //     );
-    // }
+
     settingstate(item){
         fetch('http://esummit.ecell.in/v1/api/events/likes',{
                 method:'POST',
@@ -342,21 +178,7 @@ class ScreenOne extends Component {
         console.log(this.state.event_photo_url);
         console.log(this.state.likes);
         console.log(this.state.event_id);
-        // if (this.state.event_type == 'competitions') {
-        //     this.setState({
-        //         event_photo_url:'../../assets/images/Compi.png'
-        //     })
-        // } 
-        // else if(this.state.event_type == 'speaker'){
-        //     this.setState({
-        //         event_photo_url:'../../assets/images/robot-dev.png'
-        //     })
-        // }
-        // else {
-        //     this.setState({
-        //         event_photo_url:'../../assets/images/robot-prod.png'
-        //     })
-        // }
+
         return(
             <View style={styles.screen}>
             <View style={styles.screen_box}>
@@ -404,18 +226,7 @@ class ScreenOne extends Component {
             </View>
         )
     }
-    _handleCheckBoxEvent(event_id){
-        this.CallMyEventsApi(event_id)
-        checkDict[String(event_id)] = !(checkDict[String(event_id)]);
-        console.log(String(checkDict[String(event_id)]));
-        console.log(String(this.state.Dict[String(event_id)]));
-        this.setState({
-            Dict:checkDict,
-            CheckBoxStyle:styleCheckBox,
-        });
-        this.handleRefresh();
-        //console.log(JSON.stringify(this.CheckBoxStyle[String(event_id)]));
-    }
+
     getTime(time,date){
         //extract the day from date
         let str = date.slice(8,10);
@@ -526,26 +337,6 @@ class ScreenOne extends Component {
             )
         }
         return (
-            // <View style={styles.boxcontainer}>
-            //     <FlatList
-            //     data = {this.state.dataSource}
-            //     renderItem = {({item}) =>
-            //     <ScrollView>
-            //     <View style={styles.subContainerTotal}>
-            //         <View style={styles.imageContainer}>
-                        
-            //         </View>
-            //         <View style={styles.textContainer}>
-            //             <View style={styles.heading}>
-            //                 <Text>{item.day}</Text>
-            //             </View>
-            //             <View style={styles.text}>
-            //                 <Text>{item.break1}</Text>
-            //             </View>
-            //         </View>
-            //     </View>
-            //     </ScrollView>}/>
-            // </View>
 
             <View style={{flex:1}}>
 
@@ -571,196 +362,3 @@ class ScreenOne extends Component {
     }
 }
 export default ScreenOne;
-
-const styles = StyleSheet.create({
-    container: {
-        flex:1,
-        marginVertical:20,
-    },
-    heading:{
-        flex:1,
-        marginTop:-10,
-        marginLeft:10,
-        flexDirection:'row',
-    },
-    itemInfoText:{
-        marginLeft:10,
-        marginBottom:10,
-        fontFamily:'latoRegular',
-        color: "#221d3d",
-    },
-    footer:{
-        flex:1,
-        alignItems:'center',
-        flexDirection:'row',
-        marginLeft:5,
-        marginRight:5,
-        padding:5,
-        borderRadius:30,
-        borderWidth: 1,
-        borderColor:'#6674a3',
-        shadowOffset:{width: 0,  height: 3,},
-        shadowColor: 'black',
-        shadowOpacity: 1.0,
-        shadowRadius: 5,
-        overflow: 'hidden',
-        backgroundColor: '#6674a3',
-        
-    },
-    innerFooter:{
-        flex:1,
-        justifyContent:'center',
-        flexDirection:'row',
-        marginLeft:5,
-        padding:5,
-        borderRadius:25,
-        borderWidth: 1,
-        borderColor: '#93a0cc',
-        backgroundColor: '#93a0cc',
-        shadowColor: 'black',
-        shadowOpacity: 1.0,
-        shadowRadius: 1,
-        elevation:4,
-    },
-    buttonContainer:{
-        height:40,
-        width:180,
-        backgroundColor:'rgb(93,173,226)',
-        flexDirection:'row',
-        justifyContent:'center',
-        alignItems:'center',
-    },
-    itemText:{
-        fontWeight:'bold',
-        fontSize: 20,
-        fontFamily:'latoRegular',
-        color: "#221d3d",
-    },
-    customitem:{
-        marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
-        marginLeft:15,
-        marginRight:15,
-        backgroundColor:'rgba(255,165,0,0.2)',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#fff',
-        shadowOffset:{width: 0,  height: 3,},
-        shadowColor: 'black',
-        shadowOpacity: 1.0,
-        shadowRadius: 2,
-    },
-    item:{
-        marginTop:10,
-        paddingTop:15,
-        paddingBottom:15,
-        marginLeft:15,
-        marginRight:15,
-        backgroundColor:'white',
-        borderRadius:10,
-        borderWidth: 1,
-        borderColor: '#fff',
-        shadowOffset:{width: 0,  height: 3,},
-        shadowColor: 'black',
-        shadowOpacity: 1.0,
-        shadowRadius: 5,
-    },
-    buttonText:{
-        color:'white',
-        textAlign:'center',
-    },
-    modal:{
-        flex:1,
-        alignItems:'center',
-        backgroundColor:'grey',
-        padding:100,
-    },
-    touchableContainer:{
-      flex:2,
-    },
-    titleFlex:{
-        flex:5,
-    },
-    checkBoxFlex:{
-        flex:0.55,
-        marginTop: 1,
-    },
-    innerFooterInvisible:{
-        flex:1,
-        justifyContent:'center',
-        flexDirection:'row',
-    },
-    screen:{
-        position:'absolute',
-        flex:1,
-        height:'100%',
-        width:'100%',
-        backgroundColor:'rgba(68, 69, 71, 0.5)',
-        justifyContent: 'center',
-        alignItems:'center'
-        
-    },
-    screen_image:{
-        // flex:1,
-        justifyContent:'center',
-        width:'100%',
-        height:'40%',
-
-    },
-    image:{
-        flex:1,
-        width:null,
-        height:null,
-        resizeMode:'contain',
-    },
-    screen_box:{
-        width:'80%',
-        padding:10,
-        backgroundColor:'white',
-        borderRadius:10,
-        
-    },
-    screen_name:{
-       fontSize:24,
-    },
-    screen_desc:{
-        width:'100%',
-        // height:'40%',
-        textAlign:'left',
-        
-    },
-    vbutn:{
-        width:'100%',
-        height:65,
-        justifyContent:'center',
-        alignItems:'center',
-        backgroundColor:'white',
-        marginTop:10,
-    },
-    vcross:{
-        // height:'10%',
-        flexDirection:'row-reverse',
-        textAlign:'right',
-        width:'100%'
-    },
-    onCheckBox:{
-        borderColor:'rgba(93,173,226,1)',
-        borderRadius: 15,
-        borderWidth: 1,
-        backgroundColor: 'rgba(93,173,226,0.45)',
-        height:30,
-        width:30,
-        marginRight:10,
-    },
-    offCheckBox:{
-        borderColor: 'rgba(0,0,0,0.5)',
-        borderRadius: 15,
-        borderWidth: 1,
-        backgroundColor:'rgba(120,120,120,0.15)',
-        height: 30,
-        width: 30,
-        marginRight:10,
-
-    }
-});
