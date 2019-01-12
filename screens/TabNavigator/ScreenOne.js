@@ -113,6 +113,8 @@ class ScreenOne extends Component {
         },
         () => {
             this.componentDidMount();
+            console.log("handlerefresh called");
+            this.props.screenProps.refresh_and_update();
         }
         );
     };
@@ -276,13 +278,14 @@ class ScreenOne extends Component {
                                     <TouchableNativeFeedback onPress = {()=>{
                                                                             this.props.screenProps.handleClick(item.event_id);
                                                                             this.setState({seed:2});
-                                                                            ToastAndroid.showWithGravityAndOffset(
-                                                                                this.props.screenProps.checkDict[String(item.event_id)]?'Added':'Removed',
-                                                                                ToastAndroid.SHORT,
-                                                                                ToastAndroid.TOP,
-                                                                                0,
-                                                                                40,
-                                                                            )}}>
+                                                                            // ToastAndroid.showWithGravityAndOffset(
+                                                                            //     this.props.screenProps.checkDict[String(item.event_id)]?'Added':'Removed',
+                                                                            //     ToastAndroid.SHORT,
+                                                                            //     ToastAndroid.TOP,
+                                                                            //     0,
+                                                                            //     40,
+                                                                            // )
+                                                                            }}>
                                                                             
                                         {/* <View style={this.state.CheckBoxStyle[String(item.event_id)]}></View> */}
                                         {/* <View style={checkDict[String(item.event_id)]?styles.onCheckBox:styles.offCheckBox}></View> */}
@@ -342,7 +345,7 @@ class ScreenOne extends Component {
 
                 <Text> the value of count is : { this.props.screenProps.count}</Text>
                 <FlatList 
-                data = {this.state.dataSource}
+                data = {this.props.screenProps.dataSource}
                 style = {styles.container}
                 numColumns= {numColumns}
                 refreshing = {this.state.refreshing}

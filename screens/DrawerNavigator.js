@@ -4,7 +4,8 @@ import {
     Text,
     StyleSheet,
     Image,
-    AsyncStorage
+    AsyncStorage,
+    ToastAndroid
 } from "react-native";
 import {StackNavigator, DrawerItems, SafeAreaView } from 'react-navigation'
 import { Container, Content, Icon, Header, Body } from 'native-base'
@@ -132,6 +133,7 @@ export default class AppTabNavigator extends Component {
           user_name:'',
           user_id:'',
           count:0,
+          myEventsSource:[],
           Dict:{},
         };
       }
@@ -149,10 +151,11 @@ export default class AppTabNavigator extends Component {
     _retrieveData = async (key) => {
         try {
           const value = await AsyncStorage.getItem(key);
-        //   console.log("the retrieved data is : "+ (value));
+          console.log("the retrieved data is : "+ (value));
     
           if (!(value == null)) {
             this.setState({key:value});
+            console.log("the retrieved data is : "+ key);
           }
          } catch (error) {
            // Error retrieving data
@@ -166,11 +169,17 @@ export default class AppTabNavigator extends Component {
           
         // get the data from the phone storage, use it to load the components, then download the data
         //  and update state and storage
+        console.log("drawer navigator component did mount called" ); 
 
         this._retrieveData("myEventsSource");
         this._retrieveData("checkDict");
         this._retrieveData("allEvents");
         this._retrieveData("dataSource");
+        this._retrieveData("speakerSource");
+        this._retrieveData("competitionSource");
+        this._retrieveData("othersSource");
+        this._retrieveData("highlightSource");
+       
 
         fetch('http://esummit.ecell.in/v1/api/events')
             .then((response)=>response.json())
@@ -182,6 +191,7 @@ export default class AppTabNavigator extends Component {
                 });
                 // update phone storage dataSource
                 this._storeData("dataSource", responseJson);
+                console.log("all events : " + JSON.stringify(responseJson));    
             })
             .catch(()=>{
                 ToastAndroid.showWithGravityAndOffset(
@@ -194,8 +204,45 @@ export default class AppTabNavigator extends Component {
             .then(()=>{
                 this.initializeCheckDict();
             });
+
+            this.refresh_and_update();
     }
 
+    refresh_and_update = ()=>{
+
+        console.log("refresh and update called");
+        fetch('http://esummit.ecell.in/v1/api/events/speaker/')
+            .then((response)=>response.json())
+            .then((responseJson)=>{
+                this.setState({speakerSource: responseJson});
+                this._storeData("speakerSource", responseJson);
+            });
+            fetch('http://esummit.ecell.in/v1/api/events')
+            .then((response)=>response.json())
+            .then((responseJson)=>{
+                this.setState({dataSource: responseJson});
+                this._storeData("dataSource", responseJson);
+                console.log("all events : " + JSON.stringify(responseJson)); 
+            });
+            fetch('http://esummit.ecell.in/v1/api/events/competition/')
+            .then((response)=>response.json())
+            .then((responseJson)=>{
+                this.setState({competitionSource: responseJson});
+                this._storeData("competitionSource", responseJson);
+            });
+            fetch('http://esummit.ecell.in/v1/api/events/others/')
+            .then((response)=>response.json())
+            .then((responseJson)=>{
+                this.setState({othersSource: responseJson});
+                this._storeData("othersSource", responseJson);
+            });
+            fetch('http://esummit.ecell.in/v1/api/events/highlight/')
+            .then((response)=>response.json())
+            .then((responseJson)=>{
+                this.setState({highlightSource: responseJson});
+                this._storeData("highlightSource", responseJson);
+            });
+    }
 
     initializeCheckDict = () => {
         // get the myevents data, make a dictionary to facilitate the highlighting of Events, store in storage,
@@ -254,6 +301,13 @@ export default class AppTabNavigator extends Component {
         }),
         }).then(()=>{
             console.log("event with event id "+evt_id.toString()+" added to user 2 ");
+            ToastAndroid.showWithGravityAndOffset(
+                "my event processed",
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+                0,
+                40,
+            )
         });
     }
 
@@ -268,9 +322,9 @@ export default class AppTabNavigator extends Component {
         var allEvents = this.state.allEvents;
         
          
-        // console.log("the old dict is  : " + JSON.stringify(checkDict));
+        console.log("the old dict is  : " + JSON.stringify(checkDict));
         checkDict[String(event_id)] = !checkDict[String(event_id)];
-        // console.log("the new dict is  : " + JSON.stringify(checkDict));
+        console.log("the new dict is  : " + JSON.stringify(checkDict));
         var len = myEventsSource.length;
         var found = 0;
         for(let i=0; i<len; ++i){
@@ -313,8 +367,14 @@ export default class AppTabNavigator extends Component {
                                                 user_name:user_name,
                                                 count:this.state.count,
                                                 handleClick:this.handleClick,
+                                                refresh_and_update:this.refresh_and_update,
                                                 checkDict:this.state.Dict,
                                                 myEventsSource:this.state.myEventsSource,
+                                                dataSource:this.state.dataSource,
+                                                speakerSource:this.state.speakerSource,
+                                                competitionSource:this.state.competitionSource,
+                                                othersSource:this.state.othersSource,
+                                                highlightSource:this.state.highlightSource,
                                              }} />
         )
     }

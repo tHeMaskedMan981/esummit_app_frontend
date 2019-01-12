@@ -6,7 +6,7 @@ import {
     Image
 } from "react-native";
 
-import { createBottomTabNavigator,createTabNavigator, createStackNavigator } from 'react-navigation'
+import { createBottomTabNavigator,createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import ScreenOne from './TabNavigator/ScreenOne'
@@ -87,12 +87,14 @@ export default class AppTabNavigator extends Component {
                                                     count:this.props.screenProps.count,
                                                     checkDict:this.props.screenProps.checkDict,
                                                     handleClick:this.props.screenProps.handleClick,
-                                                    myEventsSource:this.props.screenProps.myEventsSource}} />
+                                                    refresh_and_update:this.props.screenProps.refresh_and_update,
+                                                    myEventsSource:this.props.screenProps.myEventsSource,
+                                                    dataSource:this.props.screenProps.dataSource}} />
         )
     }
 }
 
-const ScreenOneTabNavigator = new createTabNavigator({
+const ScreenOneTabNavigator = new createMaterialTopTabNavigator({
     screenOneDay1: {
         screen: ScreenOne,
         navigationOptions: {
@@ -104,7 +106,7 @@ const ScreenOneTabNavigator = new createTabNavigator({
             tabBarLabel: 'Day 2'}
     }    
 })
-const ScreenTwoTabNavigator = new createTabNavigator({
+const ScreenTwoTabNavigator = new createMaterialTopTabNavigator({
     screenTwoDay1: {
         screen: ScreenTwo,
         navigationOptions: {
@@ -116,7 +118,7 @@ const ScreenTwoTabNavigator = new createTabNavigator({
             tabBarLabel: 'Day 2'}
     }    
 })
-const ScreenThreeTabNavigator = new createTabNavigator({
+const ScreenThreeTabNavigator = new createMaterialTopTabNavigator({
     screenThreeDay1: {
         screen: ScreenThree,
         navigationOptions: {
