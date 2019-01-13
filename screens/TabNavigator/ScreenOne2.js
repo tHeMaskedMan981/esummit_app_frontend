@@ -14,32 +14,40 @@ import {
     TouchableNativeFeedback,
     Platform,
     Image,
-    CheckBox,
+    
+    
 } from "react-native";
-import GradientButton from 'react-native-gradient-buttons';
+import { WebView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import GradientButton from 'react-native-gradient-buttons';
+import { Constants, WebBrowser } from 'expo';
+import {CheckBox, Icon} from 'react-native-elements';
+
+import {HomeScreen} from '../HomeScreen';
 import {Font} from 'expo';
 import onCheckBoxImage from './icons/checked.png';
 import offCheckBoxImage from './icons/unchecked.png';
 import {ToastAndroid} from 'react-native';
 import styles from '../styles';
-var checkDict = {};
-var styleCheckBox = {};
-var url;
-let numColumns = 1;
-var no_renders=0;
 
-class ScreenTwo extends Component {
+ var Arr = [];
+ var checkDict = {};
+ var styleCheckBox = {};
+ var url;
+ let numColumns = 1;
+ var no_renders=0;
+
+class ScreenOne2 extends Component {
     constructor(props){
         super(props);
         this.state = {
             isLoading:true,
             modalVisible:false,
-            seed:1,
             refreshing:false,
+            seed:1,
+            trackHighlightEvents:false,
+            trackMyEvents:false,
             Dict:{},
-            CheckBoxStyle:{},
-            ontLoading:true,
 
             screen:0,
             event_name:'',
@@ -49,8 +57,54 @@ class ScreenTwo extends Component {
             event_type:'',
             event_id:'',
             likes:'',
+
+            CheckBoxStyle:{},
+            fontLoading:true,
+
         };
     }
+
+    async componentDidMount(){
+        await Font.loadAsync({
+            'latoRegular':require('../../assets/fonts/Lato-Regular.ttf')
+        }).then(()=>{
+            this.setState({
+                fontLoading:false,
+            })
+        }).then(()=>{
+            fetch('http://esummit.ecell.in/v1/api/events')
+            .then((response)=>response.json())
+            .then((responseJson)=>{
+                this.setState({
+                    isLoading:false,
+                    dataSource: responseJson,
+                    refreshing: false,
+                })
+            })
+            .catch(()=>{
+                ToastAndroid.showWithGravityAndOffset(
+                    "Unable to connect to internet",
+                    ToastAndroid.SHORT,
+                    ToastAndroid.TOP,
+                    0,
+                    40);
+            })
+            .then(()=>{
+                checkDict = this.props.screenProps.checkDict;
+            })
+        })
+    }
+    handleRefresh = () => {
+        this.setState({
+            refreshing:true,
+            seed: this.state.seed + 1,
+        },
+        () => {
+            this.componentDidMount();
+        }
+        );
+    };
+
     settingstate(item){
         fetch('http://esummit.ecell.in/v1/api/events/likes',{
                 method:'POST',
@@ -72,11 +126,7 @@ class ScreenTwo extends Component {
                 event_web:String(item.website_url),
                 event_type:String(item.event_type),
                 event_id:String(item.event_id),                        
-            })
-                
-
-            console.log(this.state.likes);
-            
+            })            
             })
             if (this.state.event_type == 'competitions') {
                 this.setState({
@@ -93,6 +143,9 @@ class ScreenTwo extends Component {
                     event_photo_url:'../../assets/images/robot-prod.png'
                 })
             }
+            
+            
+
     }
     screen(){
         return(
@@ -137,10 +190,10 @@ class ScreenTwo extends Component {
             </View>
         )
     }
+
     getTime(time,date){
         //extract the day from date
         let str = date.slice(8,10);
-        console.log(str);
         let res = '';
         if(str == '17'){
             res = 'Day 1';
@@ -155,75 +208,7 @@ class ScreenTwo extends Component {
             return String(time.slice(0,5) + ' , ' + res);
         }
     }
-    
-    async componentDidMount(){
-            fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
-            .then((response)=>response.json())
-            .then((responseJson)=>{
-                this.setState({
-                    isLoading:false,
-                    dataSource: responseJson,
-                    refreshing: false,
-                })
-            })
-            .catch((error)=>{
-                ToastAndroid.showWithGravityAndOffset(
-                    "Unable to connect to internet",
-                    ToastAndroid.SHORT,
-                    ToastAndroid.TOP,
-                    0,
-                    40);
-            }).then(()=>{
-                console.log(this.state.dataSource.length);
-                for(let i=0;i<this.state.dataSource.length;++i){
-                    checkDict[String(this.state.dataSource[i].event_id)] = true;
-                    console.log(this.state.dataSource[i].event_id);
-                }
-                this.setState({
-                    Dict:checkDict,
-                });
-            })
-        }
-    CallMyEventsApi(evt_id){
-        fetch('http://esummit.ecell.in/v1/api/events/myevent_add', {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            event_id: evt_id,
-            user_id: 2,
-        }),
-        }).then(()=>{
-            checkDict[String(evt_id)]!=checkDict[String(evt_id)];
-            this.setState({
-                Dict:checkDict,
-            })
-        })
-    .catch((error) => {
-        ToastAndroid.showWithGravityAndOffset(
-            String(error),
-            ToastAndroid.SHORT,
-            ToastAndroid.TOP,
-            0,
-            40);
-    }).then(()=>{
-        console.log(String(this.props.screenProps.user_name));
-    });
-    }
-    
-    handleRefresh = () => {
-        this.setState({
-            refreshing:true,
-            seed: this.state.seed + 1,
-        },
-        () => {
-            this.componentDidMount();
-        }
-        );
-    };
-    onClickStar = (item) => {
+    onClickStar=((item)=>{
         this.props.screenProps.handleClick(item.event_id);
         this.setState({seed:2});
         ToastAndroid.showWithGravityAndOffset(
@@ -232,22 +217,22 @@ class ScreenTwo extends Component {
             ToastAndroid.TOP,
             0,
             40,
-        )
-    };
-    customRenderFunction = ((item)=>{
-        if(String(item.date).slice(8,10)=='17'){
+        );
+    })
+    customRenderFunction(item){
+        if(String(item.date).slice(8,10)=='18'){
             return(
+                
                 <View elevation={10} style={item.updated?styles.customitem:styles.item}>
-                    <View style={styles.touchableContainer}> 
-                      <TouchableHighlight>    
+                    <View style={styles.touchableContainer}>  
                           <View style={{flex:2}}>  
                             <View style={styles.heading}>
-                            <TouchableNativeFeedback onPress = {()=>{
+                                <TouchableNativeFeedback onPress = {()=>{
                                     this.settingstate(item)
                                 }}>
-                                <View style={styles.titleFlex}>
-                                    <Text style={styles.itemText}>{item.name}</Text>
-                                </View>
+                                    <View style={styles.titleFlex}>
+                                        <Text style={styles.itemText}>{item.name}</Text>
+                                    </View>
                                 </TouchableNativeFeedback>
                                 <View style={styles.checkBoxFlex}>
                                     <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}}>
@@ -261,7 +246,6 @@ class ScreenTwo extends Component {
                                 <Text style={styles.itemInfoText}>{item.event_type}</Text>
                             </View>
                           </View>
-                      </TouchableHighlight>
                     </View>    
                         <View style={styles.footer}>
                             <TouchableNativeFeedback
@@ -278,7 +262,7 @@ class ScreenTwo extends Component {
                             </TouchableNativeFeedback>
                             <View style={styles.innerFooterInvisible}>
                                 <View style={{flex:1}}>
-                                    <Image style={{height:20,width:20,marginTop:2,marginLeft:15,}}source={require('./icons/imagetime.png')}/>
+                                    <Image style={{height:20,width:20,marginTop:2,marginLeft:15,fontFamily:'latoRegular'}}source={require('./icons/imagetime.png')}/>
                                 </View>
                                 <View style={{flex:8}}>
                                     <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{this.getTime(String(item.start_time),String(item.date))}</Text>
@@ -288,9 +272,12 @@ class ScreenTwo extends Component {
                 </View>
             )
         }
-    })
+    }
     render() {
-        if(this.state.isLoading){
+
+        checkDict = this.props.screenProps.checkDict;
+        no_renders+=1;
+        if(this.state.isLoading||this.state.fontLoading){
             return(
                 <View style={{flex:1}}>
                     <ActivityIndicator/>
@@ -298,20 +285,25 @@ class ScreenTwo extends Component {
             )
         }
         return (
+
             <View style={{flex:1}}>
+
+                <Text> the value of count is : { this.props.screenProps.count}</Text>
                 <FlatList 
-                data = {this.props.screenProps.myEventsSource}
-                extraData = {this.props}
+                data = {this.state.dataSource}
                 style = {styles.container}
-                numColumns = {numColumns}
+                numColumns= {numColumns}
                 refreshing = {this.state.refreshing}
                 onRefresh = {this.handleRefresh}
-                renderItem = {({item})=>this.customRenderFunction(item)}/>
-
-                 {this.state.screen == 1? this.screen(): null }
-
-                </View>
+                extraData = {this.props}
+                renderItem = {({item}) => this.customRenderFunction(item)}   
+            />
+            
+            {this.state.screen == 1? this.screen(): null }
+        
+            </View>
+                
         );
     }
 }
-export default ScreenTwo;
+export default ScreenOne2;

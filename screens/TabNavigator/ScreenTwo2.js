@@ -29,7 +29,7 @@ var url;
 let numColumns = 1;
 var no_renders=0;
 
-class ScreenTwo extends Component {
+class ScreenTwo2 extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -93,6 +93,9 @@ class ScreenTwo extends Component {
                     event_photo_url:'../../assets/images/robot-prod.png'
                 })
             }
+            
+            
+
     }
     screen(){
         return(
@@ -235,14 +238,14 @@ class ScreenTwo extends Component {
         )
     };
     customRenderFunction = ((item)=>{
-        if(String(item.date).slice(8,10)=='17'){
+        if(String(item.date).slice(8,10)=='18'){
             return(
                 <View elevation={10} style={item.updated?styles.customitem:styles.item}>
                     <View style={styles.touchableContainer}> 
                       <TouchableHighlight>    
                           <View style={{flex:2}}>  
                             <View style={styles.heading}>
-                            <TouchableNativeFeedback onPress = {()=>{
+                                <TouchableNativeFeedback onPress = {()=>{
                                     this.settingstate(item)
                                 }}>
                                 <View style={styles.titleFlex}>
@@ -314,4 +317,4 @@ class ScreenTwo extends Component {
         );
     }
 }
-export default ScreenTwo;
+export default ScreenTwo2;

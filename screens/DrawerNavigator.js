@@ -246,41 +246,41 @@ export default class AppTabNavigator extends Component {
             // this.refresh_and_update();
     }
 
-    // refresh_and_update = ()=>{
+    refresh_and_update = ()=>{
 
-    //     console.log("refresh and update called");
-    //     fetch('http://esummit.ecell.in/v1/api/events/speaker/')
-    //         .then((response)=>response.json())
-    //         .then((responseJson)=>{
-    //             this.setState({speakerSource: responseJson});
-    //             this._storeData("speakerSource", responseJson);
-    //         });
-    //         fetch('http://esummit.ecell.in/v1/api/events')
-    //         .then((response)=>response.json())
-    //         .then((responseJson)=>{
-    //             this.setState({dataSource: responseJson});
-    //             this._storeData("dataSource", responseJson);
-    //             console.log("all events : " + JSON.stringify(responseJson)); 
-    //         });
-    //         fetch('http://esummit.ecell.in/v1/api/events/competition/')
-    //         .then((response)=>response.json())
-    //         .then((responseJson)=>{
-    //             this.setState({competitionSource: responseJson});
-    //             this._storeData("competitionSource", responseJson);
-    //         });
-    //         fetch('http://esummit.ecell.in/v1/api/events/others/')
-    //         .then((response)=>response.json())
-    //         .then((responseJson)=>{
-    //             this.setState({othersSource: responseJson});
-    //             this._storeData("othersSource", responseJson);
-    //         });
-    //         fetch('http://esummit.ecell.in/v1/api/events/highlight/')
-    //         .then((response)=>response.json())
-    //         .then((responseJson)=>{
-    //             this.setState({highlightSource: responseJson});
-    //             this._storeData("highlightSource", responseJson);
-    //         });
-    // }
+        // console.log("refresh and update called");
+        // fetch('http://esummit.ecell.in/v1/api/events/speaker/')
+        //     .then((response)=>response.json())
+        //     .then((responseJson)=>{
+        //         this.setState({speakerSource: responseJson});
+        //         this._storeData("speakerSource", responseJson);
+        //     });
+        //     fetch('http://esummit.ecell.in/v1/api/events')
+        //     .then((response)=>response.json())
+        //     .then((responseJson)=>{
+        //         this.setState({dataSource: responseJson});
+        //         this._storeData("dataSource", responseJson);
+        //         console.log("all events : " + JSON.stringify(responseJson)); 
+        //     });
+        //     fetch('http://esummit.ecell.in/v1/api/events/competition/')
+        //     .then((response)=>response.json())
+        //     .then((responseJson)=>{
+        //         this.setState({competitionSource: responseJson});
+        //         this._storeData("competitionSource", responseJson);
+        //     });
+        //     fetch('http://esummit.ecell.in/v1/api/events/others/')
+        //     .then((response)=>response.json())
+        //     .then((responseJson)=>{
+        //         this.setState({othersSource: responseJson});
+        //         this._storeData("othersSource", responseJson);
+        //     });
+            fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
+            .then((response)=>response.json())
+            .then((responseJson)=>{
+                this.setState({myEventsSource: responseJson});
+                this._storeData("myEventsSource", responseJson);
+            });
+    }
 
     initializeCheckDict = () => {
         // get the myevents data, make a dictionary to facilitate the highlighting of Events, store in storage,
@@ -367,7 +367,8 @@ export default class AppTabNavigator extends Component {
             event_id: event_id,
             user_id: 2,
         }),
-        }).then(()=>{
+        })
+        .then(()=>{
             console.log("event with event id "+event_id.toString()+" added to user 2 ");
             checkDict[String(event_id)] = !checkDict[String(event_id)];
             ToastAndroid.showWithGravityAndOffset(
@@ -381,6 +382,7 @@ export default class AppTabNavigator extends Component {
                 Dict:checkDict,
                 count:data,
             });
+            this.refresh_and_update();
         })
         .catch(()=>{
             ToastAndroid.showWithGravityAndOffset(
@@ -450,7 +452,7 @@ export default class AppTabNavigator extends Component {
                                                 handleClick:this.handleClick,
                                                 // refresh_and_update:this.refresh_and_update,
                                                 checkDict:this.state.Dict,
-                                                // myEventsSource:this.state.myEventsSource,
+                                                myEventsSource:this.state.myEventsSource,
                                                 dataSource:this.state.dataSource,
                                                 
                                              }} />

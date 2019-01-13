@@ -38,16 +38,6 @@ import styles from '../styles';
  var url;
  let numColumns = 1;
  var no_renders=0;
- 
-// const formatData = (dataSource,numColumns) =>{
-//     const numberOfFullRows = Math.floor(dataSource.length/numColumns);
-//     let numberOfElementsLastRow = dataSource.length - (numberOfFullRows*numColumns);
-//     while(numberOfElementsLastRow !== numColumns && numberOfElementsLastRow==0){
-//         dataSource.push({day:'blank-${numberOfElementsLastRow}',empty:true});
-//         numberOfElementsLastRow += 1;
-//     }
-//     return dataSource;
-// }
 
 class ScreenOne extends Component {
     constructor(props){
@@ -107,9 +97,7 @@ class ScreenOne extends Component {
                     40);
             })
             .then(()=>{
-                // this.initializeCheckDict();
                 checkDict = this.props.screenProps.checkDict;
-                // console.log("this is inside screen one component did mount function: "+ JSON.stringify(this.props.screenProps.checkDict));
             })
         })
     }
@@ -142,25 +130,11 @@ class ScreenOne extends Component {
                 screen:1,
                 event_desc:item.description,
                 event_name:item.name,
-                // event_photo_url:String(item.image_url),
                 event_web:String(item.website_url),
                 event_type:String(item.event_type),
                 event_id:String(item.event_id),                        
+            })            
             })
-                
-
-            console.log(this.state.likes);
-            
-            })
-        // {this.setState({ 
-        //     // screen:1,
-        //     event_desc:item.description,
-        //     event_name:item.name,
-        //     // event_photo_url:String(item.image_url),
-        //     event_web:String(item.website_url),
-        //     event_type:String(item.event_type),
-        //     event_id:String(item.event_id)
-        //     })}
             if (this.state.event_type == 'competitions') {
                 this.setState({
                     event_photo_url:'../../assets/images/Compi.png'
@@ -181,11 +155,6 @@ class ScreenOne extends Component {
 
     }
     screen(){
-        console.log('inside screen');
-        console.log(this.state.event_photo_url);
-        console.log(this.state.likes);
-        console.log(this.state.event_id);
-
         return(
             <View style={styles.screen}>
             <View style={styles.screen_box}>
@@ -198,16 +167,11 @@ class ScreenOne extends Component {
             </View>
             <View style={styles.screen_image}>
                 <Image 
-                // source={{uri:this.state.event_photo_url.toString(), isStatic:'False'}}
                 source={require('../../assets/images/Compi.png')}
                 
                 style={styles.image}
                 />
             </View>
-            
-            {/* <View style={styles.screen_name}>
-                <Text>{this.state.event_name}</Text>
-            </View> */}
             <View style={styles.screen_desc}>
                 <Text style={styles.screen_name}>{this.state.event_name}</Text>
                 <View style={{flexDirection:'row'}}>
@@ -237,7 +201,6 @@ class ScreenOne extends Component {
     getTime(time,date){
         //extract the day from date
         let str = date.slice(8,10);
-        console.log(str);
         let res = '';
         if(str == '17'){
             res = 'Day 1';
@@ -252,23 +215,22 @@ class ScreenOne extends Component {
             return String(time.slice(0,5) + ' , ' + res);
         }
     }
+    onClickStar=((item)=>{
+        this.props.screenProps.handleClick(item.event_id);
+        this.setState({seed:2});
+        ToastAndroid.showWithGravityAndOffset(
+            this.props.screenProps.checkDict[String(item.event_id)]?'Removing...':'Adding...',
+            ToastAndroid.SHORT,
+            ToastAndroid.TOP,
+            0,
+            40,
+        );
+    })
     customRenderFunction(item){
-        // console.log("custom render called");
+        if(String(item.date).slice(8,10)=='17'){
             return(
                 
                 <View elevation={10} style={item.updated?styles.customitem:styles.item}>
-                    {/* <Modal animationType = {'slide'}
-                        transparent = {false}
-                        visible = {this.state.modalVisible}
-                        onRequestClose={()=>{console.log('model has been closed')}}>
-                        <TouchableHighlight onPress={()=>{this.toggleModal(!this.state.modalVisible)}}>    
-                            <View style={styles.modal}>
-                                <Text>
-                                    Model is open!
-                                </Text>
-                            </View>
-                        </TouchableHighlight>
-                    </Modal> */}
                     <View style={styles.touchableContainer}>  
                           <View style={{flex:2}}>  
                             <View style={styles.heading}>
@@ -280,20 +242,7 @@ class ScreenOne extends Component {
                                     </View>
                                 </TouchableNativeFeedback>
                                 <View style={styles.checkBoxFlex}>
-                                    <TouchableNativeFeedback onPress = {()=>{
-                                                                            this.props.screenProps.handleClick(item.event_id);
-                                                                            this.setState({seed:2});
-                                                                            ToastAndroid.showWithGravityAndOffset(
-                                                                                this.props.screenProps.checkDict[String(item.event_id)]?'Adding...':'Removing...',
-                                                                                ToastAndroid.SHORT,
-                                                                                ToastAndroid.TOP,
-                                                                                0,
-                                                                                40,
-                                                                            )
-                                                                            }}>
-                                                                            
-                                        {/* <View style={this.state.CheckBoxStyle[String(item.event_id)]}></View> */}
-                                        {/* <View style={checkDict[String(item.event_id)]?styles.onCheckBox:styles.offCheckBox}></View> */}
+                                    <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}}>
                                         <View>
                                             <Image style={{height:30,width:30}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
                                         </View>
@@ -308,7 +257,6 @@ class ScreenOne extends Component {
                         <View style={styles.footer}>
                             <TouchableNativeFeedback
                                 onPress ={()=>{Linking.openURL(String(item.venue_url))}}
-                                //onPress={()=>this._handlePressButtonAsync(item.venue)}
                                 background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}>
                                 <View style={styles.innerFooter}>
                                     <View style={{flex:1}}>
@@ -330,20 +278,20 @@ class ScreenOne extends Component {
                         </View>
                 </View>
             )
+        }
     }
     render() {
 
         checkDict = this.props.screenProps.checkDict;
-        // console.log("this is inside screen one render function: "+ JSON.stringify(this.props.screenProps.checkDict));
         no_renders+=1;
-        console.log(no_renders);
-        // if(this.state.isLoading||this.state.fontLoading){
-        //     return(
-        //         <View style={{flex:1}}>
-        //             <ActivityIndicator/>
-        //         </View>
-        //     )
-        // }
+
+        if(this.state.isLoading||this.state.fontLoading){
+            return(
+                <View style={{flex:1}}>
+                    <ActivityIndicator/>
+                </View>
+            )
+        }
         return (
 
             <View style={{flex:1}}>
@@ -363,9 +311,6 @@ class ScreenOne extends Component {
             {this.state.screen == 1? this.screen(): null }
         
             </View>
-            
-
-                
                 
         );
     }

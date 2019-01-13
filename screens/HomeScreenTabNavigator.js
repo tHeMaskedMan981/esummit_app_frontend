@@ -12,6 +12,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import ScreenOne from './TabNavigator/ScreenOne'
 import ScreenTwo from './TabNavigator/ScreenTwo'
 import ScreenThree from './TabNavigator/ScreenThree'
+import ScreenOne2 from './TabNavigator/ScreenOne2'
+import ScreenTwo2 from './TabNavigator/ScreenTwo2'
+import ScreenThree2 from './TabNavigator/ScreenThree2'
 //import HomeScreen from './HomeScreen' 
 //var globalCheckBoxDict = {};
 
@@ -103,7 +106,7 @@ const ScreenOneTabNavigator = new createMaterialTopTabNavigator({
             tabBarLabel: 'Day 1'}
     },
     screenOneDay2: {
-        screen: ScreenOne,
+        screen: ScreenOne2,
         navigationOptions: {
             tabBarLabel: 'Day 2'}
     }    
@@ -115,7 +118,7 @@ const ScreenTwoTabNavigator = new createMaterialTopTabNavigator({
             tabBarLabel: 'Day 1'}
     },
     screenTwoDay2: {
-        screen: ScreenTwo,
+        screen: ScreenTwo2,
         navigationOptions: {
             tabBarLabel: 'Day 2'}
     }    
@@ -127,7 +130,7 @@ const ScreenThreeTabNavigator = new createMaterialTopTabNavigator({
             tabBarLabel: 'Day 1'}
     },
     screenThreeDay2: {
-        screen: ScreenThree,
+        screen: ScreenThree2,
         navigationOptions: {
             tabBarLabel: 'Day 2'}
     }    
