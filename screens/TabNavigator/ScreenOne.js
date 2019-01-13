@@ -14,6 +14,7 @@ import {
     TouchableNativeFeedback,
     Platform,
     Image,
+    BackHandler,
     
     
 } from "react-native";
@@ -112,6 +113,12 @@ class ScreenOne extends Component {
                 // console.log("this is inside screen one component did mount function: "+ JSON.stringify(this.props.screenProps.checkDict));
             })
         })
+        this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            
+                BackHandler.exitApp();
+                return true;
+            
+          });
     }
     handleRefresh = () => {
         this.setState({
