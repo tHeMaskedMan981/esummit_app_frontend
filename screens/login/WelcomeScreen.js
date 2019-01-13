@@ -17,6 +17,7 @@ export default class WelcomeScreen extends Component {
       get_email:null,
       get_esummitid:null,
       get_userid:null,
+      islogin:'false',
     };
   }
 
@@ -41,25 +42,32 @@ _storeData = async (key, value) => {
         this.setState({email_err:"problem with storage"});
     }
   }
-_retrieveData = async () => {
+_retrieveData = async (key) => {
     try {
       
-      const user_name = await AsyncStorage.getItem('user_name');
-      const user_id = await AsyncStorage.getItem('user_id');
-      const email = await AsyncStorage.getItem('email');
-      const esummit_id = await AsyncStorage.getItem('esummit_id');
-      // let retrivedevents = JSON.parse(value);
-      let user_name1 = JSON.parse(user_name);
-      let user_id1 = JSON.parse(user_id);
-      let email1 = JSON.parse(email);
-      let esummit_id1 = JSON.parse(esummit_id);
+      // const user_name = await AsyncStorage.getItem('user_name');
+      // const user_id = await AsyncStorage.getItem('user_id');
+      // const email = await AsyncStorage.getItem('email');
+      // const esummit_id = await AsyncStorage.getItem('esummit_id');
+      // const is_login = await AsyncStorage.getItem('is_login');
+      // // let retrivedevents = JSON.parse(value);
+      // let user_name1 = JSON.parse(user_name);
+      // let user_id1 = JSON.parse(user_id);
+      // let email1 = JSON.parse(email);
+      // let esummit_id1 = JSON.parse(esummit_id);
+      // let is_login1 = JSON.parse(is_login);
 
-      if (!(user_name == null)) {
-        this.setState({get_username:user_name1});
-        this.setState({get_email:email1});
-        this.setState({get_esummitid:esummit_id1});
-        this.setState({get_userid:user_id1});
-      }
+      // if (!(user_name == null)) {
+      //   this.setState({get_username:user_name1});
+      //   this.setState({get_email:email1});
+      //   this.setState({get_esummitid:esummit_id1});
+      //   this.setState({get_userid:user_id1});
+      //   this.setState({islogin:is_login1});
+      // }
+      value = await AsyncStorage.getItem(key);
+      this.setState({
+        key:value,
+      });
      } catch (error) {
        // Error retrieving data
        this.setState({email_err:"retrieving problem"});
@@ -72,7 +80,7 @@ _retrieveData = async () => {
     const  esummit_id  = this.state.esummit_id;
 
     // Alert.alert('Credentials', `${email} ${esummit_id}`);
-    this.setState({status:'submitted'});
+    // this.setState({status:'submitted'});
   
     // return fetch('https://www.ecell.in/esummit/get_user_data.php/?email=17ies021@smvdu.ac.in&esummit_id=ESS69132')
     return fetch('http://esummit.ecell.in/v1/user/register/', {
@@ -100,12 +108,14 @@ _retrieveData = async () => {
             user_id: responseJson.profile.user_id,
             email: responseJson.profile.email,
             esummit_id: responseJson.profile.esummit_id,
+            islogin:'true'
         });
     //   this._storeData(); 
     this._storeData('user_id',JSON.stringify(this.state.user_id)); 
     this._storeData('user_name',JSON.stringify(this.state.user_name)); 
     this._storeData('email',JSON.stringify(this.state.email)); 
-    this._storeData('esummit_id',JSON.stringify(this.state.esummit_id)); 
+    this._storeData('esummit_id',JSON.stringify(this.state.esummit_id));
+    this._storeData('islogin',this.state.islogin);  
     
     this.props.navigation.navigate('DrawerNavigator', {
         user_id: this.state.user_id,
@@ -161,6 +171,7 @@ _retrieveData = async () => {
                   user_id: responseJson.profile.user_id,
                   email: responseJson.profile.email,
                   photo_url: responseJson.profile.photo_url,
+                  islogin:'true',
               });
           //   this._storeData(); 
           this._storeData('user_id',JSON.stringify(this.state.user_id)); 
@@ -168,6 +179,7 @@ _retrieveData = async () => {
           this._storeData('email',JSON.stringify(this.state.email)); 
           this._storeData('photo_url',JSON.stringify(this.state.photo_url)); 
           this._storeData('esummit_id',JSON.stringify("")); 
+          this._storeData('islogin',this.state.islogin);  
           
           this.props.navigation.navigate('DrawerNavigator', {
               user_id: this.state.user_id,
@@ -194,7 +206,24 @@ _retrieveData = async () => {
       console.log("error", e)
     }
   }
+  navigate(){
+    
+    this.props.navigation.navigate('DrawerNavigator', {
+      user_id: this.state.user_id,
+      user_name: this.state.user_name,
+      esummit_id:this.state.esummit_id,
+      email:this.state.email,
+    });
   
+  }
+  componentDidMount(){
+    this._retrieveData('user_name');
+    this._retrieveData('user_id');
+    this._retrieveData('esummit_id');
+    this._retrieveData('email');
+    this._retrieveData('islogin');
+    {this.state.islogin=='true'? this.navigate(): null}
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -227,6 +256,7 @@ _retrieveData = async () => {
         />
         <View style={styles.err} >
         <Text> {this.state.email_err} </Text>
+        <Text>hi,{this.state.islogin}</Text>
       </View>
 
         <TextInput
@@ -302,6 +332,7 @@ _retrieveData = async () => {
            {/* </LinearGradient> */}
           {/* </View>
         </View> */}
+        {/* {this.state.islogin=='true'? this.navigate(): null} */}
       </View>
     );
   }

@@ -43,7 +43,9 @@ export default class AppTabNavigator extends Component {
     
     static navigationOptions = ({ navigation }) => {
         return {
-            
+            drawerIcon:(
+                <Ionicons name="md-home" size={16} />
+            ),
             headerLeft: (
                 <View style={{ padding: 10 }}>
                     <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
