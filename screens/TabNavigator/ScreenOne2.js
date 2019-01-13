@@ -37,7 +37,7 @@ import styles from '../styles';
  let numColumns = 1;
  var no_renders=0;
 
-class ScreenOne extends Component {
+class ScreenOne2 extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -220,7 +220,7 @@ class ScreenOne extends Component {
         );
     })
     customRenderFunction(item){
-        if(String(item.date).slice(8,10)=='17'){
+        if(String(item.date).slice(8,10)=='18'){
             return(
                 
                 <View elevation={10} style={item.updated?styles.customitem:styles.item}>
@@ -306,4 +306,4 @@ class ScreenOne extends Component {
         );
     }
 }
-export default ScreenOne;
+export default ScreenOne2;

@@ -16,8 +16,7 @@ import {
     Image,
     CheckBox,
 } from "react-native";
-import GradientButton from 'react-native-gradient-buttons';
-import Ionicons from 'react-native-vector-icons/Ionicons'
+import { Constants, WebBrowser } from 'expo';
 import {Font} from 'expo';
 import onCheckBoxImage from './icons/checked.png';
 import offCheckBoxImage from './icons/unchecked.png';
@@ -29,7 +28,7 @@ import styles from '../styles';
  var url;
  let numColumns = 1;
  var no_renders=0;
-class ScreenThree extends Component {
+class ScreenThree2 extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -42,101 +41,7 @@ class ScreenThree extends Component {
             Dict:{},
             CheckBoxStyle:{},
             fontLoading:true,
-            screen:0,
-            event_name:'',
-            event_desc:'',
-            event_photo_url:'',
-            event_web:'',
-            event_type:'',
-            event_id:'',
-            likes:'',
         };
-    }
-    settingstate(item){
-        fetch('http://esummit.ecell.in/v1/api/events/likes',{
-                method:'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body:JSON.stringify({
-                    event_id : String(item.event_id),
-                }),
-            }).then((response)=>response.json())
-            .then((responseJson) => {
-                
-            this.setState({
-                likes:responseJson.people_going,
-                screen:1,
-                event_desc:item.description,
-                event_name:item.name,
-                event_web:String(item.website_url),
-                event_type:String(item.event_type),
-                event_id:String(item.event_id),                        
-            })
-                
-
-            console.log(this.state.likes);
-            
-            })
-            if (this.state.event_type == 'competitions') {
-                this.setState({
-                    event_photo_url:'../../assets/images/Compi.png'
-                })
-            } 
-            else if(this.state.event_type == 'speaker'){
-                this.setState({
-                    event_photo_url:'../../assets/images/robot-dev.png'
-                })
-            }
-            else {
-                this.setState({
-                    event_photo_url:'../../assets/images/robot-prod.png'
-                })
-            }
-    }
-    screen(){
-        return(
-            <View style={styles.screen}>
-            <View style={styles.screen_box}>
-            <View style={styles.vcross}>
-            <TouchableNativeFeedback onPress={()=>{this.setState({
-                screen:0,
-            })}}>
-                <Ionicons name='md-close' size={24}/>
-            </TouchableNativeFeedback>
-            </View>
-            <View style={styles.screen_image}>
-                <Image 
-                source={require('../../assets/images/Compi.png')}
-                
-                style={styles.image}
-                />
-            </View>
-            <View style={styles.screen_desc}>
-                <Text style={styles.screen_name}>{this.state.event_name}</Text>
-                <View style={{flexDirection:'row'}}>
-                <Ionicons name="ios-heart" size={29} style={{color:"#e24f6f"}}/>
-                <Text style={{fontSize:22,marginLeft:10}}>{this.state.likes}</Text>
-                </View>
-                <Text>{this.state.event_desc}</Text>
-            </View>
-            <View style={styles.vbutn}>
-            <GradientButton 
-                text='Learn More'
-                gradientBegin="#6673a4"
-                gradientEnd="#6673a4"
-                textStyle={{ fontSize: 14 }}
-                height={'70%'}
-                width={'34%'}
-                impact='True'
-                impactStyle = 'Light'
-                onPressAction={()=>{Linking.openURL(this.state.event_web)}}
-            />
-           </View>
-            </View>
-            </View>
-        )
     }
     componentDidMount(){
         fetch('http://esummit.ecell.in/v1/api/events')
@@ -207,11 +112,9 @@ class ScreenThree extends Component {
                       <TouchableHighlight>    
                           <View style={{flex:2}}>  
                             <View style={styles.heading}>
-                            <TouchableNativeFeedback onPress = {()=>{this.settingstate(item)}}>
-                                    <View style={styles.titleFlex}>
-                                        <Text style={styles.itemText}>{item.name}</Text>
-                                    </View>
-                                </TouchableNativeFeedback>
+                                <View style={styles.titleFlex}>
+                                    <Text style={styles.itemText}>{item.name}</Text>
+                                </View>
                                 <View style={styles.checkBoxFlex}>
                                     <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}}>
                                         <View>
@@ -268,9 +171,9 @@ class ScreenThree extends Component {
                 numColumns= {numColumns}
                 refreshing = {this.state.refreshing}
                 onRefresh = {this.handleRefresh}
-                renderItem = {({item}) => this.customRenderFunction(item) 
+                renderItem = {({item}) => this.customRenderFunction(item)   
             }/>
         );
     }
 }
-export default ScreenThree;
+export default ScreenThree2;
