@@ -220,7 +220,7 @@ class ScreenOne2 extends Component {
         );
     })
     customRenderFunction(item){
-        if(String(item.date).slice(8,10)=='18'){
+        if(String(item.day)=='day2'){
             return(
                 
                 <View elevation={10} style={item.updated?styles.customitem:styles.item}>

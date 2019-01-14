@@ -43,9 +43,9 @@ export default class AppTabNavigator extends Component {
     
     static navigationOptions = ({ navigation }) => {
         return {
-            drawerIcon:(
-                <Ionicons name="md-home" size={16} />
-            ),
+            // drawerIcon:(
+            //     <Ionicons name="md-home" size={16} />
+            // ),
             headerLeft: (
                 <View style={{ padding: 10 }}>
                     <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
@@ -89,12 +89,9 @@ export default class AppTabNavigator extends Component {
             <HomeScreenTabNavigator screenProps={{  navigation: this.props.navigation,
                                                     user_name:this.props.screenProps.user_name,
                                                     user_id:this.props.screenProps.user_id,
-                                                    count:this.props.screenProps.count,
                                                     checkDict:this.props.screenProps.checkDict,
                                                     handleClick:this.props.screenProps.handleClick,
-                                                    refresh_and_update:this.props.screenProps.refresh_and_update,
-                                                    myEventsSource:this.props.screenProps.myEventsSource,
-                                                    dataSource:this.props.screenProps.dataSource}} />
+                                                    myEventsSource:this.props.screenProps.myEventsSource,}} />
         )
     }
 }

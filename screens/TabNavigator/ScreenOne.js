@@ -14,6 +14,7 @@ import {
     TouchableNativeFeedback,
     Platform,
     Image,
+    BackHandler,
     
     
 } from "react-native";
@@ -64,6 +65,7 @@ class ScreenOne extends Component {
             fontLoading:true,
 
         };
+        
     }
 
     async componentDidMount(){
@@ -76,8 +78,7 @@ class ScreenOne extends Component {
         }).then(()=>{
             this.setState({
                 isLoading:true,
-            })
-            
+            });
             
             fetch('http://esummit.ecell.in/v1/api/events')
             .then((response)=>response.json())
@@ -100,6 +101,12 @@ class ScreenOne extends Component {
                 checkDict = this.props.screenProps.checkDict;
             })
         })
+        this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            
+                BackHandler.exitApp ;
+                return true;
+            
+          });
     }
     handleRefresh = () => {
         this.setState({
@@ -227,10 +234,10 @@ class ScreenOne extends Component {
         );
     })
     customRenderFunction(item){
-        if(String(item.date).slice(8,10)=='17'){
+        if(String(item.day=='day1')){
             return(
                 
-                <View elevation={10} style={item.updated?styles.customitem:styles.item}>
+                <View  style={item.updated?styles.customitem:styles.item}>
                     <View style={styles.touchableContainer}>  
                           <View style={{flex:2}}>  
                             <View style={styles.heading}>
@@ -242,9 +249,9 @@ class ScreenOne extends Component {
                                     </View>
                                 </TouchableNativeFeedback>
                                 <View style={styles.checkBoxFlex}>
-                                    <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}}>
-                                        <View>
-                                            <Image style={{height:30,width:30}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                                    <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}} >
+                                        <View style={{justifyContent:'center',alignItems:'center'}}>
+                                            <Image style={{height:15,width:15,marginTop:5,marginLeft:2}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
                                         </View>
                                     </TouchableNativeFeedback>
                                 </View>
@@ -297,7 +304,7 @@ class ScreenOne extends Component {
             <View style={{flex:1}}>
             <LoadingGIF show={this.state.isLoading} />
 
-                <Text> the value of count is : { this.props.screenProps.count}</Text>
+                {/* <Text> the value of count is : { this.props.screenProps.count}</Text> */}
                 <FlatList 
                 data = {this.state.dataSource}
                 style = {styles.container}

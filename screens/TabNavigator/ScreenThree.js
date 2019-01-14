@@ -15,10 +15,13 @@ import {
     Platform,
     Image,
     CheckBox,
+    BackHandler,
 } from "react-native";
-import GradientButton from 'react-native-gradient-buttons';
+
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import {Font} from 'expo';
+
+import GradientButton from 'react-native-gradient-buttons';
 import onCheckBoxImage from './icons/checked.png';
 import offCheckBoxImage from './icons/unchecked.png';
 import {ToastAndroid} from 'react-native';
@@ -157,6 +160,12 @@ class ScreenThree extends Component {
                 0,
                 40);
         })
+        this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            
+            this.props.navigation.goBack(null);
+            return true;
+        
+      });
     }
     handleRefresh = () => {
         this.setState({
@@ -196,6 +205,115 @@ class ScreenThree extends Component {
         else{
             return String(time.slice(0,5) + ' , ' + res);
         }
+    }
+    settingstate(item){
+        fetch('http://esummit.ecell.in/v1/api/events/likes',{
+                method:'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body:JSON.stringify({
+                    event_id : String(item.event_id),
+                }),
+            }).then((response)=>response.json())
+            .then((responseJson) => {
+                
+            this.setState({
+                likes:responseJson.people_going,
+                screen:1,
+                event_desc:item.description,
+                event_name:item.name,
+                // event_photo_url:String(item.image_url),
+                event_web:String(item.website_url),
+                event_type:String(item.event_type),
+                event_id:String(item.event_id),                        
+            })
+                
+
+            console.log(this.state.likes);
+            
+            })
+        // {this.setState({ 
+        //     // screen:1,
+        //     event_desc:item.description,
+        //     event_name:item.name,
+        //     // event_photo_url:String(item.image_url),
+        //     event_web:String(item.website_url),
+        //     event_type:String(item.event_type),
+        //     event_id:String(item.event_id)
+        //     })}
+            if (this.state.event_type == 'competitions') {
+                this.setState({
+                    event_photo_url:'../../assets/images/Compi.png'
+                })
+            } 
+            else if(this.state.event_type == 'speaker'){
+                this.setState({
+                    event_photo_url:'../../assets/images/robot-dev.png'
+                })
+            }
+            else {
+                this.setState({
+                    event_photo_url:'../../assets/images/robot-prod.png'
+                })
+            }
+            
+            
+
+    }
+    screen(){
+        console.log('inside screen');
+        console.log(this.state.event_photo_url);
+        console.log(this.state.likes);
+        console.log(this.state.event_id);
+
+        return(
+            <View style={styles.screen}>
+            <View style={styles.screen_box}>
+            <View style={styles.vcross}>
+            <TouchableNativeFeedback onPress={()=>{this.setState({
+                screen:0,
+            })}}>
+                <Ionicons name='md-close' size={24}/>
+            </TouchableNativeFeedback>
+            </View>
+            <View style={styles.screen_image}>
+                <Image 
+                // source={{uri:this.state.event_photo_url.toString(), isStatic:'False'}}
+                source={require('../../assets/images/Compi.png')}
+                
+                style={styles.image}
+                />
+            </View>
+            
+            {/* <View style={styles.screen_name}>
+                <Text>{this.state.event_name}</Text>
+            </View> */}
+            <View style={styles.screen_desc}>
+                <Text style={styles.screen_name}>{this.state.event_name}</Text>
+                <View style={{flexDirection:'row'}}>
+                <Ionicons name="ios-heart" size={29} style={{color:"#e24f6f"}}/>
+                <Text style={{fontSize:22,marginLeft:10}}>{this.state.likes}</Text>
+                </View>
+                <Text>{this.state.event_desc}</Text>
+            </View>
+            <View style={styles.vbutn}>
+            <GradientButton 
+                text='Learn More'
+                gradientBegin="#6673a4"
+                gradientEnd="#6673a4"
+                textStyle={{ fontSize: 14 }}
+                height={'70%'}
+                width={'34%'}
+                impact='True'
+                impactStyle = 'Light'
+                onPressAction={()=>{Linking.openURL(this.state.event_web)}}
+            />
+           </View>
+            </View>
+            </View>
+        )
     }
     customRenderFunction(item){
         console.log(item.name);
@@ -261,6 +379,7 @@ class ScreenThree extends Component {
             )
         }
         return (
+            <View style={{flex:1}}>
                 <FlatList 
                 extraData = {this.props}
                 data = {this.state.dataSource}
@@ -270,6 +389,9 @@ class ScreenThree extends Component {
                 onRefresh = {this.handleRefresh}
                 renderItem = {({item}) => this.customRenderFunction(item) 
             }/>
+            {this.state.screen == 1? this.screen(): null }
+        
+        </View>
         );
     }
 }
