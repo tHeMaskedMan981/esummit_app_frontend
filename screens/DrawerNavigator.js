@@ -23,6 +23,8 @@ import HelplineNavigator from './HelplineNavigator'
 import DeveloperNavigator from './DeveloperNavigator'
 import MapNavigator from './MapNavigator'
 import SpeakerNavigator from './SpeakerNavigator'
+import ContactNavigator from './ContactNavigator'
+import FeedbackNavigator from './FeedbackNavigator'
 
 const InnerStackNavigator = new createStackNavigator({
     TabNavigator: {
@@ -57,6 +59,17 @@ const HelplineStackNavigator = new createStackNavigator({
 const DeveloperStackNavigator = new createStackNavigator({
     DeveloperNavigator: {
         screen: DeveloperNavigator
+    }
+}) 
+
+const ContactStackNavigator = new createStackNavigator({
+    ContactNavigator: {
+        screen: ContactNavigator
+    }
+})
+const FeedbackStackNavigator = new createStackNavigator({
+    FeedbackNavigator: {
+        screen: FeedbackNavigator
     }
 })
 
@@ -137,8 +150,21 @@ const AppDrawerNavigator = new createDrawerNavigator({
             )
         }
     },
-    Map: {screen : MapStackNavigator}
-
+    Contacts: {screen : ContactStackNavigator,
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-home" size={16} />
+            )
+        }
+    },
+    
+    Feedback: {screen : FeedbackStackNavigator,
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-home" size={16} />
+            )
+        }
+    },
     },
     {
       initialRouteName: 'HomeScreen',
