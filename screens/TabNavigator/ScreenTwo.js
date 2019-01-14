@@ -15,6 +15,7 @@ import {
     Platform,
     Image,
     CheckBox,
+    BackHandler,
 } from "react-native";
 import GradientButton from 'react-native-gradient-buttons';
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -310,6 +311,13 @@ class ScreenTwo extends Component {
                     Dict:checkDict,
                 });
             })
+            this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
+            
+                this.props.navigation.goBack(null);
+                return true;
+            
+            
+          });
         }
     CallMyEventsApi(evt_id){
         fetch('http://esummit.ecell.in/v1/api/events/myevent_add', {
@@ -371,7 +379,7 @@ class ScreenTwo extends Component {
             //         </View>
             //         <View style={styles.textContainer}>
             //             <View style={styles.heading}>
-            //                 <Text>{item.day}</Text>
+            //             <Text>{item.day}</Text>
             //             </View>
             //             <View style={styles.text}>
             //                 <Text>{item.break1}</Text>

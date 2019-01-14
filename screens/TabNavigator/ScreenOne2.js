@@ -14,11 +14,9 @@ import {
     TouchableNativeFeedback,
     Platform,
     Image,
-    BackHandler,
     
     
 } from "react-native";
-
 import { WebView } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import GradientButton from 'react-native-gradient-buttons';
@@ -30,7 +28,6 @@ import {Font} from 'expo';
 import onCheckBoxImage from './icons/checked.png';
 import offCheckBoxImage from './icons/unchecked.png';
 import {ToastAndroid} from 'react-native';
-import LoadingGIF from "../LoadingGIF";
 import styles from '../styles';
 
  var Arr = [];
@@ -40,7 +37,7 @@ import styles from '../styles';
  let numColumns = 1;
  var no_renders=0;
 
-class ScreenOne extends Component {
+class ScreenOne2 extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -65,7 +62,6 @@ class ScreenOne extends Component {
             fontLoading:true,
 
         };
-        
     }
 
     async componentDidMount(){
@@ -76,10 +72,6 @@ class ScreenOne extends Component {
                 fontLoading:false,
             })
         }).then(()=>{
-            this.setState({
-                isLoading:true,
-            });
-            
             fetch('http://esummit.ecell.in/v1/api/events')
             .then((response)=>response.json())
             .then((responseJson)=>{
@@ -101,12 +93,6 @@ class ScreenOne extends Component {
                 checkDict = this.props.screenProps.checkDict;
             })
         })
-        this.backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
-            
-                BackHandler.exitApp ;
-                return true;
-            
-          });
     }
     handleRefresh = () => {
         this.setState({
@@ -234,10 +220,10 @@ class ScreenOne extends Component {
         );
     })
     customRenderFunction(item){
-        if(String(item.day=='day1')){
+        if(String(item.day)=='day2'){
             return(
                 
-                <View  style={item.updated?styles.customitem:styles.item}>
+                <View elevation={10} style={item.updated?styles.customitem:styles.item}>
                     <View style={styles.touchableContainer}>  
                           <View style={{flex:2}}>  
                             <View style={styles.heading}>
@@ -249,9 +235,9 @@ class ScreenOne extends Component {
                                     </View>
                                 </TouchableNativeFeedback>
                                 <View style={styles.checkBoxFlex}>
-                                    <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}} >
-                                        <View style={{justifyContent:'center',alignItems:'center'}}>
-                                            <Image style={{height:15,width:15,marginTop:5,marginLeft:2}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                                    <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}}>
+                                        <View>
+                                            <Image style={{height:30,width:30}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
                                         </View>
                                     </TouchableNativeFeedback>
                                 </View>
@@ -291,7 +277,6 @@ class ScreenOne extends Component {
 
         checkDict = this.props.screenProps.checkDict;
         no_renders+=1;
-
         if(this.state.isLoading||this.state.fontLoading){
             return(
                 <View style={{flex:1}}>
@@ -302,9 +287,8 @@ class ScreenOne extends Component {
         return (
 
             <View style={{flex:1}}>
-            <LoadingGIF show={this.state.isLoading} />
 
-                {/* <Text> the value of count is : { this.props.screenProps.count}</Text> */}
+                <Text> the value of count is : { this.props.screenProps.count}</Text>
                 <FlatList 
                 data = {this.state.dataSource}
                 style = {styles.container}
@@ -322,4 +306,4 @@ class ScreenOne extends Component {
         );
     }
 }
-export default ScreenOne;
+export default ScreenOne2;

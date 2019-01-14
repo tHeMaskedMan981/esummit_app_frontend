@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage, Image , ToastAndroid } from 'react-native';
 import GradientButton from 'react-native-gradient-buttons'
-
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 export default class WelcomeScreen extends Component {
   constructor(props) {
@@ -348,7 +348,7 @@ storeData(){
     // {this.state.islogin=='true'? this.navigate(): null}
     console.log("inside render");
     console.log(this.state.islogin);
-    {this.state.islogin=='true'? this.navigate(): null}
+    // {this.state.islogin=='true'? this.navigate(): null}
     // console.log(this.state.user_user_name);
     // console.log(this.state.user_user_id);
     // console.log(this.state.user_email);
@@ -470,7 +470,10 @@ storeData(){
            impact='True'
            impactStyle = 'Light'
            onPressAction={this.onGoogleLogin.bind(this)} 
-           />
+           >
+           
+           <Ionicons name="logo-google" size={16} />
+           </GradientButton>
            </View>
            {/* </LinearGradient> */}
           {/* </View>

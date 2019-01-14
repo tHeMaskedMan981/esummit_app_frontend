@@ -12,6 +12,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import ScreenOne from './TabNavigator/ScreenOne'
 import ScreenTwo from './TabNavigator/ScreenTwo'
 import ScreenThree from './TabNavigator/ScreenThree'
+import ScreenOne2 from './TabNavigator/ScreenOne2'
+import ScreenTwo2 from './TabNavigator/ScreenTwo2'
+import ScreenThree2 from './TabNavigator/ScreenThree2'
 //import HomeScreen from './HomeScreen' 
 //var globalCheckBoxDict = {};
 
@@ -40,9 +43,9 @@ export default class AppTabNavigator extends Component {
     
     static navigationOptions = ({ navigation }) => {
         return {
-            drawerIcon:(
-                <Ionicons name="md-home" size={16} />
-            ),
+            // drawerIcon:(
+            //     <Ionicons name="md-home" size={16} />
+            // ),
             headerLeft: (
                 <View style={{ padding: 10 }}>
                     <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
@@ -86,12 +89,9 @@ export default class AppTabNavigator extends Component {
             <HomeScreenTabNavigator screenProps={{  navigation: this.props.navigation,
                                                     user_name:this.props.screenProps.user_name,
                                                     user_id:this.props.screenProps.user_id,
-                                                    count:this.props.screenProps.count,
                                                     checkDict:this.props.screenProps.checkDict,
                                                     handleClick:this.props.screenProps.handleClick,
-                                                    refresh_and_update:this.props.screenProps.refresh_and_update,
-                                                    myEventsSource:this.props.screenProps.myEventsSource,
-                                                    dataSource:this.props.screenProps.dataSource}} />
+                                                    myEventsSource:this.props.screenProps.myEventsSource,}} />
         )
     }
 }
@@ -103,7 +103,7 @@ const ScreenOneTabNavigator = new createMaterialTopTabNavigator({
             tabBarLabel: 'Day 1'}
     },
     screenOneDay2: {
-        screen: ScreenOne,
+        screen: ScreenOne2,
         navigationOptions: {
             tabBarLabel: 'Day 2'}
     }    
@@ -115,7 +115,7 @@ const ScreenTwoTabNavigator = new createMaterialTopTabNavigator({
             tabBarLabel: 'Day 1'}
     },
     screenTwoDay2: {
-        screen: ScreenTwo,
+        screen: ScreenTwo2,
         navigationOptions: {
             tabBarLabel: 'Day 2'}
     }    
@@ -127,7 +127,7 @@ const ScreenThreeTabNavigator = new createMaterialTopTabNavigator({
             tabBarLabel: 'Day 1'}
     },
     screenThreeDay2: {
-        screen: ScreenThree,
+        screen: ScreenThree2,
         navigationOptions: {
             tabBarLabel: 'Day 2'}
     }    
