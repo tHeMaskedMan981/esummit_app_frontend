@@ -192,5 +192,56 @@ export default StyleSheet.create({
         width: 30,
         marginRight:10,
 
-    }
+    },
+    welcome_container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'steelblue',
+        flexDirection:'column'
+      },
+    
+      background:{
+        width:'100%',
+        justifyContent:'center',
+        alignItems:'center'
+    
+      },
+      inputs:{
+        width:'100%',
+        justifyContent:'center',
+        alignItems:'center'
+      },
+      buttons:{
+        width:'100%',
+        alignItems:'center'
+      },
+      input: {
+        width: '80%',
+        // height: '10%',
+        // padding:'10%',
+        margin:'10%',
+        borderBottomWidth :1,
+        borderBottomColor: 'white',
+        marginTop:0,
+        // marginBottom: 15,
+        borderRadius: 10,
+        fontSize: 20,
+        color:'white',
+      },
+      binput: {
+        marginTop:10,
+        width: '70%',
+        paddingBottom:'auto',
+        borderRadius: 10,
+    
+      },
+      binput1: {
+        marginTop:10,
+        width: '70%',
+        paddingBottom:'auto',
+        borderRadius: 10,
+    
+        
+        },
 });

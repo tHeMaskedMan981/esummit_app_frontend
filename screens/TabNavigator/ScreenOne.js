@@ -15,8 +15,6 @@ import {
     Platform,
     Image,
     BackHandler,
-    
-    
 } from "react-native";
 
 import { WebView } from 'react-native';
@@ -88,7 +86,7 @@ class ScreenOne extends Component {
                     dataSource: responseJson,
                     refreshing: false,
                 });
-                console.log(JSON.stringify(responseJson) )
+                // console.log(JSON.stringify(responseJson) )
             })
             .catch(()=>{
                 ToastAndroid.showWithGravityAndOffset(
@@ -235,7 +233,7 @@ class ScreenOne extends Component {
         );
     })
     customRenderFunction(item){
-        if(String(item.day=='day1')){
+        if(String(item.day)=='day1' && item.highlight==true){
             return(
                 
                 <View  style={item.updated?styles.customitem:styles.item}>

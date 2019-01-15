@@ -108,17 +108,11 @@ class ScreenThree extends Component {
         let str = date.slice(8,10);
         console.log(str);
         let res = '';
-        if(str == '17'){
-            res = 'Day 1';
-        }
-        else if(str == '18'){
-            res = 'Day 2';
-        }
         if(time[0]=='0'){
-            return String(time.slice(1,5) + ' , ' + res);
+            return String(time.slice(1,5));
         }
         else{
-            return String(time.slice(0,5) + ' , ' + res);
+            return String(time.slice(0,5));
         }
     }
     settingstate(item){
@@ -149,15 +143,7 @@ class ScreenThree extends Component {
             console.log(this.state.likes);
             
             })
-        // {this.setState({ 
-        //     // screen:1,
-        //     event_desc:item.description,
-        //     event_name:item.name,
-        //     // event_photo_url:String(item.image_url),
-        //     event_web:String(item.website_url),
-        //     event_type:String(item.event_type),
-        //     event_id:String(item.event_id)
-        //     })}
+
             if (this.state.event_type == 'competitions') {
                 this.setState({
                     event_photo_url:'../../assets/images/Compi.png'
@@ -173,9 +159,6 @@ class ScreenThree extends Component {
                     event_photo_url:'../../assets/images/robot-prod.png'
                 })
             }
-            
-            
-
     }
     screen(){
         console.log('inside screen');
@@ -201,10 +184,7 @@ class ScreenThree extends Component {
                 style={styles.image}
                 />
             </View>
-            
-            {/* <View style={styles.screen_name}>
-                <Text>{this.state.event_name}</Text>
-            </View> */}
+
             <View style={styles.screen_desc}>
                 <Text style={styles.screen_name}>{this.state.event_name}</Text>
                 <View style={{flexDirection:'row'}}>
@@ -232,7 +212,7 @@ class ScreenThree extends Component {
     }
     customRenderFunction(item){
         console.log(item.name);
-        if(item.updated == true && String(item.day)=='day2'){
+        if(item.updated == true && String(item.day)=='day1'){
             return(
                 <View  style={styles.item}>
                     
@@ -240,47 +220,52 @@ class ScreenThree extends Component {
                       <TouchableHighlight>    
                           <View style={{flex:2}}>  
                             <View style={styles.heading}>
-                            <TouchableNativeFeedback onPress = {()=>{this.settingstate(item)}}>
-                                    <View style={styles.titleFlex}>
-                                        <Text style={styles.itemText}>{item.name}</Text>
-                                    </View>
-                                </TouchableNativeFeedback>
-                                <View style={styles.checkBoxFlex}>
-                                    <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}}>
-                                        <View>
-                                            <Image style={{height:15,width:15}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                            {/* name of the event */}
+                                <TouchableNativeFeedback onPress = {()=>{this.settingstate(item)}}>
+                                        <View style={styles.titleFlex}>
+                                            <Text style={styles.itemText}>{item.name}</Text>
                                         </View>
-                                    </TouchableNativeFeedback>
+                                </TouchableNativeFeedback>
+                                {/* star image.  */}
+                                <View style={styles.checkBoxFlex}>
+                                        <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}}>
+                                            <View>
+                                                <Image style={{height:15,width:15}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                                            </View>
+                                        </TouchableNativeFeedback>
                                 </View>
                             </View>
+                            {/* event type */}
                             <View>
                                 <Text style={styles.itemInfoText}>{item.event_type}</Text>
                             </View>
                           </View>
                       </TouchableHighlight>
                     </View>    
-                        <View style={styles.footer}>
-                            <TouchableNativeFeedback
-                                onPress ={()=>{Linking.openURL(String(item.venue_url))}}
-                                background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}>
-                                <View style={styles.innerFooter}>
-                                    <View style={{flex:1}}>
-                                        <Image style={{height:20,width:20,marginTop:2}}source={require('./icons/image.png')}/>
-                                    </View>
-                                    <View style={{flex:8}}>
-                                        <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{item.venue_name}</Text>
-                                    </View>    
-                                </View>
-                            </TouchableNativeFeedback>
-                            <View style={styles.innerFooterInvisible}>
+                    <View style={styles.footer}>
+                        {/* Venue  */}
+                        <TouchableNativeFeedback
+                            onPress ={()=>{Linking.openURL(String(item.venue_url))}}
+                            background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}>
+                            <View style={styles.innerFooter}>
                                 <View style={{flex:1}}>
-                                    <Image style={{height:20,width:20,marginTop:2,marginLeft:15,}}source={require('./icons/imagetime.png')}/>
+                                    <Image style={{height:20,width:20,marginTop:2}}source={require('./icons/image.png')}/>
                                 </View>
                                 <View style={{flex:8}}>
-                                    <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{this.getTime(String(item.start_time),String(item.date))}</Text>
-                                </View>
-                            </View>    
-                        </View>
+                                    <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{item.venue_name}</Text>
+                                </View>    
+                            </View>
+                        </TouchableNativeFeedback>
+                        {/* time */}
+                        <View style={styles.innerFooterInvisible}>
+                            <View style={{flex:1}}>
+                                <Image style={{height:20,width:20,marginTop:2,marginLeft:15,}}source={require('./icons/imagetime.png')}/>
+                            </View>
+                            <View style={{flex:8}}>
+                                <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{this.getTime(String(item.start_time),String(item.date))}</Text>
+                            </View>
+                        </View>    
+                    </View>
                 </View>
             );
         }

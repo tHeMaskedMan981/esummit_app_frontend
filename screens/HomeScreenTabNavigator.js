@@ -6,7 +6,7 @@ import {
     Image
 } from "react-native";
 
-import { createBottomTabNavigator,createTabNavigator, createStackNavigator } from 'react-navigation'
+import { createBottomTabNavigator,createTabNavigator,createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import ScreenOne from './TabNavigator/ScreenOne'
@@ -19,36 +19,38 @@ import ScreenThree2 from './TabNavigator/ScreenThree2'
 //var globalCheckBoxDict = {};
 
 
+class LogoTitle extends React.Component {
+    render() {
+      return (
+        <Image
+          source={require('../assets/images/robot-dev.png')}
+          style={{ width: 30, height: 30 }}
+        />
+      );
+    }
+  }
+
 export default class AppTabNavigator extends Component {
-    // constructor(props){
-    //     super(props);
-    //     this.state = {
-    //         parentCheckBoxDict:globalCheckBoxDict,
-    //         initializeCheckDict: this.initializeCheckDict.bind(this),
-    //         componentDidMount: this.componentDidMount.bind(this),
-    //     }
-    // }
-    // componentDidMount(){
-    //     fetch('http://esummit.ecell.in/v1/api/events')
-    //     .then((response) => response.json())
-    //     .then((responseJson)=>{
-    //         this.setState({
-    //             dataSource: responseJson,
-    //         });
-    //     })
-    //     .then(()=>{
-    //         this.state.initializeCheckDict();
-    //     })
-    // }
-    
+
     static navigationOptions = ({ navigation }) => {
+
+        
         return {
-            
+            // headerTitle: <LogoTitle />,
+            title:'E-Summit\'19',
             headerLeft: (
-                <View style={{ padding: 10 }}>
+                <View style={{ padding: 10,flexDirection:'row' }}>
                     <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
                 </View>
-            )
+            ),
+            headerStyle: {
+                backgroundColor: 'steelblue',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+          
         }
     }
     render() {
@@ -57,13 +59,14 @@ export default class AppTabNavigator extends Component {
                                                     user_name:this.props.screenProps.user_name,
                                                     user_id:this.props.screenProps.user_id,
                                                     checkDict:this.props.screenProps.checkDict,
+                                                    count:this.props.screenProps.count,
                                                     handleClick:this.props.screenProps.handleClick,
                                                     myEventsSource:this.props.screenProps.myEventsSource}} />
         )
     }
 }
 
-const ScreenOneTabNavigator = new createTabNavigator({
+const ScreenOneTabNavigator = new createMaterialTopTabNavigator({
     screenOneDay1: {
         screen: ScreenOne,
         navigationOptions: {
@@ -75,7 +78,7 @@ const ScreenOneTabNavigator = new createTabNavigator({
             tabBarLabel: 'Day 2'}
     }    
 })
-const ScreenTwoTabNavigator = new createTabNavigator({
+const ScreenTwoTabNavigator = new createMaterialTopTabNavigator({
     screenTwoDay1: {
         screen: ScreenTwo,
         navigationOptions: {
@@ -87,7 +90,7 @@ const ScreenTwoTabNavigator = new createTabNavigator({
             tabBarLabel: 'Day 2'}
     }    
 })
-const ScreenThreeTabNavigator = new createTabNavigator({
+const ScreenThreeTabNavigator = new createMaterialTopTabNavigator({
     screenThreeDay1: {
         screen: ScreenThree,
         navigationOptions: {
@@ -119,15 +122,15 @@ const HomeScreenTabNavigator = new createBottomTabNavigator({
             )
         }
     },
-    ScreenThree:{
-        screen: ScreenThreeTabNavigator,
-        navigationOptions:{
-            tabBarLabel:'Updated Events',
-            tabBarIcon:()=>(
-                <Ionicons name='md-notifications' size={16}/>
-            )
-        }
-    }
+    // ScreenThree:{
+    //     screen: ScreenThreeTabNavigator,
+    //     navigationOptions:{
+    //         tabBarLabel:'Updated Events',
+    //         tabBarIcon:()=>(
+    //             <Ionicons name='md-notifications' size={16}/>
+    //         )
+    //     }
+    // }
 })
 
 

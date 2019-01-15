@@ -11,20 +11,17 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import {StackNavigator, DrawerItems, SafeAreaView } from 'react-navigation'
 import { Container, Content, Icon, Header, Body } from 'native-base'
 import HomeScreen from './HomeScreen';
-// import MyEventScreen from './MyEventScreen';
-// import SpeakerSessions from './SpeakerSessions';
-// import NetworkingEvents from './NetworkingEvents';
+import suit from '../assets/images/suit.jpg';
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation'
-
 import HomeScreenTabNavigator from './HomeScreenTabNavigator'
 import EventTabNavigator from './EventTabNavigator'
-import SponsorNavigator from './SponsorNavigator'
+// import SponsorNavigator from './SponsorNavigator'
 import HelplineNavigator from './HelplineNavigator'
 import DeveloperNavigator from './DeveloperNavigator'
-import MapNavigator from './MapNavigator'
 import SpeakerNavigator from './SpeakerNavigator'
 import ContactNavigator from './ContactNavigator'
 import FeedbackNavigator from './FeedbackNavigator'
+import LogoutNavigator from './LogoutNavigator'
 
 const InnerStackNavigator = new createStackNavigator({
     TabNavigator: {
@@ -38,11 +35,11 @@ const EventStackNavigator = new createStackNavigator({
     }
 })
 
-const SponsorStackNavigator = new createStackNavigator({
-    SponsorNavigator: {
-        screen: SponsorNavigator
-    }
-})
+// const SponsorStackNavigator = new createStackNavigator({
+//     SponsorNavigator: {
+//         screen: SponsorNavigator
+//     }
+// })
 
 const SpeakerStackNavigator = new createStackNavigator({
     SpeakerNavigator: {
@@ -56,11 +53,11 @@ const HelplineStackNavigator = new createStackNavigator({
     }
 })
 
-const DeveloperStackNavigator = new createStackNavigator({
-    DeveloperNavigator: {
-        screen: DeveloperNavigator
-    }
-}) 
+// const DeveloperStackNavigator = new createStackNavigator({
+//     DeveloperNavigator: {
+//         screen: DeveloperNavigator
+//     }
+// }) 
 
 const ContactStackNavigator = new createStackNavigator({
     ContactNavigator: {
@@ -72,22 +69,15 @@ const FeedbackStackNavigator = new createStackNavigator({
         screen: FeedbackNavigator
     }
 })
-
-const MapStackNavigator = new createStackNavigator({
-    MapNavigator: {
-        screen: MapNavigator,
-        navigationOptions: {
-          header: null
-        }
+const LogoutStackNavigator = new createStackNavigator({
+    LogoutNavigator: {
+        screen: LogoutNavigator
     }
 })
 
 var user_name;
+var user_id;
 
-// const { navigation } = this.props;
-// const user_name = navigation.getParam('user_name', 'some default name');
-// const { navigation } = this.props;
-// var user_name = navigation.getParam('user_name', 'some default name');
 const CustomDrawerContentComponent = (props) => (
 
     <Container>
@@ -95,7 +85,7 @@ const CustomDrawerContentComponent = (props) => (
         <Body style={styles.container}>
           <Image
             style={styles.drawerImage}
-            source={require('../assets/images/robot-dev.png')} />
+            source={require('../assets/images/suit.jpg')} />
             <View style={styles.welcome}>
                 <Text>Hi {user_name}</Text>
             </View>
@@ -124,13 +114,13 @@ const AppDrawerNavigator = new createDrawerNavigator({
             )
         }
     },
-    Sponsors: {screen : SponsorStackNavigator,
-        navigationOptions: {
-            drawerIcon: () => (
-                <Ionicons name="md-home" size={16} />
-            )
-        }
-    },
+    // Sponsors: {screen : SponsorStackNavigator,
+    //     navigationOptions: {
+    //         drawerIcon: () => (
+    //             <Ionicons name="md-home" size={16} />
+    //         )
+    //     }
+    // },
     Speakers: {screen: SpeakerStackNavigator,
         navigationOptions: {
             drawerIcon: () => (
@@ -145,13 +135,13 @@ const AppDrawerNavigator = new createDrawerNavigator({
             )
         }
     },
-    Developer: {screen : DeveloperStackNavigator,
-        navigationOptions: {
-            drawerIcon: () => (
-                <Ionicons name="md-home" size={16} />
-            )
-        }
-    },
+    // Developer: {screen : DeveloperStackNavigator,
+    //     navigationOptions: {
+    //         drawerIcon: () => (
+    //             <Ionicons name="md-home" size={16} />
+    //         )
+    //     }
+    // },
     Contacts: {screen : ContactStackNavigator,
         navigationOptions: {
             drawerIcon: () => (
@@ -167,6 +157,13 @@ const AppDrawerNavigator = new createDrawerNavigator({
             )
         }
     },
+    Logout: {screen : LogoutStackNavigator,
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-home" size={16} />
+            )
+        }
+    },
     },
     {
       initialRouteName: 'HomeScreen',
@@ -175,9 +172,18 @@ const AppDrawerNavigator = new createDrawerNavigator({
       drawerOpenRoute: 'DrawerOpen',
       drawerCloseRoute: 'DrawerClose',
       drawerToggleRoute: 'DrawerToggle',
+      defaultNavigationOptions: {
+        headerStyle: {
+          backgroundColor: 'steelblue',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      },
       drawerIcon: ({tintColor}) => (
         <Image 
-            source={require('../assets/images/robot-prod.png')}
+            source={suit}
             style={{height:24, width:24, tintColor: tintColor}}
         />
       )
@@ -229,7 +235,6 @@ export default class AppTabNavigator extends Component {
            return "cant retrieve data";
          }
       }
-
 
       async componentDidMount(){
           
@@ -302,19 +307,29 @@ export default class AppTabNavigator extends Component {
         //         this.setState({othersSource: responseJson});
         //         this._storeData("othersSource", responseJson);
         //     });
-            fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
+
+        console.log("inside refresh and update");
+            fetch('http://esummit.ecell.in/v1/api/events/myevents/'+user_id.toString())
             .then((response)=>response.json())
             .then((responseJson)=>{
-                this.setState({myEventsSource: responseJson});
+                this.setState({
+                    myEventsSource: responseJson
+                });
+            
+                 console.log("inside refresh and update response");
+                 console.log("my events in response "+JSON.stringify(responseJson));
+                 console.log("my events after updating "+JSON.stringify(this.state.myEventsSource));
+            
                 this._storeData("myEventsSource", responseJson);
+                
             });
     }
 
     initializeCheckDict = () => {
         // get the myevents data, make a dictionary to facilitate the highlighting of Events, store in storage,
         // update the state 
-
-        fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
+        console.log("the url is : " + 'http://esummit.ecell.in/v1/api/events/myevents/'+user_id.toString());
+        fetch('http://esummit.ecell.in/v1/api/events/myevents/'+user_id.toString()+'')
         .then((response) => response.json())
         .then((responseJson)=>{
             this.setState({
@@ -322,7 +337,7 @@ export default class AppTabNavigator extends Component {
                 trackMyEvents:true,
             });
             this._storeData("myEventsSource", responseJson);
-            console.log('myevents checked from drawer navigator');
+            console.log('myevents checked the user defined events are' + JSON.stringify(this.state.myEventsSource));
         }).then(()=>{
             checkDict={};
             // settings all the events in my events as true
@@ -383,7 +398,7 @@ export default class AppTabNavigator extends Component {
 
         var data = this.state.count;
         data = data+1;
-        // console.log("the updated data is  : " + JSON.stringify(data));
+        console.log("handle click called  : " + JSON.stringify(data));
 
         fetch('http://esummit.ecell.in/v1/api/events/myevent_add', {
         method: 'POST',
@@ -393,7 +408,7 @@ export default class AppTabNavigator extends Component {
         },
         body: JSON.stringify({
             event_id: event_id,
-            user_id: 2,
+            user_id: user_id,
         }),
         })
         .then(()=>{
@@ -421,53 +436,10 @@ export default class AppTabNavigator extends Component {
                 40);
         });
     }
-
-    // handleClick = (event_id) => {
-    //     // Update the checkDict, remove the event from myevents if already present, or add it from allEvents.
-    //     // update the local storage, state and call the api 
-
-    //     var data = this.state.count;
-    //     data = data+1;
-    //     // console.log("the updated data is  : " + JSON.stringify(data));
-    //     var myEventsSource = this.state.myEventsSource;
-    //     var allEvents = this.state.allEvents;
-        
-         
-    //     console.log("the old dict is  : " + JSON.stringify(checkDict));
-    //     checkDict[String(event_id)] = !checkDict[String(event_id)];
-    //     console.log("the new dict is  : " + JSON.stringify(checkDict));
-    //     var len = myEventsSource.length;
-    //     var found = 0;
-    //     for(let i=0; i<len; ++i){
-    //         if (myEventsSource[i].event_id == event_id)
-    //         {   
-    //             // console.log("myevents old array  : " + JSON.stringify(myEventsSource));
-    //             var removed = myEventsSource.splice(i, 1);
-    //             // console.log("myevents new array  : " + JSON.stringify(myEventsSource));
-    //             found =1;
-    //             break; 
-    //         }
-    //     }
-    //     if (found==0){
-    //         var event = allEvents[String(event_id)];
-    //         // console.log("the event to be aadded : " + JSON.stringify(event));
-    //         myEventsSource.push(event);
-    //     }
-
-    //     this.setState({
-    //         myEventsSource: myEventsSource,
-    //         Dict:checkDict,
-    //         count:data,
-    //     });
-    //     this.CallMyEventsApi(event_id);
-    //     this._storeData("myEventsSource", myEventsSource);
-    //     this._storeData("checkDict", checkDict);
-    //     // this.componentDidMount();
-    // }
-
     render() {
         const { navigation } = this.props;
-        const user_id = navigation.getParam('user_id', 'NO-ID');
+        user_id = navigation.getParam('user_id', 'NO-ID');
+        console.log("user_id is : " + user_id.toString());
         user_name = navigation.getParam('user_name', 'Disruptor');
         const email = navigation.getParam('email', 'NO-ID');
         const esummit_id = navigation.getParam('esummit_id', 'NO-ID');
@@ -478,7 +450,6 @@ export default class AppTabNavigator extends Component {
                                                 user_name:user_name,
                                                 count:this.state.count,
                                                 handleClick:this.handleClick,
-                                                // refresh_and_update:this.refresh_and_update,
                                                 checkDict:this.state.Dict,
                                                 myEventsSource:this.state.myEventsSource,
                                                 dataSource:this.state.dataSource,
@@ -493,24 +464,26 @@ export default class AppTabNavigator extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'stretch',
-        justifyContent: 'center'
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin:25,
+        padding:25,
     },
     drawerHeader: {
-      height: 150,
-      backgroundColor: 'white'
+      height: 200,
+      backgroundColor: 'steelblue'
     },
     drawerImage: {
       height: 100,
       width: 100,
       borderRadius: 75,
-      marginBottom:15,
     },
     welcome: {
         flex:1,
         textAlign: 'left',
-        padding: 10,
-        marginBottom:15,
+        fontWeight:'700',
+        padding:5,
+        margin:5
     }
   
 });

@@ -194,18 +194,11 @@ class ScreenOne2 extends Component {
     getTime(time,date){
         //extract the day from date
         let str = date.slice(8,10);
-        let res = '';
-        if(str == '17'){
-            res = 'Day 1';
-        }
-        else if(str == '18'){
-            res = 'Day 2';
-        }
         if(time[0]=='0'){
-            return String(time.slice(1,5) + ' , ' + res);
+            return String(time.slice(1,5));
         }
         else{
-            return String(time.slice(0,5) + ' , ' + res);
+            return String(time.slice(0,5));
         }
     }
     onClickStar=((item)=>{
@@ -220,10 +213,10 @@ class ScreenOne2 extends Component {
         );
     })
     customRenderFunction(item){
-        if(String(item.day)=='day2'){
+        if(String(item.day)=='day2' && item.highlight==true){
             return(
                 
-                <View elevation={10} style={item.updated?styles.customitem:styles.item}>
+                <View style={item.updated?styles.customitem:styles.item}>
                     <View style={styles.touchableContainer}>  
                           <View style={{flex:2}}>  
                             <View style={styles.heading}>
@@ -237,7 +230,7 @@ class ScreenOne2 extends Component {
                                 <View style={styles.checkBoxFlex}>
                                     <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}}>
                                         <View>
-                                            <Image style={{height:30,width:30}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                                            <Image style={{height:15,width:15}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
                                         </View>
                                     </TouchableNativeFeedback>
                                 </View>
