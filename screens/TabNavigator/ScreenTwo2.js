@@ -238,9 +238,10 @@ class ScreenTwo2 extends Component {
         )
     };
     customRenderFunction = ((item)=>{
-        if(String(item.date).slice(8,10)=='18'){
+        
+        if(String(item.day)=='day2'){
             return(
-                <View elevation={10} style={item.updated?styles.customitem:styles.item}>
+                <View style={item.updated?styles.customitem:styles.item}>
                     <View style={styles.touchableContainer}> 
                       <TouchableHighlight>    
                           <View style={{flex:2}}>  
@@ -255,7 +256,7 @@ class ScreenTwo2 extends Component {
                                 <View style={styles.checkBoxFlex}>
                                     <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}}>
                                         <View>
-                                            <Image style={{height:30,width:30}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                                            <Image style={{height:15,width:15}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
                                         </View>
                                     </TouchableNativeFeedback>
                                 </View>

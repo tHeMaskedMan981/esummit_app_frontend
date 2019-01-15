@@ -103,10 +103,10 @@ class ScreenThree2 extends Component {
         }
     }
     customRenderFunction(item){
-        console.log(item.name);
-        if(item.updated == true){
+        console.log("hilalalalalla"+ item.name + item.day);
+        if(item.updated == true && String(item.day)=='day2'){
             return(
-                <View elevation={10} style={styles.item}>
+                <View style={styles.item}>
                     
                     <View style={styles.touchableContainer}> 
                       <TouchableHighlight>    
@@ -118,7 +118,7 @@ class ScreenThree2 extends Component {
                                 <View style={styles.checkBoxFlex}>
                                     <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}}>
                                         <View>
-                                            <Image style={{height:30,width:30}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                                            <Image style={{height:15,width:15}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
                                         </View>
                                     </TouchableNativeFeedback>
                                 </View>

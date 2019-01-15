@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage, Image  } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage, Image , ToastAndroid } from 'react-native';
 import GradientButton from 'react-native-gradient-buttons'
-
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 export default class WelcomeScreen extends Component {
   constructor(props) {
@@ -18,7 +18,15 @@ export default class WelcomeScreen extends Component {
       get_esummitid:null,
       get_userid:null,
       islogin:'false',
+      user_email: null,
+      user_esummit_id: null,
+      user_user_name:null,
+      user_user_id:null,
+      data:0,
+      user_islogin:'false',
     };
+    this.storeData = this.storeData.bind(this);
+    this.retrieveData = this.retrieveData.bind(this);
   }
 
 //   _storeData = async () => {
@@ -33,47 +41,123 @@ export default class WelcomeScreen extends Component {
 //       this.setState({email_err:"problem with storage"});
 //   }
 // }
-_storeData = async (key, value) => {
+// _storeData = async (key, value) => {
 
-    try {
-      await AsyncStorage.setItem(key,value);
-
-    } catch (error) {
-        this.setState({email_err:"problem with storage"});
-    }
-  }
-_retrieveData = async (key) => {
-    try {
+//     try {
+//       await AsyncStorage.setItem(key,value);
+//       ToastAndroid.showWithGravityAndOffset(
+//         "stored"+key,
+//         ToastAndroid.SHORT,
+//         ToastAndroid.TOP,
+//         0,
+//         40);
+//     } catch (error) {
+//         this.setState({email_err:"problem with storage"});
+        
+//     }
+//   }
+storeData(){
+  let name = this.state.user_name;
+  let email = this.state.email;
+  let esummitid = this.state.esummit_id;
+  let userid = this.state.user_id;
+  let islogin = this.state.islogin;
+  AsyncStorage.setItem('name',name);
+  AsyncStorage.setItem('email',email);
+  AsyncStorage.setItem('esummitid',esummitid);
+  AsyncStorage.setItem('userid',userid);
+  AsyncStorage.setItem('islogin',islogin);
+  this.setState({
+    user_name:name,
+    email:email,
+    esummit_id:esummitid,
+    user_id:userid,
+    islogin:islogin,
+  })
+}
+// _retrieveData = async (key) => {
+//     try {
       
-      // const user_name = await AsyncStorage.getItem('user_name');
-      // const user_id = await AsyncStorage.getItem('user_id');
-      // const email = await AsyncStorage.getItem('email');
-      // const esummit_id = await AsyncStorage.getItem('esummit_id');
-      // const is_login = await AsyncStorage.getItem('is_login');
-      // // let retrivedevents = JSON.parse(value);
-      // let user_name1 = JSON.parse(user_name);
-      // let user_id1 = JSON.parse(user_id);
-      // let email1 = JSON.parse(email);
-      // let esummit_id1 = JSON.parse(esummit_id);
-      // let is_login1 = JSON.parse(is_login);
+//       // const user_name = await AsyncStorage.getItem('user_name');
+//       // const user_id = await AsyncStorage.getItem('user_id');
+//       // const email = await AsyncStorage.getItem('email');
+//       // const esummit_id = await AsyncStorage.getItem('esummit_id');
+//       // const is_login = await AsyncStorage.getItem('is_login');
+//       // // let retrivedevents = JSON.parse(value);
+//       // let user_name1 = JSON.parse(user_name);
+//       // let user_id1 = JSON.parse(user_id);
+//       // let email1 = JSON.parse(email);
+//       // let esummit_id1 = JSON.parse(esummit_id);
+//       // let is_login1 = JSON.parse(is_login);
 
-      // if (!(user_name == null)) {
-      //   this.setState({get_username:user_name1});
-      //   this.setState({get_email:email1});
-      //   this.setState({get_esummitid:esummit_id1});
-      //   this.setState({get_userid:user_id1});
-      //   this.setState({islogin:is_login1});
-      // }
-      value = await AsyncStorage.getItem(key);
+//       // if (!(user_name == null)) {
+//       //   this.setState({get_username:user_name1});
+//       //   this.setState({get_email:email1});
+//       //   this.setState({get_esummitid:esummit_id1});
+//       //   this.setState({get_userid:user_id1});
+//       //   this.setState({islogin:is_login1});
+//       // }
+//       value = await AsyncStorage.getItem(key);
+//       value = JSON.parse(value);
+//       if(!(value==null)){
+//         this.setState({
+//           key:value,
+//         }); 
+
+//         console.log(key+":"+JSON.stringify(this.state.key));
+//       }
+//       // this.setState({
+//       //   key:value,
+//       // });
+//       ToastAndroid.showWithGravityAndOffset(
+//         "retrieved:"+key+":"+value,
+//         ToastAndroid.SHORT,
+//         ToastAndroid.TOP,
+//         0,
+//         40);
+//      } catch (error) {
+//        // Error retrieving data
+//        this.setState({email_err:"retrieving problem"});
+//      }
+//   }
+  retrieveData(){
+    AsyncStorage.getItem('islogin').then((islogin)=>{
       this.setState({
-        key:value,
-      });
-     } catch (error) {
-       // Error retrieving data
-       this.setState({email_err:"retrieving problem"});
-     }
+        islogin:islogin,
+        user_islogin:islogin,
+      })
+    })
+    AsyncStorage.getItem('name').then((name)=>{
+      this.setState({
+        user_name:name,
+        user_user_name:name,
+      })
+    })
+    AsyncStorage.getItem('email').then((email)=>{
+      this.setState({
+        email:email,
+        user_email:email,
+      })
+    })
+    AsyncStorage.getItem('esummitid').then((esummitid)=>{
+      this.setState({
+        esummit_id:esummitid,
+        user_esummit_id:esummitid,
+      })
+    })
+    AsyncStorage.getItem('userid').then((userid)=>{
+      this.setState({
+        user_id:userid,
+        user_user_id:userid,
+      })
+    })
+    // AsyncStorage.getItem('islogin').then((islogin)=>{
+    //   this.setState({
+    //     islogin:islogin,
+    //     user_islogin:islogin,
+    //   })
+    // })
   }
-
   onLogin() {
 
     const  email = this.state.email;
@@ -111,11 +195,12 @@ _retrieveData = async (key) => {
             islogin:'true'
         });
     //   this._storeData(); 
-    this._storeData('user_id',JSON.stringify(this.state.user_id)); 
-    this._storeData('user_name',JSON.stringify(this.state.user_name)); 
-    this._storeData('email',JSON.stringify(this.state.email)); 
-    this._storeData('esummit_id',JSON.stringify(this.state.esummit_id));
-    this._storeData('islogin',this.state.islogin);  
+    // this._storeData('user_user_id',JSON.stringify(this.state.user_id)); 
+    // this._storeData('user_user_name',JSON.stringify(this.state.user_name)); 
+    // this._storeData('user_email',JSON.stringify(this.state.email)); 
+    // this._storeData('user_esummit_id',JSON.stringify(this.state.esummit_id));
+    // this._storeData('user_islogin',this.state.islogin); 
+    this.storeData() ;
     
     this.props.navigation.navigate('DrawerNavigator', {
         user_id: this.state.user_id,
@@ -163,6 +248,9 @@ _retrieveData = async (key) => {
           }),
         }).then((response) => response.json())
         .then((responseJson) => {
+          this.setState({
+            user_name:responseJson.profile.user_name,
+        });
   
           try
             {
@@ -170,21 +258,23 @@ _retrieveData = async (key) => {
                   user_name: responseJson.profile.user_name,
                   user_id: responseJson.profile.user_id,
                   email: responseJson.profile.email,
-                  photo_url: responseJson.profile.photo_url,
+                  // photo_url: responseJson.profile.photo_url,
                   islogin:'true',
               });
           //   this._storeData(); 
-          this._storeData('user_id',JSON.stringify(this.state.user_id)); 
-          this._storeData('user_name',JSON.stringify(this.state.user_name)); 
-          this._storeData('email',JSON.stringify(this.state.email)); 
-          this._storeData('photo_url',JSON.stringify(this.state.photo_url)); 
-          this._storeData('esummit_id',JSON.stringify("")); 
-          this._storeData('islogin',this.state.islogin);  
+          // this._storeData('user_name',responseJson.profile.user_name); 
+          // this._storeData('user_user_id',JSON.stringify(this.state.user_id)); 
+          // this._storeData('user_user_name',JSON.stringify(this.state.user_name)); 
+          // this._storeData('user_email',JSON.stringify(this.state.email)); 
+          // this._storeData('user_photo_url',JSON.stringify(this.state.photo_url)); 
+          // this._storeData('user_esummit_id',JSON.stringify("")); 
+          // this._storeData('user_islogin',this.state.islogin);  
+          this.storeData();
           
           this.props.navigation.navigate('DrawerNavigator', {
               user_id: this.state.user_id,
               user_name: this.state.user_name,
-              photo_url:this.state.photo_url,
+              // photo_url:this.state.photo_url,
               email:this.state.email,
             });
       
@@ -217,17 +307,64 @@ _retrieveData = async (key) => {
   
   }
   componentDidMount(){
-    this._retrieveData('user_name');
-    this._retrieveData('user_id');
-    this._retrieveData('esummit_id');
-    this._retrieveData('email');
-    this._retrieveData('islogin');
-    {this.state.islogin=='true'? this.navigate(): null}
+  //   this.setState({
+  //     user_name:"Guest",
+  // });
+    console.log("inside component");
+    // console.log("inside component did mount with data value as " + this.state.data);
+    this.retrieveData();
+    
+    // this._retrieveData('user_user_name');
+    // this._retrieveData('user_user_id');
+    // this._retrieveData('user_esummit_id');
+    // this._retrieveData('user_email');
+    // this._retrieveData('user_islogin');
+      
+    // let a = this.state.user_user_name
+    // this.setState({
+    //   user_name:a,
+    //   user_id:this.state.user_user_id,
+    //   email:this.state.user_email,
+    //   esummit_id:this.state.user_esummit_id,
+    //   islogin:this.state.user_islogin,
+    // });
+    // console.log(this.state.user_user_name);
+    // console.log(this.state.user_user_id);
+    // console.log(this.state.user_email);
+    // console.log(this.state.user_esummit_id);
+    // console.log(this.state.user_name);
+    // console.log(this.state.user_id);
+    // console.log(this.state.email);
+    // console.log(this.state.esummit_id);
+
+    // this.state.islogin=='true'? this.navigate(): null
+    // {this.state.islogin=='true'? this.navigate(): null}
   }
   render() {
+    // let count = this.state.data;
+    // count = count +1;
+    // console.log("inside render with data value as " + this.state.data);
+    
+    // {this.state.islogin=='true'? this.navigate(): null}
+    console.log("inside render");
+    console.log(this.state.islogin);
+    // {this.state.islogin=='true'? this.navigate(): null}
+    // console.log(this.state.user_user_name);
+    // console.log(this.state.user_user_id);
+    // console.log(this.state.user_email);
+    // console.log(this.state.user_esummit_id);
+    // console.log(this.state.user_name);
+    // console.log(this.state.user_id);
+    // console.log(this.state.email);
+    // console.log(this.state.esummit_id);
+    
     return (
       <View style={styles.container}>
-      
+
+        {/* <Text>  Data value is : {this.state.data} </Text>
+        <Text>  User_name value is : {this.state.user_name} </Text> */}
+
+
         {/* <Text> {this.state.user_name} </Text>
         <Text> {this.state.user_id} </Text>
         <Text> {this.state.esummit_id}</Text>
@@ -255,8 +392,11 @@ _retrieveData = async (key) => {
           style={styles.input}
         />
         <View style={styles.err} >
-        <Text> {this.state.email_err} </Text>
+        <Text> hi{this.state.user_name} </Text>
+        <Text>hi,{this.state.email}</Text>
+        {console.log(this.state.islogin)}
         <Text>hi,{this.state.islogin}</Text>
+        {console.log(this.state.islogin)}
       </View>
 
         <TextInput
@@ -297,6 +437,9 @@ _retrieveData = async (key) => {
           impactStyle = 'Light'
           onPressAction={() => {
             console.log("Pressed");
+            this.setState({
+              // data:count,
+          });
             /* 1. Navigate to the Details route with params */
             this.props.navigation.navigate('DrawerNavigator', {
               user_id: this.state.user_id,
@@ -327,7 +470,10 @@ _retrieveData = async (key) => {
            impact='True'
            impactStyle = 'Light'
            onPressAction={this.onGoogleLogin.bind(this)} 
-           />
+           >
+           
+           <Ionicons name="logo-google" size={16} />
+           </GradientButton>
            </View>
            {/* </LinearGradient> */}
           {/* </View>

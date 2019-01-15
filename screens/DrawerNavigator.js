@@ -82,6 +82,8 @@ const MapStackNavigator = new createStackNavigator({
     }
 })
 
+var user_name;
+
 // const { navigation } = this.props;
 // const user_name = navigation.getParam('user_name', 'some default name');
 // const { navigation } = this.props;
@@ -95,7 +97,7 @@ const CustomDrawerContentComponent = (props) => (
             style={styles.drawerImage}
             source={require('../assets/images/robot-dev.png')} />
             <View style={styles.welcome}>
-                <Text>Hi ,</Text>
+                <Text>Hi {user_name}</Text>
             </View>
         </Body>
       </Header>
@@ -215,7 +217,7 @@ export default class AppTabNavigator extends Component {
     _retrieveData = async (key) => {
         try {
           const value = await AsyncStorage.getItem(key);
-          console.log("the retrieved data is : "+ (value));
+        //   console.log("the retrieved data is : "+ (value));
     
           if (!(value == null)) {
             this.setState({key:value});
@@ -255,7 +257,7 @@ export default class AppTabNavigator extends Component {
                 });
                 // update phone storage dataSource
                 this._storeData("dataSource", responseJson);
-                console.log("all events : " + JSON.stringify(responseJson));    
+                // console.log("all events : " + JSON.stringify(responseJson));    
             })
             .catch(()=>{
                 ToastAndroid.showWithGravityAndOffset(
@@ -466,7 +468,7 @@ export default class AppTabNavigator extends Component {
     render() {
         const { navigation } = this.props;
         const user_id = navigation.getParam('user_id', 'NO-ID');
-        const user_name = navigation.getParam('user_name', 'some default name');
+        user_name = navigation.getParam('user_name', 'Disruptor');
         const email = navigation.getParam('email', 'NO-ID');
         const esummit_id = navigation.getParam('esummit_id', 'NO-ID');
         
