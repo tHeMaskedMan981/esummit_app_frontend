@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage, Image , ToastAndroid } from 'react-native';
 import GradientButton from 'react-native-gradient-buttons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import background from '../../assets/images/Compi.png';
+import styles from '../styles';
 
 export default class WelcomeScreen extends Component {
   constructor(props) {
@@ -20,7 +22,7 @@ export default class WelcomeScreen extends Component {
       islogin:'false',
       user_email: null,
       user_esummit_id: null,
-      user_user_name:null,
+      user_user_name:null,  
       user_user_id:null,
       data:0,
       user_islogin:'false',
@@ -346,8 +348,8 @@ storeData(){
     // console.log("inside render with data value as " + this.state.data);
     
     // {this.state.islogin=='true'? this.navigate(): null}
-    console.log("inside render");
-    console.log(this.state.islogin);
+    // console.log("inside render");
+    // console.log(this.state.islogin);
     // {this.state.islogin=='true'? this.navigate(): null}
     // console.log(this.state.user_user_name);
     // console.log(this.state.user_user_id);
@@ -359,28 +361,14 @@ storeData(){
     // console.log(this.state.esummit_id);
     
     return (
-      <View style={styles.container}>
-
-        {/* <Text>  Data value is : {this.state.data} </Text>
-        <Text>  User_name value is : {this.state.user_name} </Text> */}
-
-
-        {/* <Text> {this.state.user_name} </Text>
-        <Text> {this.state.user_id} </Text>
-        <Text> {this.state.esummit_id}</Text>
-        <Text> {this.state.retrieved}</Text>
-        <Text> Stored Data :</Text>
-        <Text> {this.state.get_username} </Text>
-        <Text> {this.state.get_esummitid} </Text>
-        <Text> {this.state.get_email}</Text>
-        <Text> {this.state.get_userid}</Text> */}
-        {/* <View style={{height:'30%',width:'100%',padding:10,justifyContent:'center',alignItems:'center'}}>
-        <Image
-        source={require(`../../assets/images/robot-dev.png`)}
-        style={{width:'100%', marginBottom:15, height:'100%'}}
-        />
-        </View> */}
-        <View style={{height:'30%',width:'100%',justifyContent:'center',alignItems:'center'}}>
+      <View style={styles.welcome_container}>
+        
+        <View style={styles.background}>
+        <Image style={{height:200,width:200,marginTop:5,marginLeft:2}}
+         source={background}/>
+                                      
+        </View>
+        <View style={styles.inputs}>
         <TextInput
           value={this.state.email}
           onChangeText={ (email) => {
@@ -391,13 +379,13 @@ storeData(){
           placeholder={'Email'}
           style={styles.input}
         />
-        <View style={styles.err} >
+        {/* <View style={styles.err} >
         <Text> hi{this.state.user_name} </Text>
         <Text>hi,{this.state.email}</Text>
         {console.log(this.state.islogin)}
         <Text>hi,{this.state.islogin}</Text>
         {console.log(this.state.islogin)}
-      </View>
+      </View> */}
 
         <TextInput
           value={this.state.esummit_id}
@@ -407,38 +395,48 @@ storeData(){
           style={styles.input}
         />
         </View>
-        <View style={{height:'40%',width:'100%',alignItems:'center'}}>
+        <View style={styles.buttons}>
         <GradientButton
           style= {styles.binput1}
-          textStyle={{ fontSize: 24 }}
+          textStyle={{ fontSize: 20 }}
           text="Sign In"
           height={40}
           gradientBegin="#6673a4"
            gradientEnd="#6673a4"
-          impact='True'
-          impactStyle = 'Light'
+          // impact='True'
+          // impactStyle = 'Light'
           onPressAction={this.onLogin.bind(this)}
         />
-        {/* <View style={styles.or}>
-          <Text style={{fontSize:24}}>OR</Text>
-        </View> */}
-        {/* <GradientButton 
-        style={styles.binput} 
-        gradientBegin="#e1306c" 
-        gradientEnd="#275d8e" /> */}
-        <GradientButton
+
+          <GradientButton text='Google Sign In'
+           textStyle={{ fontSize: 20 }}
+           height={40}
+           style={styles.binput}
+           gradientBegin="#6673a4"
+           gradientEnd="#6673a4"
+          //  impact='True'
+          //  impactStyle = 'Light'
+           onPressAction={this.onGoogleLogin.bind(this)} 
+           />
+           {/* <Button title='Google Sign In'
+           textStyle={{ fontSize: 20 }}
+           height={40}
+           style={styles.binput}
+           onPress={this.onGoogleLogin.bind(this)} 
+           /> */}
+          <GradientButton
           text="Continue as Guest"
           style={styles.binput}
-          textStyle={{ fontSize: 24 }}
+          textStyle={{ fontSize: 20 }}
           height={40}
           gradientBegin="#6673a4"
            gradientEnd="#6673a4"
-          impact='True'
+          // impact='True'
           impactStyle = 'Light'
           onPressAction={() => {
             console.log("Pressed");
             this.setState({
-              data:count,
+              // data:count,
           });
             /* 1. Navigate to the Details route with params */
             this.props.navigation.navigate('DrawerNavigator', {
@@ -449,31 +447,7 @@ storeData(){
             });
           }}
         />
-        {/* </GradientButton> */}
-        {/* <View style={{flexDirection:'row'}}>
-        <View>
-          <Text>
-            Try 
-          </Text>
-          </View>
-          <View> */}
-          {/* <LinearGradient
-          colors = {['#e1306c', '#275d8e']}
-          style={{width:300}}
-          > */}
-          <GradientButton text='Google Sign In'
-           textStyle={{ fontSize: 24 }}
-           height={40}
-           style={styles.binput}
-           gradientBegin="#6673a4"
-           gradientEnd="#6673a4"
-           impact='True'
-           impactStyle = 'Light'
-           onPressAction={this.onGoogleLogin.bind(this)} 
-           >
            
-           <Ionicons name="logo-google" size={16} />
-           </GradientButton>
            </View>
            {/* </LinearGradient> */}
           {/* </View>
@@ -484,41 +458,3 @@ storeData(){
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'white',
-    flexDirection:'column'
-  },
-  input: {
-    width: 350,
-    height: 55,
-    padding:'4%',
-    borderWidth: 1,
-    borderColor: 'black',
-    marginTop:0,
-    // marginBottom: 15,
-    borderRadius: 30,
-    fontSize: 20,
-  },
-  binput: {
-    marginTop:15,
-    width: '70%',
-    paddingBottom:'auto',
-    marginTop:15
-  },
-  binput1: {
-    marginTop:15,
-    width: '50%',
-    paddingBottom:'auto',
-    marginTop:15
-    
-    },
-  err: {
-    marginBottom: 20,
-  },
-  or:{
-  }
-});

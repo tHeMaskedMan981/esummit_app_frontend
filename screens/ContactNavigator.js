@@ -22,7 +22,7 @@ import { Header, Left, Icon } from "native-base";
 import { stringify } from "qs";
 // import SponsorScreen from './SponsorScreen';
 
-class SpeakerScreen extends Component {
+class ContactScreen extends Component {
     constructor(props){
         super(props);
         this.state ={ isLoading: true}
@@ -32,15 +32,19 @@ class SpeakerScreen extends Component {
         
                 return {
                     title:'Speakers',
+                    headerTintColor: '#fff',
                     headerStyle: {
                         backgroundColor: 'steelblue',
                       },
-                      headerTintColor: '#fff',
                     headerLeft: (
                         <View style={{ padding: 10 }}>
                             <Ionicons name="md-menu" size={44} color='white' onPress={() => navigation.openDrawer()} />
                         </View>
-                    )
+                    ),
+                    headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
                 }
             }
 
@@ -107,7 +111,7 @@ class SpeakerScreen extends Component {
           );
     }
 }
-export default SpeakerScreen;
+export default ContactScreen;
 
 const styles = StyleSheet.create({
     container: {

@@ -32,7 +32,7 @@ import EventScreen from './EventScreen';
  var url;
  let numColumns = 1;
 
-class speaker extends Component {
+class speaker2 extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -62,7 +62,7 @@ class speaker extends Component {
         return (
             <EventScreen 
             handleRefresh={this.props.screenProps.handleRefresh} 
-            day='day1' 
+            day='day2' 
             event_type="speaker" 
             dataSource = {this.props.screenProps.dataSource} 
             handleClick={this.props.screenProps.handleClick} 
@@ -71,4 +71,4 @@ class speaker extends Component {
         );
     }
 }
-export default speaker;
+export default speaker2;

@@ -22,6 +22,7 @@ import onCheckBoxImage from './icons/checked.png';
 import offCheckBoxImage from './icons/unchecked.png';
 import {ToastAndroid} from 'react-native';
 import styles from '../styles';
+import EventScreen from './EventScreen';
  var Arr = [];
  var checkDict = {};
  var styleCheckBox = {};
@@ -103,55 +104,58 @@ class ScreenThree2 extends Component {
         }
     }
     customRenderFunction(item){
-        console.log(item.name);
-        if(item.updated == true){
+        console.log("hilalalalalla"+ item.name + item.day);
+        if(item.updated == true && String(item.day)=='day2'){
             return(
-                <View elevation={10} style={styles.item}>
+
+                <EventScreen item={item} checkDict={this.props.screenProps.checkDict} />
+
+                // <View style={styles.item}>
                     
-                    <View style={styles.touchableContainer}> 
-                      <TouchableHighlight>    
-                          <View style={{flex:2}}>  
-                            <View style={styles.heading}>
-                                <View style={styles.titleFlex}>
-                                    <Text style={styles.itemText}>{item.name}</Text>
-                                </View>
-                                <View style={styles.checkBoxFlex}>
-                                    <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}}>
-                                        <View>
-                                            <Image style={{height:30,width:30}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
-                                        </View>
-                                    </TouchableNativeFeedback>
-                                </View>
-                            </View>
-                            <View>
-                                <Text style={styles.itemInfoText}>{item.event_type}</Text>
-                            </View>
-                          </View>
-                      </TouchableHighlight>
-                    </View>    
-                        <View style={styles.footer}>
-                            <TouchableNativeFeedback
-                                onPress ={()=>{Linking.openURL(String(item.venue_url))}}
-                                background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}>
-                                <View style={styles.innerFooter}>
-                                    <View style={{flex:1}}>
-                                        <Image style={{height:20,width:20,marginTop:2}}source={require('./icons/image.png')}/>
-                                    </View>
-                                    <View style={{flex:8}}>
-                                        <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{item.venue_name}</Text>
-                                    </View>    
-                                </View>
-                            </TouchableNativeFeedback>
-                            <View style={styles.innerFooterInvisible}>
-                                <View style={{flex:1}}>
-                                    <Image style={{height:20,width:20,marginTop:2,marginLeft:15,}}source={require('./icons/imagetime.png')}/>
-                                </View>
-                                <View style={{flex:8}}>
-                                    <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{this.getTime(String(item.start_time),String(item.date))}</Text>
-                                </View>
-                            </View>    
-                        </View>
-                </View>
+                //     <View style={styles.touchableContainer}> 
+                //       <TouchableHighlight>    
+                //           <View style={{flex:2}}>  
+                //             <View style={styles.heading}>
+                //                 <View style={styles.titleFlex}>
+                //                     <Text style={styles.itemText}>{item.name}</Text>
+                //                 </View>
+                //                 <View style={styles.checkBoxFlex}>
+                //                     <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}}>
+                //                         <View>
+                //                             <Image style={{height:15,width:15}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                //                         </View>
+                //                     </TouchableNativeFeedback>
+                //                 </View>
+                //             </View>
+                //             <View>
+                //                 <Text style={styles.itemInfoText}>{item.event_type}</Text>
+                //             </View>
+                //           </View>
+                //       </TouchableHighlight>
+                //     </View>    
+                //         <View style={styles.footer}>
+                //             <TouchableNativeFeedback
+                //                 onPress ={()=>{Linking.openURL(String(item.venue_url))}}
+                //                 background={Platform.OS === 'android' ? TouchableNativeFeedback.SelectableBackground() : ''}>
+                //                 <View style={styles.innerFooter}>
+                //                     <View style={{flex:1}}>
+                //                         <Image style={{height:20,width:20,marginTop:2}}source={require('./icons/image.png')}/>
+                //                     </View>
+                //                     <View style={{flex:8}}>
+                //                         <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{item.venue_name}</Text>
+                //                     </View>    
+                //                 </View>
+                //             </TouchableNativeFeedback>
+                //             <View style={styles.innerFooterInvisible}>
+                //                 <View style={{flex:1}}>
+                //                     <Image style={{height:20,width:20,marginTop:2,marginLeft:15,}}source={require('./icons/imagetime.png')}/>
+                //                 </View>
+                //                 <View style={{flex:8}}>
+                //                     <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{this.getTime(String(item.start_time),String(item.date))}</Text>
+                //                 </View>
+                //             </View>    
+                //         </View>
+                // </View>
             );
         }
     };

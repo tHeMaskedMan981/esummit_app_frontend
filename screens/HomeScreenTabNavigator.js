@@ -6,7 +6,7 @@ import {
     Image
 } from "react-native";
 
-import { createBottomTabNavigator,createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation'
+import { createBottomTabNavigator,createTabNavigator,createMaterialTopTabNavigator, createStackNavigator } from 'react-navigation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import ScreenOne from './TabNavigator/ScreenOne'
@@ -19,79 +19,52 @@ import ScreenThree2 from './TabNavigator/ScreenThree2'
 //var globalCheckBoxDict = {};
 
 
+class LogoTitle extends React.Component {
+    render() {
+      return (
+        <Image
+          source={require('../assets/images/robot-dev.png')}
+          style={{ width: 30, height: 30 }}
+        />
+      );
+    }
+  }
+
 export default class AppTabNavigator extends Component {
-    // constructor(props){
-    //     super(props);
-    //     this.state = {
-    //         parentCheckBoxDict:globalCheckBoxDict,
-    //         initializeCheckDict: this.initializeCheckDict.bind(this),
-    //         componentDidMount: this.componentDidMount.bind(this),
-    //     }
-    // }
-    // componentDidMount(){
-    //     fetch('http://esummit.ecell.in/v1/api/events')
-    //     .then((response) => response.json())
-    //     .then((responseJson)=>{
-    //         this.setState({
-    //             dataSource: responseJson,
-    //         });
-    //     })
-    //     .then(()=>{
-    //         this.state.initializeCheckDict();
-    //     })
-    // }
-    
+
     static navigationOptions = ({ navigation }) => {
+
+        
         return {
-            // drawerIcon:(
-            //     <Ionicons name="md-home" size={16} />
-            // ),
+            // headerTitle: <LogoTitle />,
+            title:'E-Summit\'19',
+            headerTintColor: '#fff',
             headerLeft: (
-                <View style={{ padding: 10 }}>
-                    <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
+                <View style={{ padding: 10,flexDirection:'row' }}>
+                    <Ionicons name="md-menu" size={44} color='white' onPress={() => navigation.openDrawer()} />
                 </View>
-            )
+            ),
+            headerStyle: {
+                backgroundColor: '#221d3d',
+              },
+              headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
+          
         }
     }
-    // initializeCheckDict(){
-    //     fetch('http://esummit.ecell.in/v1/api/events/myevents/2')
-    //     .then((response) => response.json())
-    //     .then((responseJson)=>{
-    //         this.setState({
-    //             myEventsSource: responseJson,
-    //         });
-    //         console.log('myevents checked');
-    //     }).then(()=>{
-    //         // console.log(JSON.stringify(this.state.myEventsSource));
-    //         // console.log(JSON.stringify(this.state.dataSource));
-    //         console.log(JSON.stringify(this.state.myEventsSource[0]));
-    //         for(let i=0;i<this.state.myEventsSource.length;++i){
-    //             globalCheckBoxDict[String(this.state.myEventsSource[i].event_id)] = true;
-    //         }
-    //         for(let i=0;i<this.state.dataSource.length;++i){
-    //             if(!(String(this.state.dataSource[i].event_id) in checkDict)){
-    //             globalCheckBoxDict[String(this.state.dataSource[i].event_id)] = false;
-    //             }
-    //         }
-    //         // for(let obj in this.state.dataSource){
-    //         //     if(!(String(obj.event_id) in checkDict)){
-    //         //         checkDict[String(obj.event_id)] = false;
-    //         //         console.log(obj.event_id);
-    //         //     }
-    //         // }
-    //         this.setState({
-    //             parentCheckBoxDict: globalCheckBoxDict,
-    //         })
-    //     })
-    // }
     render() {
         return (
             <HomeScreenTabNavigator screenProps={{  navigation: this.props.navigation,
                                                     user_name:this.props.screenProps.user_name,
                                                     user_id:this.props.screenProps.user_id,
                                                     checkDict:this.props.screenProps.checkDict,
+                                                    count:this.props.screenProps.count,
                                                     handleClick:this.props.screenProps.handleClick,
-                                                    myEventsSource:this.props.screenProps.myEventsSource,}} />
+                                                    handleRefresh:this.props.screenProps.handleRefresh,
+                                                    myEventsSource:this.props.screenProps.myEventsSource,
+                                                    dataSource:this.props.screenProps.dataSource}} />
         )
     }
 }
@@ -107,7 +80,20 @@ const ScreenOneTabNavigator = new createMaterialTopTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Day 2'}
     }    
-})
+},
+{
+        tabBarOptions: {
+            activeTintColor: 'white',
+            activeBackgroundColor:'#D3D3D3',
+            labelStyle: {
+              fontSize: 14,
+            //   color:'red',
+            },
+            style: {
+            //   backgroundColor: '#6673a4',
+            },
+          }
+    });
 const ScreenTwoTabNavigator = new createMaterialTopTabNavigator({
     screenTwoDay1: {
         screen: ScreenTwo,
@@ -133,35 +119,60 @@ const ScreenThreeTabNavigator = new createMaterialTopTabNavigator({
     }    
 })
 
-const HomeScreenTabNavigator = new createBottomTabNavigator({
+// const HomeScreenTabNavigator = new createBottomTabNavigator({
+//     ScreenOne: {
+//         screen: ScreenOneTabNavigator,
+//         navigationOptions: {
+//             tabBarLabel: 'Highlight Events',
+//             activeBackgroundColor:'#D3D3D3',
+//             activeTintColor:'#D3D3D3',
+//             tabBarIcon: () => (
+//                 <Ionicons name="ios-star"  size={16} />
+//             )
+//         }
+//     },
+//     // ScreenTwo: {
+//     //     screen: ScreenTwoTabNavigator,
+//     //     navigationOptions: {
+//     //         tabBarLabel: 'My Events',
+//     //         tabBarIcon: () => (
+//     //             <Ionicons name="md-person"  size={16} />
+//     //         )
+//     //     }
+//     // },
+//     // ScreenThree:{
+//     //     screen: ScreenThreeTabNavigator,
+//     //     navigationOptions:{
+//     //         tabBarLabel:'Updated Events',
+//     //         tabBarIcon:()=>(
+//     //             <Ionicons name='md-notifications' size={16}/>
+//     //         )
+//     //     }
+//     // }
+// },
+// {
+//     tabBarOptions: {
+//         activeTintColor: '#6673a4',
+//         activeBackgroundColor:'#D3D3D3',
+//         labelStyle: {
+//           fontSize: 14,
+//         },
+//         style: {
+//           backgroundColor: 'white',
+//         },
+//       }
+// }
+
+// )
+
+const HomeScreenTabNavigator = new createStackNavigator({
     ScreenOne: {
         screen: ScreenOneTabNavigator,
         navigationOptions: {
-            tabBarLabel: 'Highlight Events',
-            tabBarIcon: () => (
-                <Ionicons name="ios-star" size={16} />
-            )
-        }
-    },
-    ScreenTwo: {
-        screen: ScreenTwoTabNavigator,
-        navigationOptions: {
-            tabBarLabel: 'My Events',
-            tabBarIcon: () => (
-                <Ionicons name="md-person" size={16} />
-            )
-        }
-    },
-    ScreenThree:{
-        screen: ScreenThreeTabNavigator,
-        navigationOptions:{
-            tabBarLabel:'Updated Events',
-            tabBarIcon:()=>(
-                <Ionicons name='md-notifications' size={16}/>
-            )
-        }
+          header: null
+        }},
     }
-})
+)
 
 
 const styles = StyleSheet.create({

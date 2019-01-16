@@ -227,6 +227,18 @@ class ScreenTwo2 extends Component {
         );
     };
     onClickStar = (item) => {
+        if (this.props.screenProps.user_id==null)
+        {
+           
+                ToastAndroid.showWithGravityAndOffset(
+                    'Not logged in. Login to access this feature',
+                    ToastAndroid.SHORT,
+                    ToastAndroid.TOP,
+                    0,
+                    40,
+                );
+            return;
+        }
         this.props.screenProps.handleClick(item.event_id);
         this.setState({seed:2});
         ToastAndroid.showWithGravityAndOffset(
@@ -238,9 +250,10 @@ class ScreenTwo2 extends Component {
         )
     };
     customRenderFunction = ((item)=>{
+        
         if(String(item.day)=='day2'){
             return(
-                <View elevation={10} style={item.updated?styles.customitem:styles.item}>
+                <View style={item.updated?styles.customitem:styles.item}>
                     <View style={styles.touchableContainer}> 
                       <TouchableHighlight>    
                           <View style={{flex:2}}>  
@@ -255,7 +268,7 @@ class ScreenTwo2 extends Component {
                                 <View style={styles.checkBoxFlex}>
                                     <TouchableNativeFeedback onPress = {()=>{this.onClickStar(item)}}>
                                         <View>
-                                            <Image style={{height:30,width:30}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
+                                            <Image style={{height:15,width:15}} source={this.props.screenProps.checkDict[String(item.event_id)]?onCheckBoxImage:offCheckBoxImage}/>
                                         </View>
                                     </TouchableNativeFeedback>
                                 </View>
@@ -297,6 +310,14 @@ class ScreenTwo2 extends Component {
             return(
                 <View style={{flex:1}}>
                     <ActivityIndicator/>
+                </View>
+            )
+        }
+        else if (this.props.screenProps.user_id==null)
+        {
+            return(
+                <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+                    <Text>Please Login to access this feature</Text>
                 </View>
             )
         }
