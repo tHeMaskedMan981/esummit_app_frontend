@@ -14,11 +14,20 @@ class DeveloperScreen extends Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
+            title: "Developer",
+            headerTintColor: '#fff',
+            headerStyle: {
+                backgroundColor: 'steelblue',
+              },
             headerLeft: (
                 <View style={{ padding: 10 }}>
-                    <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
+                    <Ionicons name="md-menu" size={44} color='white' onPress={() => navigation.openDrawer()} />
                 </View>
-            )
+            ),
+            headerTintColor: '#fff',
+              headerTitleStyle: {
+                fontWeight: 'bold',
+              },
         }
     }
 

@@ -17,9 +17,18 @@ export default StyleSheet.create({
         fontFamily:'latoRegular',
         color: "#221d3d",
     },
+    button_input: {
+        width: 200,
+        height: 44,
+        padding: 10,
+        borderWidth: 1,
+        borderColor: 'black',
+        marginBottom: 10,
+      },
     footer:{
         flex:1,
         alignItems:'center',
+        justifyContent:'center',
         flexDirection:'row',
         marginLeft:5,
         marginRight:5,
@@ -38,6 +47,7 @@ export default StyleSheet.create({
     innerFooter:{
         flex:1,
         justifyContent:'center',
+        alignItems:'center',
         flexDirection:'row',
         marginLeft:5,
         padding:5,
@@ -110,16 +120,21 @@ export default StyleSheet.create({
       flex:2,
     },
     titleFlex:{
-        flex:5,
+        flex:2,
+        marginTop: 1,
     },
     checkBoxFlex:{
-        flex:0.55,
+        flex:1,
         marginTop: 1,
+        justifyContent:'center',
+        alignItems:'center',
+        fontWeight:'bold',
     },
     innerFooterInvisible:{
         flex:1,
         justifyContent:'center',
         flexDirection:'row',
+        alignItems:'center',
     },
     screen:{
         position:'absolute',
@@ -200,6 +215,13 @@ export default StyleSheet.create({
         backgroundColor: 'steelblue',
         flexDirection:'column'
       },
+    welcome_container_normal: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        flexDirection:'column'
+      },
     
       background:{
         width:'100%',
@@ -233,14 +255,14 @@ export default StyleSheet.create({
         marginTop:10,
         width: '70%',
         paddingBottom:'auto',
-        borderRadius: 10,
+        // borderRadius: 10,
     
       },
       binput1: {
         marginTop:10,
         width: '70%',
         paddingBottom:'auto',
-        borderRadius: 10,
+        // borderRadius: 10,
     
         
         },

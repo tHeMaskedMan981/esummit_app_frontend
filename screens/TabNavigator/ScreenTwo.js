@@ -199,6 +199,18 @@ class ScreenTwo2 extends Component {
         );
     };
     onClickStar = (item) => {
+        if (this.props.screenProps.user_id==null)
+        {
+           
+                ToastAndroid.showWithGravityAndOffset(
+                    'Not logged in. Login to access this feature',
+                    ToastAndroid.SHORT,
+                    ToastAndroid.TOP,
+                    0,
+                    40,
+                );
+            return;
+        }
         this.props.screenProps.handleClick(item.event_id);
         this.setState({seed:2});
         ToastAndroid.showWithGravityAndOffset(
@@ -270,6 +282,14 @@ class ScreenTwo2 extends Component {
             return(
                 <View style={{flex:1}}>
                     <ActivityIndicator/>
+                </View>
+            )
+        }
+        else if (this.props.screenProps.user_id==null)
+        {
+            return(
+                <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+                    <Text>Please Login to access this feature</Text>
                 </View>
             )
         }

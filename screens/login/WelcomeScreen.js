@@ -398,18 +398,18 @@ storeData(){
         <View style={styles.buttons}>
         <GradientButton
           style= {styles.binput1}
-          textStyle={{ fontSize: 24 }}
+          textStyle={{ fontSize: 20 }}
           text="Sign In"
           height={40}
           gradientBegin="#6673a4"
            gradientEnd="#6673a4"
-          impact='True'
-          impactStyle = 'Light'
+          // impact='True'
+          // impactStyle = 'Light'
           onPressAction={this.onLogin.bind(this)}
         />
 
           <GradientButton text='Google Sign In'
-           textStyle={{ fontSize: 24 }}
+           textStyle={{ fontSize: 20 }}
            height={40}
            style={styles.binput}
            gradientBegin="#6673a4"
@@ -418,10 +418,16 @@ storeData(){
           //  impactStyle = 'Light'
            onPressAction={this.onGoogleLogin.bind(this)} 
            />
+           {/* <Button title='Google Sign In'
+           textStyle={{ fontSize: 20 }}
+           height={40}
+           style={styles.binput}
+           onPress={this.onGoogleLogin.bind(this)} 
+           /> */}
           <GradientButton
           text="Continue as Guest"
           style={styles.binput}
-          textStyle={{ fontSize: 24 }}
+          textStyle={{ fontSize: 20 }}
           height={40}
           gradientBegin="#6673a4"
            gradientEnd="#6673a4"

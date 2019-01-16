@@ -32,9 +32,13 @@ class SpeakerScreen extends Component {
         
                 return {
                     title:'Speakers',
+                    headerStyle: {
+                        backgroundColor: 'steelblue',
+                      },
+                      headerTintColor: '#fff',
                     headerLeft: (
                         <View style={{ padding: 10 }}>
-                            <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
+                            <Ionicons name="md-menu" size={44} color='white' onPress={() => navigation.openDrawer()} />
                         </View>
                     )
                 }

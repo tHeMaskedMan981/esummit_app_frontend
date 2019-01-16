@@ -22,9 +22,13 @@ export default class AppTabNavigator extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
             title: "Schedule",
+            headerTintColor: '#fff',
+            headerStyle: {
+                backgroundColor: 'steelblue',
+              },
             headerLeft: (
                 <View style={{ padding: 10 }}>
-                    <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
+                    <Ionicons name="md-menu" size={44} color='white' onPress={() => navigation.openDrawer()} />
                 </View>
             ),
             drawerLabel: 'Schedule',
@@ -44,7 +48,9 @@ export default class AppTabNavigator extends Component {
                 checkDict:this.props.screenProps.checkDict,
                 count:this.props.screenProps.count,
                 handleClick:this.props.screenProps.handleClick,
-                myEventsSource:this.props.screenProps.myEventsSource}} />
+                handleRefresh:this.props.screenProps.handleRefresh,
+                myEventsSource:this.props.screenProps.myEventsSource,
+                dataSource:this.props.screenProps.dataSource}} />
         )
     }
 }
@@ -91,7 +97,7 @@ const EventTabNavigator = new createBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Speakers',
             tabBarIcon: () => (
-                <Ionicons name="md-person" size={24} />
+                <Ionicons name="md-person" color='white' size={20} />
             )
         }
     },
@@ -100,7 +106,7 @@ const EventTabNavigator = new createBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Competitions',
             tabBarIcon: () => (
-                <Ionicons name="md-trophy" size={24} />
+                <Ionicons name="md-trophy" color='white' size={20} />
             )
         }
     },
@@ -109,12 +115,24 @@ const EventTabNavigator = new createBottomTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Others',
             tabBarIcon: () => (
-                <Ionicons name="ios-people" size={24} />
+                <Ionicons name="ios-people" color='white' size={20} />
             )
         }
     },
-    
-})
+},
+{
+    tabBarOptions: {
+        activeTintColor: 'black',
+        activeBackgroundColor:'#6674a3',
+        labelStyle: {
+          fontSize: 12,
+          color:'white'
+        },
+        style: {
+          backgroundColor: '#221d3d',
+        },
+      }
+});
 
 const styles = StyleSheet.create({
     container: {

@@ -87,7 +87,7 @@ const CustomDrawerContentComponent = (props) => (
             style={styles.drawerImage}
             source={require('../assets/images/suit.jpg')} />
             <View style={styles.welcome}>
-                <Text>Hi {user_name}</Text>
+                <Text style={{color:'white', fontWeight: 'bold'}}>Hi {user_name}</Text>
             </View>
         </Body>
       </Header>
@@ -100,17 +100,17 @@ const CustomDrawerContentComponent = (props) => (
   );
   
 const AppDrawerNavigator = new createDrawerNavigator({
-    HomeScreen: { screen: InnerStackNavigator,
+    Highlights: { screen: InnerStackNavigator,
         navigationOptions: {
             drawerIcon: () => (
-                <Ionicons name="md-home" size={16} />
+                <Ionicons name="md-star" size={16} />
             )
         }
     },
     Schedule: { screen: EventStackNavigator, 
         navigationOptions: {
             drawerIcon: () => (
-                <Ionicons name="md-home" size={16} />
+                <Ionicons name="md-bookmark" size={16} />
             )
         }
     },
@@ -124,14 +124,14 @@ const AppDrawerNavigator = new createDrawerNavigator({
     Speakers: {screen: SpeakerStackNavigator,
         navigationOptions: {
             drawerIcon: () => (
-                <Ionicons name="md-home" size={16} />
+                <Ionicons name="md-mic" size={16} />
             )
         }
     },
     Helpline: {screen : HelplineStackNavigator,
         navigationOptions: {
             drawerIcon: () => (
-                <Ionicons name="md-home" size={16} />
+                <Ionicons name="md-help" size={16} />
             )
         }
     },
@@ -145,7 +145,7 @@ const AppDrawerNavigator = new createDrawerNavigator({
     Contacts: {screen : ContactStackNavigator,
         navigationOptions: {
             drawerIcon: () => (
-                <Ionicons name="md-home" size={16} />
+                <Ionicons name="md-call" size={16} />
             )
         }
     },
@@ -157,21 +157,22 @@ const AppDrawerNavigator = new createDrawerNavigator({
             )
         }
     },
-    Logout: {screen : LogoutStackNavigator,
-        navigationOptions: {
-            drawerIcon: () => (
-                <Ionicons name="md-home" size={16} />
-            )
-        }
-    },
+    // Logout: {screen : LogoutStackNavigator,
+    //     navigationOptions: {
+    //         drawerIcon: () => (
+    //             <Ionicons name="md-home" size={16} />
+    //         )
+    //     }
+    // },
     },
     {
-      initialRouteName: 'HomeScreen',
+      initialRouteName: 'Highlights',
       drawerPosition: 'left',
       contentComponent: CustomDrawerContentComponent,
       drawerOpenRoute: 'DrawerOpen',
       drawerCloseRoute: 'DrawerClose',
       drawerToggleRoute: 'DrawerToggle',
+      backgroundColor: 'steelblue',
       defaultNavigationOptions: {
         headerStyle: {
           backgroundColor: 'steelblue',
@@ -288,13 +289,20 @@ export default class AppTabNavigator extends Component {
         //         this.setState({speakerSource: responseJson});
         //         this._storeData("speakerSource", responseJson);
         //     });
-        //     fetch('http://esummit.ecell.in/v1/api/events')
-        //     .then((response)=>response.json())
-        //     .then((responseJson)=>{
-        //         this.setState({dataSource: responseJson});
-        //         this._storeData("dataSource", responseJson);
-        //         console.log("all events : " + JSON.stringify(responseJson)); 
-        //     });
+            fetch('http://esummit.ecell.in/v1/api/events')
+            .then((response)=>response.json())
+            .then((responseJson)=>{
+                this.setState({dataSource: responseJson});
+                this._storeData("dataSource", responseJson);
+                ToastAndroid.showWithGravityAndOffset(
+                    'Updated',
+                    ToastAndroid.SHORT,
+                    ToastAndroid.TOP,
+                    0,
+                    40,
+                )
+                console.log("refresh and update drawer called" ); 
+            });
         //     fetch('http://esummit.ecell.in/v1/api/events/competition/')
         //     .then((response)=>response.json())
         //     .then((responseJson)=>{
@@ -307,7 +315,8 @@ export default class AppTabNavigator extends Component {
         //         this.setState({othersSource: responseJson});
         //         this._storeData("othersSource", responseJson);
         //     });
-
+        if (user_id==null)
+        return;
         console.log("inside refresh and update");
             fetch('http://esummit.ecell.in/v1/api/events/myevents/'+user_id.toString())
             .then((response)=>response.json())
@@ -367,34 +376,22 @@ export default class AppTabNavigator extends Component {
         })
     }
 
-    CallMyEventsApi(evt_id){
-        // add the event in myevents field of the User
+    handleClick = (event_id) => {
+        // Update the checkDict, remove the event from myevents if already present, or add it from allEvents.
+        // update the local storage, state and call the api 
 
-        fetch('http://esummit.ecell.in/v1/api/events/myevent_add', {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            event_id: evt_id,
-            user_id: 2,
-        }),
-        }).then(()=>{
-            console.log("event with event id "+evt_id.toString()+" added to user 2 ");
+        if (user_id==null)
+        {
             ToastAndroid.showWithGravityAndOffset(
-                "my event processed",
+                'Not logged in. Login to access this feature',
                 ToastAndroid.SHORT,
                 ToastAndroid.TOP,
                 0,
                 40,
-            )
-        });
-    }
-
-    handleClick = (event_id) => {
-        // Update the checkDict, remove the event from myevents if already present, or add it from allEvents.
-        // update the local storage, state and call the api 
+            );
+            return;
+        }
+        
 
         var data = this.state.count;
         data = data+1;
@@ -439,7 +436,6 @@ export default class AppTabNavigator extends Component {
     render() {
         const { navigation } = this.props;
         user_id = navigation.getParam('user_id', 'NO-ID');
-        console.log("user_id is : " + user_id.toString());
         user_name = navigation.getParam('user_name', 'Disruptor');
         const email = navigation.getParam('email', 'NO-ID');
         const esummit_id = navigation.getParam('esummit_id', 'NO-ID');
@@ -451,6 +447,7 @@ export default class AppTabNavigator extends Component {
                                                 count:this.state.count,
                                                 handleClick:this.handleClick,
                                                 checkDict:this.state.Dict,
+                                                handleRefresh:this.refresh_and_update,
                                                 myEventsSource:this.state.myEventsSource,
                                                 dataSource:this.state.dataSource,
                                                 
@@ -471,7 +468,7 @@ const styles = StyleSheet.create({
     },
     drawerHeader: {
       height: 200,
-      backgroundColor: 'steelblue'
+      backgroundColor: '#221d3d'
     },
     drawerImage: {
       height: 100,

@@ -38,13 +38,14 @@ export default class AppTabNavigator extends Component {
         return {
             // headerTitle: <LogoTitle />,
             title:'E-Summit\'19',
+            headerTintColor: '#fff',
             headerLeft: (
                 <View style={{ padding: 10,flexDirection:'row' }}>
-                    <Ionicons name="md-menu" size={44} onPress={() => navigation.openDrawer()} />
+                    <Ionicons name="md-menu" size={44} color='white' onPress={() => navigation.openDrawer()} />
                 </View>
             ),
             headerStyle: {
-                backgroundColor: 'steelblue',
+                backgroundColor: '#221d3d',
               },
               headerTintColor: '#fff',
               headerTitleStyle: {
@@ -61,7 +62,9 @@ export default class AppTabNavigator extends Component {
                                                     checkDict:this.props.screenProps.checkDict,
                                                     count:this.props.screenProps.count,
                                                     handleClick:this.props.screenProps.handleClick,
-                                                    myEventsSource:this.props.screenProps.myEventsSource}} />
+                                                    handleRefresh:this.props.screenProps.handleRefresh,
+                                                    myEventsSource:this.props.screenProps.myEventsSource,
+                                                    dataSource:this.props.screenProps.dataSource}} />
         )
     }
 }
@@ -77,7 +80,20 @@ const ScreenOneTabNavigator = new createMaterialTopTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Day 2'}
     }    
-})
+},
+{
+        tabBarOptions: {
+            activeTintColor: 'white',
+            activeBackgroundColor:'#D3D3D3',
+            labelStyle: {
+              fontSize: 14,
+            //   color:'red',
+            },
+            style: {
+            //   backgroundColor: '#6673a4',
+            },
+          }
+    });
 const ScreenTwoTabNavigator = new createMaterialTopTabNavigator({
     screenTwoDay1: {
         screen: ScreenTwo,
@@ -103,35 +119,60 @@ const ScreenThreeTabNavigator = new createMaterialTopTabNavigator({
     }    
 })
 
-const HomeScreenTabNavigator = new createBottomTabNavigator({
+// const HomeScreenTabNavigator = new createBottomTabNavigator({
+//     ScreenOne: {
+//         screen: ScreenOneTabNavigator,
+//         navigationOptions: {
+//             tabBarLabel: 'Highlight Events',
+//             activeBackgroundColor:'#D3D3D3',
+//             activeTintColor:'#D3D3D3',
+//             tabBarIcon: () => (
+//                 <Ionicons name="ios-star"  size={16} />
+//             )
+//         }
+//     },
+//     // ScreenTwo: {
+//     //     screen: ScreenTwoTabNavigator,
+//     //     navigationOptions: {
+//     //         tabBarLabel: 'My Events',
+//     //         tabBarIcon: () => (
+//     //             <Ionicons name="md-person"  size={16} />
+//     //         )
+//     //     }
+//     // },
+//     // ScreenThree:{
+//     //     screen: ScreenThreeTabNavigator,
+//     //     navigationOptions:{
+//     //         tabBarLabel:'Updated Events',
+//     //         tabBarIcon:()=>(
+//     //             <Ionicons name='md-notifications' size={16}/>
+//     //         )
+//     //     }
+//     // }
+// },
+// {
+//     tabBarOptions: {
+//         activeTintColor: '#6673a4',
+//         activeBackgroundColor:'#D3D3D3',
+//         labelStyle: {
+//           fontSize: 14,
+//         },
+//         style: {
+//           backgroundColor: 'white',
+//         },
+//       }
+// }
+
+// )
+
+const HomeScreenTabNavigator = new createStackNavigator({
     ScreenOne: {
         screen: ScreenOneTabNavigator,
         navigationOptions: {
-            tabBarLabel: 'Highlight Events',
-            tabBarIcon: () => (
-                <Ionicons name="ios-star" size={16} />
-            )
-        }
-    },
-    ScreenTwo: {
-        screen: ScreenTwoTabNavigator,
-        navigationOptions: {
-            tabBarLabel: 'My Events',
-            tabBarIcon: () => (
-                <Ionicons name="md-person" size={16} />
-            )
-        }
-    },
-    // ScreenThree:{
-    //     screen: ScreenThreeTabNavigator,
-    //     navigationOptions:{
-    //         tabBarLabel:'Updated Events',
-    //         tabBarIcon:()=>(
-    //             <Ionicons name='md-notifications' size={16}/>
-    //         )
-    //     }
-    // }
-})
+          header: null
+        }},
+    }
+)
 
 
 const styles = StyleSheet.create({
