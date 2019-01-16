@@ -452,7 +452,7 @@ storeData(){
            {/* </LinearGradient> */}
           {/* </View>
         </View> */}
-        {/* {this.state.islogin=='true'? this.navigate(): null} */}
+        {this.state.islogin=='true'? this.navigate(): null}
       </View>
     );
   }
