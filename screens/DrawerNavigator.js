@@ -135,13 +135,20 @@ const AppDrawerNavigator = new createDrawerNavigator({
             )
         }
     },
-    Developer: {screen : DeveloperStackNavigator,
+    Feedback: {screen : FeedbackStackNavigator,
         navigationOptions: {
             drawerIcon: () => (
-                <Ionicons name="md-code-working" size={16} />
+                <Ionicons name="md-book" size={16} />
             )
         }
     },
+    // Developer: {screen : DeveloperStackNavigator,
+    //     navigationOptions: {
+    //         drawerIcon: () => (
+    //             <Ionicons name="md-code-working" size={16} />
+    //         )
+    //     }
+    // },
     // Contacts: {screen : ContactStackNavigator,
     //     navigationOptions: {
     //         drawerIcon: () => (
@@ -150,13 +157,14 @@ const AppDrawerNavigator = new createDrawerNavigator({
     //     }
     // },
     
-    Feedback: {screen : FeedbackStackNavigator,
-        navigationOptions: {
-            drawerIcon: () => (
-                <Ionicons name="md-book" size={16} />
-            )
-        }
-    },
+
+    // Developers: {screen: DeveloperStackNavigator,
+    //     navigationOptions:{
+    //         drawerIcon:()=>(
+    //             <Ionicons name="md-home" size={16}/>
+    //         )
+    //     }
+    // }
     // Logout: {screen : LogoutStackNavigator,
     //     navigationOptions: {
     //         drawerIcon: () => (
