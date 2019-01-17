@@ -26,7 +26,7 @@ class SpeakerScreen extends Component {
                 return {
                     title:'Feedback',
                     headerStyle: {
-                        backgroundColor: 'steelblue',
+                        backgroundColor: '#221d3d',
                       },
                       headerTintColor: '#fff',
                     headerLeft: (

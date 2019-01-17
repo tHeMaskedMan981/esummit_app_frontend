@@ -369,7 +369,7 @@ storeData(){
                                       
         </View>
         <View style={styles.inputs}>
-        <TextInput
+        {/* <TextInput
           value={this.state.email}
           onChangeText={ (email) => {
               this.setState({ email });
@@ -378,7 +378,7 @@ storeData(){
               }}
           placeholder={'Email'}
           style={styles.input}
-        />
+        /> */}
         {/* <View style={styles.err} >
         <Text> hi{this.state.user_name} </Text>
         <Text>hi,{this.state.email}</Text>
@@ -387,16 +387,16 @@ storeData(){
         {console.log(this.state.islogin)}
       </View> */}
 
-        <TextInput
+        {/* <TextInput
           value={this.state.esummit_id}
           onChangeText={(esummit_id) => this.setState({ esummit_id })}
           placeholder={'Esummit_id'}
           secureTextEntry={true}
           style={styles.input}
-        />
+        /> */}
         </View>
         <View style={styles.buttons}>
-        <GradientButton
+        {/* <GradientButton
           style= {styles.binput1}
           textStyle={{ fontSize: 20 }}
           text="Sign In"
@@ -406,9 +406,9 @@ storeData(){
           // impact='True'
           // impactStyle = 'Light'
           onPressAction={this.onLogin.bind(this)}
-        />
+        /> */}
 
-          <GradientButton text='Google Sign In'
+          {/* <GradientButton text='Google Sign In'
            textStyle={{ fontSize: 20 }}
            height={40}
            style={styles.binput}
@@ -417,7 +417,7 @@ storeData(){
           //  impact='True'
           //  impactStyle = 'Light'
            onPressAction={this.onGoogleLogin.bind(this)} 
-           />
+           /> */}
            {/* <Button title='Google Sign In'
            textStyle={{ fontSize: 20 }}
            height={40}
@@ -458,3 +458,91 @@ storeData(){
   }
 }
 
+
+
+// import React, { Component } from 'react';
+// import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage, Image , ToastAndroid } from 'react-native';
+// import GradientButton from 'react-native-gradient-buttons'
+// import Ionicons from 'react-native-vector-icons/Ionicons'
+// import background from '../../assets/images/Compi.png';
+// import styles from '../styles';
+
+// export default class WelcomeScreen extends Component {
+//   constructor(props) {
+//     super(props);
+    
+//     this.state = {
+//       email: null,
+//       esummit_id: null,
+//       email_err:'',
+//       user_name:null,
+//       user_id:null,
+//       get_username:null,
+//       get_email:null,
+//       get_esummitid:null,
+//       get_userid:null,
+//       islogin:'false',
+//       user_email: null,
+//       user_esummit_id: null,
+//       user_user_name:null,  
+//       user_user_id:null,
+//       data:0,
+//       user_islogin:'false',
+//     };
+//   }
+
+//   componentDidMount(){
+  
+//   }
+//   render() {
+
+//     return (
+//       <View style={styles.welcome_container}>
+        
+//         <View style={{color:'white', flex:1, marginTop:50}}> 
+//           <Text style={{color:'white', fontWeight:'bold', fontSize:35,justifyContent:'center',
+//         alignItems:'center',}}> E- Summit 19</Text>
+//           <Text style={{color:'white',fontWeight:'bold', fontSize:20,justifyContent:'center',
+//         alignItems:'center',}}> Paradigm of Disruption</Text>  
+//         </View>
+//         <View style={{color:'white', flex:3}}>
+//         <View style={{width:'80%'}}>
+//                 <Image 
+//                 // source={{uri:this.state.event_photo_url.toString(), isStatic:'False'}}
+//                 source={require('../../assets/images/main_page.png')}
+                
+//                 style={styles.image}
+//                 />
+//             </View>
+//         </View>
+//         <View style={{color:'white', flex:1}}>
+//         <Button title="Let's Disrupt" 
+//           style={{width:'60%'}}
+        
+//         onPress={() => {
+//             /* 1. Navigate to the Details route with params */
+//             this.props.navigation.navigate('DrawerNavigator', {
+//               user_id: this.state.user_id,
+//               user_name: this.state.user_name,
+//               esummit_id:this.state.esummit_id,
+//               email:this.state.email,
+//             });
+//           }}></Button>
+//         </View>
+          
+//     </View>
+//     );
+//   }
+// }
+
+// // const styles = StyleSheet.create({
+// //   image:{
+// //     width:'80%'
+// //   },
+
+// //   container: {
+// //       flex: 1,
+// //       alignItems: 'center',
+// //       justifyContent: 'center'
+// //   }
+// // });

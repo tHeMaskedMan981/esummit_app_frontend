@@ -142,6 +142,7 @@ export default StyleSheet.create({
         height:'100%',
         width:'100%',
         backgroundColor:'rgba(68, 69, 71, 0.5)',
+        // backgroundColor:'#221d3d',
         justifyContent: 'center',
         alignItems:'center'
         
@@ -168,11 +169,18 @@ export default StyleSheet.create({
     },
     screen_name:{
        fontSize:24,
+       fontWeight:'bold',
+       color:"#6674a3",
     },
     screen_desc:{
         width:'100%',
         // height:'40%',
         textAlign:'left',
+        // backgroundColor:'#6674a3',
+        color:"#221d3d",
+        // margin:5,
+        // justifyContent:'center',
+        // alignItems:'center'
         
     },
     vbutn:{
@@ -212,8 +220,9 @@ export default StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'steelblue',
-        flexDirection:'column'
+        backgroundColor: '#221d3d',
+        flexDirection:'column',
+        padding:20
       },
     welcome_container_normal: {
         flex: 1,

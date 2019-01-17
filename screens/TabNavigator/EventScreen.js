@@ -114,39 +114,19 @@ class EventScreen extends Component {
             <TouchableNativeFeedback onPress={()=>{this.setState({
                 screen:0,
             })}}>
-                <Ionicons name='md-close' size={24}/>
+                <Ionicons name='md-close' size={30}/>
             </TouchableNativeFeedback>
             </View>
-            <View style={styles.screen_image}>
-                <Image 
-                // source={{uri:this.state.event_photo_url.toString(), isStatic:'False'}}
-                source={require('../../assets/images/Compi.png')}
-                
-                style={styles.image}
-                />
-            </View>
-
             <View style={styles.screen_desc}>
-                <Text style={styles.screen_name}>{this.state.event_name}</Text>
-                <View style={{flexDirection:'row'}}>
-                <Ionicons name="ios-heart" size={29} style={{color:"#e24f6f"}}/>
-                <Text style={{fontSize:22,marginLeft:10}}>{this.state.likes}</Text>
-                </View>
-                <Text>{this.state.event_desc}</Text>
+            {/* <View style={{backgroundColor:'#221d3d'}}> */}
+            <Text style={styles.screen_name}>{this.state.event_name}</Text>
             </View>
-            <View style={styles.vbutn}>
-            <GradientButton 
-                text='Learn More'
-                gradientBegin="#6673a4"
-                gradientEnd="#6673a4"
-                textStyle={{ fontSize: 14 }}
-                height={'70%'}
-                width={'34%'}
-                impact='True'
-                impactStyle = 'Light'
-                onPressAction={()=>{Linking.openURL(this.state.event_web)}}
-            />
-           </View>
+            <View style={{margin:10, textAlign:'justify'}}>
+               <Text style={{fontSize:15}} >{this.state.event_desc}</Text>
+            </View>
+                
+            
+
             </View>
             </View>
         )
@@ -218,7 +198,7 @@ class EventScreen extends Component {
                     </View>
                     {/* event type */}
                     <View>
-                        <Text style={styles.itemInfoText}>{item.event_type}</Text>
+                        <Text style={styles.itemInfoText}>{item.event_type=='speaker'?item.speaker:item.event_type}</Text>
                     </View>
                   </View>
               </TouchableHighlight>
@@ -234,10 +214,10 @@ class EventScreen extends Component {
                     <View style={styles.innerFooter}>
                         <View style={{flex:2,justifyContent:'center', alignItems:'center',}}>
                             {/* <Image style={{height:20,width:20,margin:2}}source={require('./icons/image.png')}/> */}
-                            <Ionicons name="md-compass" size={16} color='white'/>
+                            <Ionicons name="md-compass" size={20} color='white'/>
                         </View>
                         <View style={{flex:6, justifyContent:'center', alignItems:'center',}}>
-                            <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular'}}>{item.venue_name}</Text>
+                            <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular',fontWeight:'bold',}}>{item.venue_name}</Text>
                         </View>    
                     </View>
                 </TouchableNativeFeedback>
@@ -245,11 +225,11 @@ class EventScreen extends Component {
                 {/* time */}
                 <View style={styles.innerFooterInvisible}>
                     <View style={{flex:2, margin:5, padding:10}} >
-                    <Ionicons name="md-time" size={16} color='white'/>
+                    <Ionicons name="md-time" size={20} color='white'/>
                         {/* <Image style={{height:20,width:20,marginTop:2,marginLeft:15,}}source={require('./icons/imagetime.png')}/> */}
                     </View>
                     <View style={{flex:6}}>
-                        <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular',}}>{this.getTime(String(item.start_time),String(item.date))}</Text>
+                        <Text style={{color:'white',textAlign:'center',fontFamily:'latoRegular',fontWeight:'bold',}}>{this.getTime(String(item.start_time),String(item.date))}</Text>
                     </View>
                 </View>    
             </View>

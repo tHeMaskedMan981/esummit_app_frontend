@@ -11,10 +11,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import ScreenOne from './TabNavigator/ScreenOne'
 import ScreenTwo from './TabNavigator/ScreenTwo'
-import ScreenThree from './TabNavigator/ScreenThree'
+// import ScreenThree from './TabNavigator/ScreenThree'
 import ScreenOne2 from './TabNavigator/ScreenOne2'
 import ScreenTwo2 from './TabNavigator/ScreenTwo2'
-import ScreenThree2 from './TabNavigator/ScreenThree2'
+// import ScreenThree2 from './TabNavigator/ScreenThree2'
 //import HomeScreen from './HomeScreen' 
 //var globalCheckBoxDict = {};
 
@@ -37,7 +37,7 @@ export default class AppTabNavigator extends Component {
         
         return {
             // headerTitle: <LogoTitle />,
-            title:'E-Summit\'19',
+            title:'Highlights',
             headerTintColor: '#fff',
             headerLeft: (
                 <View style={{ padding: 10,flexDirection:'row' }}>
@@ -94,30 +94,39 @@ const ScreenOneTabNavigator = new createMaterialTopTabNavigator({
             },
           }
     });
-const ScreenTwoTabNavigator = new createMaterialTopTabNavigator({
-    screenTwoDay1: {
-        screen: ScreenTwo,
-        navigationOptions: {
-            tabBarLabel: 'Day 1'}
-    },
-    screenTwoDay2: {
-        screen: ScreenTwo2,
-        navigationOptions: {
-            tabBarLabel: 'Day 2'}
-    }    
-})
-const ScreenThreeTabNavigator = new createMaterialTopTabNavigator({
-    screenThreeDay1: {
-        screen: ScreenThree,
-        navigationOptions: {
-            tabBarLabel: 'Day 1'}
-    },
-    screenThreeDay2: {
-        screen: ScreenThree2,
-        navigationOptions: {
-            tabBarLabel: 'Day 2'}
-    }    
-})
+
+//     constScreenOneDay1Stack = new createStackNavigator({
+//         screenOne: {
+//             screen: ScreenOne
+//         },
+//         details: {
+//             screen: details
+//         }
+//     })
+// const ScreenTwoTabNavigator = new createMaterialTopTabNavigator({
+//     screenTwoDay1: {
+//         screen: ScreenTwo,
+//         navigationOptions: {
+//             tabBarLabel: 'Day 1'}
+//     },
+//     screenTwoDay2: {
+//         screen: ScreenTwo2,
+//         navigationOptions: {
+//             tabBarLabel: 'Day 2'}
+//     }    
+// })
+// const ScreenThreeTabNavigator = new createMaterialTopTabNavigator({
+//     screenThreeDay1: {
+//         screen: ScreenThree,
+//         navigationOptions: {
+//             tabBarLabel: 'Day 1'}
+//     },
+//     screenThreeDay2: {
+//         screen: ScreenThree2,
+//         navigationOptions: {
+//             tabBarLabel: 'Day 2'}
+//     }    
+// })
 
 // const HomeScreenTabNavigator = new createBottomTabNavigator({
 //     ScreenOne: {
