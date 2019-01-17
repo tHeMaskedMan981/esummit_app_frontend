@@ -22,14 +22,8 @@ class Developer extends Component{
     render(){
         return(
             <View style={styles.vname}>
-                <View style={styles.header}>
-                    <Text style={styles.tname}>{this.props.name}</Text>
-                </View>
                 <View style={styles.imageContainer}>
-                    <Image style={{flex:1,width:image_width}} source={this.props.imageVariable}/>
-                </View>
-                <View style={styles.footer}>
-                    <Text style={{textAlign:'center',color:'white',}}>{this.props.designation}</Text>
+
                 </View>
             </View>
         )
