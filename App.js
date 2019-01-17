@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { Component } from "react";
 import { StyleSheet, Text, View, ScrollView, Dimensions } from 'react-native';
 import { Container, Content, Icon, Header, Body } from 'native-base'
 // import { createStackNavigator } from 'react-navigation'
 import DrawerNavigator from './screens/DrawerNavigator'
 import {StackNavigator,createStackNavigator, DrawerItems} from 'react-navigation'
 import WelcomeScreen from './screens/login/WelcomeScreen'
-import LoginScreen from './screens/login/LoginScreen'
-import SignUpScreen from './screens/login/SignUpScreen'
-import HomeScreen from './screens/HomeScreen'
+// import LoginScreen from './screens/login/LoginScreen'
+// import SignUpScreen from './screens/login/SignUpScreen'
+// import HomeScreen from './screens/HomeScreen'
 
 
 export default class App extends React.Component {
@@ -24,9 +24,9 @@ const AppStackNavigator = new createStackNavigator({
     navigationOptions: {
       header: null
     }},
-  LoginScreen: { screen: LoginScreen },
-  SignUpScreen: { screen: SignUpScreen },
-  HomeScreen: { screen: HomeScreen },
+  // LoginScreen: { screen: LoginScreen },
+  // SignUpScreen: { screen: SignUpScreen },
+  // HomeScreen: { screen: HomeScreen },
   DrawerNavigator: {
     screen: DrawerNavigator,
     navigationOptions: {

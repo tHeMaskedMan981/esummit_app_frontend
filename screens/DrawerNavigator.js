@@ -10,7 +10,7 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import {StackNavigator, DrawerItems, SafeAreaView } from 'react-navigation'
 import { Container, Content, Icon, Header, Body } from 'native-base'
-import HomeScreen from './HomeScreen';
+// import HomeScreen from './HomeScreen';
 import suit from '../assets/images/suit.jpg';
 import { createDrawerNavigator, createStackNavigator } from 'react-navigation'
 import HomeScreenTabNavigator from './HomeScreenTabNavigator'
@@ -19,9 +19,9 @@ import EventTabNavigator from './EventTabNavigator'
 import HelplineNavigator from './HelplineNavigator'
 import DeveloperNavigator from './DeveloperNavigator'
 import SpeakerNavigator from './SpeakerNavigator'
-import ContactNavigator from './ContactNavigator'
+// import ContactNavigator from './ContactNavigator'
 import FeedbackNavigator from './FeedbackNavigator'
-import LogoutNavigator from './LogoutNavigator'
+// import LogoutNavigator from './LogoutNavigator'
 
 const InnerStackNavigator = new createStackNavigator({
     TabNavigator: {
@@ -59,21 +59,21 @@ const DeveloperStackNavigator = new createStackNavigator({
     }
 }) 
 
-const ContactStackNavigator = new createStackNavigator({
-    ContactNavigator: {
-        screen: ContactNavigator
-    }
-})
+// const ContactStackNavigator = new createStackNavigator({
+//     ContactNavigator: {
+//         screen: ContactNavigator
+//     }
+// })
 const FeedbackStackNavigator = new createStackNavigator({
     FeedbackNavigator: {
         screen: FeedbackNavigator
     }
 })
-const LogoutStackNavigator = new createStackNavigator({
-    LogoutNavigator: {
-        screen: LogoutNavigator
-    }
-})
+// const LogoutStackNavigator = new createStackNavigator({
+//     LogoutNavigator: {
+//         screen: LogoutNavigator
+//     }
+// })
 
 var user_name;
 var user_id;
@@ -87,7 +87,7 @@ const CustomDrawerContentComponent = (props) => (
             style={styles.drawerImage}
             source={require('../assets/images/suit.jpg')} />
             <View style={styles.welcome}>
-                <Text style={{color:'white', fontWeight: 'bold'}}>Hi {user_name}</Text>
+                <Text style={{color:'white', fontWeight: 'bold'}}>E-Summit'19</Text>
             </View>
         </Body>
       </Header>
@@ -121,49 +121,50 @@ const AppDrawerNavigator = new createDrawerNavigator({
     //         )
     //     }
     // },
-    Speakers: {screen: SpeakerStackNavigator,
-        navigationOptions: {
-            drawerIcon: () => (
-                <Ionicons name="md-mic" size={16} />
-            )
-        }
-    },
+    // Speakers: {screen: SpeakerStackNavigator,
+    //     navigationOptions: {
+    //         drawerIcon: () => (
+    //             <Ionicons name="md-person" size={16} />
+    //         )
+    //     }
+    // },
     Helpline: {screen : HelplineStackNavigator,
         navigationOptions: {
             drawerIcon: () => (
-                <Ionicons name="md-help" size={16} />
+                <Ionicons name="md-medkit" size={16} />
+            )
+        }
+    },
+    Feedback: {screen : FeedbackStackNavigator,
+        navigationOptions: {
+            drawerIcon: () => (
+                <Ionicons name="md-book" size={16} />
             )
         }
     },
     // Developer: {screen : DeveloperStackNavigator,
     //     navigationOptions: {
     //         drawerIcon: () => (
-    //             <Ionicons name="md-home" size={16} />
+    //             <Ionicons name="md-code-working" size={16} />
     //         )
     //     }
     // },
-    Contacts: {screen : ContactStackNavigator,
-        navigationOptions: {
-            drawerIcon: () => (
-                <Ionicons name="md-call" size={16} />
-            )
-        }
-    },
+    // Contacts: {screen : ContactStackNavigator,
+    //     navigationOptions: {
+    //         drawerIcon: () => (
+    //             <Ionicons name="md-call" size={16} />
+    //         )
+    //     }
+    // },
     
-    Feedback: {screen : FeedbackStackNavigator,
-        navigationOptions: {
-            drawerIcon: () => (
-                <Ionicons name="md-home" size={16} />
-            )
-        }
-    },
-    Developers: {screen: DeveloperStackNavigator,
-        navigationOptions:{
-            drawerIcon:()=>(
-                <Ionicons name="md-home" size={16}/>
-            )
-        }
-    }
+
+    // Developers: {screen: DeveloperStackNavigator,
+    //     navigationOptions:{
+    //         drawerIcon:()=>(
+    //             <Ionicons name="md-home" size={16}/>
+    //         )
+    //     }
+    // }
     // Logout: {screen : LogoutStackNavigator,
     //     navigationOptions: {
     //         drawerIcon: () => (

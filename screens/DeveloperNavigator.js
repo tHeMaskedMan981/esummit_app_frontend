@@ -160,4 +160,5 @@ const styles = StyleSheet.create({
     imageContainer:{
         flex:4,
     }
-});
+
+}); 

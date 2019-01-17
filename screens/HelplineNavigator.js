@@ -15,7 +15,7 @@ export default class HelplineScreen extends Component {
         return {
             title:'Helpline',
             headerStyle: {
-                backgroundColor: 'steelblue',
+                backgroundColor: '#221d3d',
               },
               headerTintColor: '#fff',
     
@@ -31,7 +31,7 @@ export default class HelplineScreen extends Component {
 
             <View style={{flex: 1, flexDirection:'column', padding:20}}>
        <View style={styles.helplineHeader}><Text style={{fontSize: 25,color:'white'}}> Hospital</Text></View>
-            <View style={{flex: 0.5,  flexDirection:'row', justifyContent: "space-around"}}>
+            <View style={{flex: 0.5,  flexDirection:'row', justifyContent: "space-around",marginHorizontal: 10}}>
                 
                <View style={{ flex:0.5, justifyContent: 'flex-start',paddingLeft:8}}>
                 <Text style={{fontSize: 15, marginVertical:7}}>Ambulance</Text> 
@@ -52,7 +52,7 @@ export default class HelplineScreen extends Component {
             </View>
 
             <View style={style=styles.helplineHeader}><Text style={{fontSize: 25, color:'white'}}> Security Section</Text></View>
-            <View style={{flex: 0.5,  flexDirection:'row', justifyContent: "space-around"}}>
+            <View style={{flex: 0.5,  flexDirection:'row', justifyContent: "space-around",marginHorizontal: 10}}>
                 
                <View style={{ flex:0.5, justifyContent: 'flex-start',paddingLeft:8}}>
                 <Text style={{fontSize: 15, marginVertical:7}}>Main Gate</Text> 
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         color:'white',
         backgroundColor: '#6674a3',
-        marginHorizontal: 20
+        marginHorizontal: 10
 
     }
 });

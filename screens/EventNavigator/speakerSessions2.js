@@ -32,7 +32,7 @@ import EventScreen from './EventScreen';
  var url;
  let numColumns = 1;
 
-class speaker2 extends Component {
+class Speaker2 extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -71,4 +71,4 @@ class speaker2 extends Component {
         );
     }
 }
-export default speaker2;
+export default Speaker2;

@@ -33,7 +33,7 @@ class SpeakerScreen extends Component {
                 return {
                     title:'Speakers',
                     headerStyle: {
-                        backgroundColor: 'steelblue',
+                        backgroundColor: '#221d3d',
                       },
                       headerTintColor: '#fff',
                     headerLeft: (

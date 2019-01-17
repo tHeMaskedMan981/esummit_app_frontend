@@ -24,7 +24,7 @@ export default class AppTabNavigator extends Component {
             title: "Schedule",
             headerTintColor: '#fff',
             headerStyle: {
-                backgroundColor: 'steelblue',
+                backgroundColor: '#221d3d',
               },
             headerLeft: (
                 <View style={{ padding: 10 }}>
