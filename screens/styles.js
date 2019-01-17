@@ -229,50 +229,140 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'white',
-        flexDirection:'column'
+        flexDirection:'column',
+        borderColor:'#dce0a3',
+        borderWidth:1,
+        borderRadius: 10,
+        marginTop:50,
+        marginBottom:50,
+        marginLeft:25,
+        marginRight:25,
       },
-    
-      background:{
+    new_welcome_container_normal:{
+        alignItems: 'center',
+        flex:1,
+        backgroundColor: 'white',
+        flexDirection:'column',
+        justifyContent:'center',
+        borderColor:'#dce0a3',
+        borderWidth:1,
+        borderRadius: 10,
+        // paddingBottom: '5%',
+        // marginTop:150,
+        // marginBottom:220,
+        // marginLeft:25,
+        // marginRight:25,
+    },
+    background:{
         width:'100%',
         justifyContent:'center',
         alignItems:'center'
     
-      },
-      inputs:{
+    },
+    inputs:{
         width:'100%',
         justifyContent:'center',
-        alignItems:'center'
-      },
-      buttons:{
+        alignItems:'center',
+    },
+    inputsFeedback:{
         width:'100%',
-        alignItems:'center'
-      },
-      input: {
+        //justifyContent:'space-evenly',
+        alignItems:'center',
+        flex:2,
+        // margin:15,
+        flexDirection:'column',
+        justifyContent:'center',
+        marginBottom:30,
+    },
+    buttons:{
+        width:'100%',
+        alignItems:'center',
+    },
+    buttonFeedback:{
+        width:'100%',
+        alignItems:'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        flex:1,
+        marginTop:'15%',
+        padding:20
+
+    },
+    input: {
         width: '80%',
         // height: '10%',
         // padding:'10%',
         margin:'10%',
         borderBottomWidth :1,
-        borderBottomColor: 'white',
+        borderColor: '#dce0a3',
         marginTop:0,
         // marginBottom: 15,
         borderRadius: 10,
         fontSize: 20,
-        color:'white',
-      },
-      binput: {
+        color:'black',
+    },
+    binput: {
         marginTop:10,
         width: '70%',
         paddingBottom:'auto',
-        // borderRadius: 10,
+        borderRadius: 10,
     
-      },
-      binput1: {
+    },
+    binput1: {
         marginTop:10,
         width: '70%',
         paddingBottom:'auto',
-        // borderRadius: 10,
-    
-        
-        },
+        borderRadius: 10,
+    },
+    inputSubject:{
+        height: 40, 
+        borderColor: 'gray', 
+        borderWidth: 2,
+        borderRadius: 10,
+        borderColor: '#dce0a3', 
+        backgroundColor:'rgba(70, 130, 180,0.04)',
+        paddingLeft : 10,
+        paddingRight: 10,
+        width: '80%',
+        marginTop:20,
+        //textAlign:'center',
+    },
+    inputFeedback:{
+        height: 200, 
+        borderColor: 'gray', 
+        borderWidth: 2,
+        borderRadius: 10,
+        borderColor: '#dce0a3', 
+        backgroundColor:'rgba(70, 130, 180,0.04)',
+        paddingLeft : 10,
+        paddingRight: 10,
+        width: '80%',
+        marginTop:20,
+        textAlignVertical: 'top',
+        paddingTop:5,
+        //textAlign:'center',
+    },
+    feedbackButtonRegion:{
+        flex:1,
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'flex-start',
+        paddingBottom:100,
+    },
+    feedbackButton:{
+        width:'80%',
+        height:'100%',
+        paddingTop:10,
+        paddingBottom: 10,
+        backgroundColor:'#6674a3',
+        borderColor:'#6674a3',
+        borderWidth:1,
+        borderRadius:10,
+    },
+    feedbackSubject:{
+        flex:1,
+        flexDirection:'column',
+        justifyContent:'flex-end',
+        margin:30
+    }
 });
