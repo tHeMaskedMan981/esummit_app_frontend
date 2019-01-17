@@ -9,8 +9,8 @@ import {
 import { createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-navigation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
-import speakerSessions from './EventNavigator/speakerSessions'
-import speakerSessions2 from './EventNavigator/speakerSessions2'
+import speaker from './EventNavigator/speakerSessions'
+import speaker2 from './EventNavigator/speakerSessions2'
 import competitions from './EventNavigator/competitions'
 import competitions2 from './EventNavigator/competitions2'
 import others from './EventNavigator/others'
@@ -57,12 +57,12 @@ export default class AppTabNavigator extends Component {
 
 const SpeakerTabNavigator = new createMaterialTopTabNavigator({
     speakerDay1: {
-        screen: speakerSessions,
+        screen: speaker,
         navigationOptions: {
             tabBarLabel: 'Day 1'}
     },
     speakerDay2: {
-        screen: speakerSessions2,
+        screen: speaker2,
         navigationOptions: {
             tabBarLabel: 'Day 2'}
     }    

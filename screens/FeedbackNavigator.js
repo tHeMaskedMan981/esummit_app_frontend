@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage, Image , ToastAndroid } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage, Image , ToastAndroid, TouchableNativeFeedback} from 'react-native';
 import GradientButton from 'react-native-gradient-buttons'
 import {
     List,
@@ -36,34 +36,64 @@ class SpeakerScreen extends Component {
                     )
                 }
             }
-
-            onLogin() {
-
-                const  sub = this.state.sub;
-                const  feedback  = this.state.feedback;
-            
-                Alert.alert('Feedback Submitted', "Thanks a lot for providing your valuable feedback. Hope you have a great learning experience at E-Summit");
-                return fetch('http://esummit.ecell.in/v1/feedback/submit', {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    sub: sub,
-                    feedback: feedback,
-                }),
-
-                })
-                .then((response) => response.json())
-                .then((responseJson) => {
-            
-                })
-                .catch((error) =>{
-                  console.error(error);
-                });
-              }
-              
+    SendFeedback = ((sub,feedback)=>{
+        if(sub == null||feedback == null||sub == ''||feedback == ''){
+            Alert.alert('Invalid Entry',"Please send feedback with non-empty entries");
+            return null;
+        }
+        ToastAndroid.showWithGravityAndOffset(
+            'Sending',
+            ToastAndroid.SHORT,
+            ToastAndroid.TOP,
+            0,
+            40,
+        )
+        fetch('http://esummit.ecell.in/v1/api/feedback', {  
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            subject: String(sub),
+            description: String(feedback),
+        })
+        })
+        .catch((error)=>{
+            console.error(error);
+        })
+        .then(()=>{
+            this.setState({
+                sub:'',
+                feedback:'',
+            });
+        })
+        .then(()=>{
+            ToastAndroid.showWithGravityAndOffset(
+                'Sent',
+                ToastAndroid.SHORT,
+                ToastAndroid.TOP,
+                0,
+                40,
+            );
+        })
+        .then(()=>{
+            Alert.alert('Feedback Submitted', "Thanks a lot for providing your valuable feedback. Hope you have a great learning experience at E-Summit");
+        })
+    })
+    clearEntry = (()=>{
+        this.setState({
+            sub:'',
+            feedback:'',
+        });
+        ToastAndroid.showWithGravityAndOffset(
+            'Cleared',
+            ToastAndroid.SHORT,
+            ToastAndroid.TOP,
+            0,
+            40,
+        );
+    })         
     render() {
         if(this.state.isLoading){
             return(
@@ -74,59 +104,43 @@ class SpeakerScreen extends Component {
           }
     
           return(
-        <View style={styles.welcome_container_normal}>
-            <View style={styles.inputs}>
+        <View style={styles.new_welcome_container_normal}>
+            <View style={styles.feedbackSubject}>
+                <Text style={{fontSize:20,fontWeight:'bold',textAlign:'center'}}>We would love to hear from you!</Text>
+            </View>
+            <View style={styles.inputsFeedback}>
                 <TextInput
                 value={this.state.sub}
                 onChangeText={ (sub) => {
                     this.setState({ sub });
                     }}
+                style={styles.inputSubject}
                 placeholder={'Subject'}
-                style={styles.input}
                 />
 
                 <TextInput
-                multiline = {true}
-                numberOfLines = {4}
                 value={this.state.feedback}
                 onChangeText={(feedback) => this.setState({ feedback })}
                 placeholder={'Feedback'}
-                style={styles.input}
+                multiline={true}
+                style={styles.inputFeedback}
                 />
             </View>
-            <View style={styles.buttons}>
-                <View style={{flex:1, flexDirection:'row'}}>
-                <View style={{flex:1}}>
-                <GradientButton
-                style= {styles.binput1}
-                textStyle={{ fontSize: 24 }}
-                text="Submit"
-                height={40}
-                gradientBegin="#6673a4"
-                gradientEnd="#6673a4"
-                impact='True'
-                impactStyle = 'Light'
-                onPressAction={this.onLogin.bind(this)}
-                />
+            <View style={styles.buttonFeedback}>
+                <View style={styles.feedbackButtonRegion}>
+                    <TouchableNativeFeedback onPress = {()=>{this.SendFeedback(this.state.sub,this.state.feedback)}}>
+                        <View style={styles.feedbackButton}>
+                            <Text style={{color:'white',textAlign:'center',fontSize:20,fontWeight:'bold'}}>Submit</Text>
+                        </View>
+                    </TouchableNativeFeedback>
                 </View>
-                <View style={{flex:1}}>
-                <GradientButton
-                style= {styles.binput1}
-                textStyle={{ fontSize: 24 }}
-                text="Clear"
-                height={40}
-                gradientBegin="#6673a4"
-                gradientEnd="#6673a4"
-                impact='True'
-                impactStyle = 'Light'
-                onPressAction={() =>
-                    this.setState({
-                        sub:"" ,
-                        feedback:""})}
-                />
-                </View></View>
-                
-                
+                <View style={styles.feedbackButtonRegion}>
+                    <TouchableNativeFeedback onPress={()=>{this.clearEntry()}}>
+                        <View style={styles.feedbackButton}>
+                            <Text style={{color:'white',textAlign:'center',fontSize:20,fontWeight:'bold'}}>Clear</Text>
+                        </View>
+                    </TouchableNativeFeedback>
+                </View>
                 
             </View>    
         </View>
@@ -134,37 +148,3 @@ class SpeakerScreen extends Component {
     }
 }
 export default SpeakerScreen;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

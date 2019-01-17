@@ -53,11 +53,11 @@ const HelplineStackNavigator = new createStackNavigator({
     }
 })
 
-// const DeveloperStackNavigator = new createStackNavigator({
-//     DeveloperNavigator: {
-//         screen: DeveloperNavigator
-//     }
-// }) 
+const DeveloperStackNavigator = new createStackNavigator({
+    DeveloperNavigator: {
+        screen: DeveloperNavigator
+    }
+}) 
 
 const ContactStackNavigator = new createStackNavigator({
     ContactNavigator: {
@@ -157,6 +157,13 @@ const AppDrawerNavigator = new createDrawerNavigator({
             )
         }
     },
+    Developers: {screen: DeveloperStackNavigator,
+        navigationOptions:{
+            drawerIcon:()=>(
+                <Ionicons name="md-home" size={16}/>
+            )
+        }
+    }
     // Logout: {screen : LogoutStackNavigator,
     //     navigationOptions: {
     //         drawerIcon: () => (
