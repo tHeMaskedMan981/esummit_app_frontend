@@ -9,15 +9,15 @@
       "android"
     ],
     "android": {
-      "package": "com.ecell.naruto"
+      "package": "in.ecell.esummit"
     },
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo.png",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#221d3d"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

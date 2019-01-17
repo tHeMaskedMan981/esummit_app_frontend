@@ -90,7 +90,7 @@ const ScreenOneTabNavigator = new createMaterialTopTabNavigator({
             //   color:'red',
             },
             style: {
-            //   backgroundColor: '#6673a4',
+              backgroundColor: '#6674a3',
             },
           }
     });

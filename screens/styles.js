@@ -221,8 +221,9 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#221d3d',
+        backgroundColor: 'black',
         flexDirection:'column',
-        padding:20
+        // padding:20
       },
     welcome_container_normal: {
         flex: 1,
@@ -305,7 +306,9 @@ export default StyleSheet.create({
         marginTop:10,
         width: '70%',
         paddingBottom:'auto',
-        borderRadius: 10,
+        // borderBottomWidth :1,
+        // borderColor: '#dce0a3',
+        // borderRadius: 10,
     
     },
     binput1: {

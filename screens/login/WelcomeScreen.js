@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage, Image , ToastAndroid } from 'react-native';
+import { Alert, Button, TextInput, View, StyleSheet, Text,AsyncStorage, Image , ToastAndroid, ImageBackground } from 'react-native';
 import GradientButton from 'react-native-gradient-buttons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import background from '../../assets/images/Compi.png';
+import background from '../../assets/images/splash.png';
 import styles from '../styles';
 
 export default class WelcomeScreen extends Component {
@@ -361,14 +361,17 @@ storeData(){
     // console.log(this.state.esummit_id);
     
     return (
+      <ImageBackground source={require('../../assets/images/splash.png')} style={{width: '100%', height: '100%'}}>
+    
+  
       <View style={styles.welcome_container}>
         
         <View style={styles.background}>
-        <Image style={{height:200,width:200,marginTop:5,marginLeft:2}}
+        <Image style={{height:'85%',width:'100%',marginTop:5,marginLeft:2}}
          source={background}/>
                                       
         </View>
-        <View style={styles.inputs}>
+        {/* <View style={styles.inputs}> */}
         {/* <TextInput
           value={this.state.email}
           onChangeText={ (email) => {
@@ -394,7 +397,7 @@ storeData(){
           secureTextEntry={true}
           style={styles.input}
         /> */}
-        </View>
+        {/* </View> */}
         <View style={styles.buttons}>
         {/* <GradientButton
           style= {styles.binput1}
@@ -427,10 +430,11 @@ storeData(){
           <GradientButton
           text="Let's DISRUPT!"
           style={styles.binput}
-          textStyle={{ fontSize: 20 }}
-          height={40}
-          gradientBegin="#6673a4"
-           gradientEnd="#6673a4"
+          textStyle={{ fontSize: 20,
+          color:'white' }}
+          height={60}
+          gradientBegin="#221d3d"
+           gradientEnd="#221d3d"
           // impact='True'
           impactStyle = 'Light'
           onPressAction={() => {
@@ -454,6 +458,7 @@ storeData(){
         </View> */}
         {/* {this.state.islogin=='true'? this.navigate(): null} */}
       </View>
+      </ImageBackground>
     );
   }
 }
