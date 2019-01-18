@@ -158,13 +158,13 @@ const AppDrawerNavigator = new createDrawerNavigator({
     // },
     
 
-    // Developers: {screen: DeveloperStackNavigator,
-    //     navigationOptions:{
-    //         drawerIcon:()=>(
-    //             <Ionicons name="md-home" size={16}/>
-    //         )
-    //     }
-    // }
+    Developers: {screen: DeveloperStackNavigator,
+        navigationOptions:{
+            drawerIcon:()=>(
+                <Ionicons name="md-home" size={16}/>
+            )
+        }
+    }
     // Logout: {screen : LogoutStackNavigator,
     //     navigationOptions: {
     //         drawerIcon: () => (

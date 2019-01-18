@@ -1,12 +1,12 @@
 import { createBottomTabNavigator,createStackNavigator } from 'react-navigation'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import React, { Component } from "react";
-import { Row } from "native-base";
+import { Row, Item } from "native-base";
 import {
     View,
     Text,
     StyleSheet,
-    Image,
+    ImageBackground,
     AsyncStorage,
     ToastAndroid,
     ScrollView,
@@ -23,7 +23,11 @@ class Developer extends Component{
         return(
             <View style={styles.vname}>
                 <View style={styles.imageContainer}>
+                    <ImageBackground source={this.props.imageVariable} style={styles.imageDef}>
+                        <View style={styles.backgroundEffect}>
 
+                        </View>
+                    </ImageBackground>
                 </View>
             </View>
         )
@@ -130,7 +134,7 @@ const styles = StyleSheet.create({
         flexDirection:'column',
         height:200,
         borderRadius:10,
-        backgroundColor:'#93a0cc',
+        backgroundColor:'white',
     },
     tname:{
         fontSize:24,
@@ -159,6 +163,12 @@ const styles = StyleSheet.create({
     },
     imageContainer:{
         flex:4,
+    },
+    imageDef:{
+        height:200,
+        width:image_width,
+    },
+    backgroundEffect:{
+        backgroundColor:'rgb(0,0,0,0.1)'
     }
-
 }); 
