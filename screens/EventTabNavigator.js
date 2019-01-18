@@ -66,7 +66,20 @@ const SpeakerTabNavigator = new createMaterialTopTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Day 2'}
     }    
-})
+},
+{
+        tabBarOptions: {
+            activeTintColor: 'white',
+            activeBackgroundColor:'#D3D3D3',
+            labelStyle: {
+              fontSize: 14,
+            //   color:'red',
+            },
+            style: {
+              backgroundColor: '#6674a3',
+            },
+          }
+    })
 const CompetitionsTabNavigator = new createMaterialTopTabNavigator({
     competitionsDay1: {
         screen: competitions,
@@ -78,7 +91,20 @@ const CompetitionsTabNavigator = new createMaterialTopTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Day 2'}
     }    
-})
+},
+{
+        tabBarOptions: {
+            activeTintColor: 'white',
+            activeBackgroundColor:'#D3D3D3',
+            labelStyle: {
+              fontSize: 14,
+            //   color:'red',
+            },
+            style: {
+              backgroundColor: '#6674a3',
+            },
+          }
+    })
 const OthersTabNavigator = new createMaterialTopTabNavigator({
     othersDay1: {
         screen: others,
@@ -90,7 +116,20 @@ const OthersTabNavigator = new createMaterialTopTabNavigator({
         navigationOptions: {
             tabBarLabel: 'Day 2'}
     }    
-})
+},
+{
+        tabBarOptions: {
+            activeTintColor: 'white',
+            activeBackgroundColor:'#D3D3D3',
+            labelStyle: {
+              fontSize: 14,
+            //   color:'red',
+            },
+            style: {
+              backgroundColor: '#6674a3',
+            },
+          }
+    })
 const EventTabNavigator = new createBottomTabNavigator({
     SpeakerSessions: {
         screen: SpeakerTabNavigator,
