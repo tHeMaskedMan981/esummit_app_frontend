@@ -428,7 +428,7 @@ storeData(){
            onPress={this.onGoogleLogin.bind(this)} 
            /> */}
           <GradientButton
-          text="Let's DISRUPT!"
+          text=" Let's DISRUPT! "
           style={styles.binput}
           textStyle={{ fontSize: 20,
           color:'white' }}

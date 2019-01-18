@@ -21,17 +21,18 @@ export default class AppTabNavigator extends Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-            title: "Schedule",
+            title: " Schedule ",
             headerTintColor: '#fff',
             headerStyle: {
                 backgroundColor: '#221d3d',
+                width:'100%',
               },
             headerLeft: (
                 <View style={{ padding: 10 }}>
                     <Ionicons name="md-menu" size={44} color='white' onPress={() => navigation.openDrawer()} />
                 </View>
             ),
-            drawerLabel: 'Schedule',
+            drawerLabel: ' Schedule ',
             drawerIcon: ({ tintColor }) => (
               <Image
                 source={require('../assets/images/robot-dev.png')}

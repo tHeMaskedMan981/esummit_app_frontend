@@ -169,6 +169,6 @@ const styles = StyleSheet.create({
         width:image_width,
     },
     backgroundEffect:{
-        backgroundColor:'rgb(0,0,0,0.1)'
+        flex:1,
     }
 }); 

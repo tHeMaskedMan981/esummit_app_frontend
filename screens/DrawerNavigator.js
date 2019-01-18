@@ -24,13 +24,13 @@ import FeedbackNavigator from './FeedbackNavigator'
 // import LogoutNavigator from './LogoutNavigator'
 
 const InnerStackNavigator = new createStackNavigator({
-    TabNavigator: {
+    TabNavigator : {
         screen: HomeScreenTabNavigator
     }
 })
 
 const EventStackNavigator = new createStackNavigator({
-    EventTabNavigator: {
+    EventTabNavigator : {
         screen: EventTabNavigator
     }
 })
@@ -42,19 +42,19 @@ const EventStackNavigator = new createStackNavigator({
 // })
 
 const SpeakerStackNavigator = new createStackNavigator({
-    SpeakerNavigator: {
+    SpeakerNavigator : {
         screen: SpeakerNavigator
     }
 })
 
 const HelplineStackNavigator = new createStackNavigator({
-    HelplineNavigator: {
+    HelplineNavigator : {
         screen: HelplineNavigator
     }
 })
 
 const DeveloperStackNavigator = new createStackNavigator({
-    DeveloperNavigator: {
+    DeveloperNavigator : {
         screen: DeveloperNavigator
     }
 }) 
@@ -65,7 +65,7 @@ const DeveloperStackNavigator = new createStackNavigator({
 //     }
 // })
 const FeedbackStackNavigator = new createStackNavigator({
-    FeedbackNavigator: {
+    FeedbackNavigator : {
         screen: FeedbackNavigator
     }
 })
@@ -87,7 +87,7 @@ const CustomDrawerContentComponent = (props) => (
             style={styles.drawerImage}
             source={require('../assets/images/suit.jpg')} />
             <View style={styles.welcome}>
-                <Text style={{color:'white', fontWeight: 'bold'}}>E-Summit'19</Text>
+                <Text style={{color:'white', fontWeight: 'bold',width:'100%'}}>  E-Summit'19  </Text>
             </View>
         </Body>
       </Header>
@@ -98,16 +98,16 @@ const CustomDrawerContentComponent = (props) => (
     </Container>
   
   );
-  
 const AppDrawerNavigator = new createDrawerNavigator({
-    Highlights: { screen: InnerStackNavigator,
+
+    Highlights : { screen: InnerStackNavigator,
         navigationOptions: {
             drawerIcon: () => (
                 <Ionicons name="md-star" size={16} />
             )
         }
     },
-    Schedule: { screen: EventStackNavigator, 
+    Schedule : { screen: EventStackNavigator, 
         navigationOptions: {
             drawerIcon: () => (
                 <Ionicons name="md-bookmark" size={16} />
@@ -128,14 +128,14 @@ const AppDrawerNavigator = new createDrawerNavigator({
     //         )
     //     }
     // },
-    Helpline: {screen : HelplineStackNavigator,
+    Helpline : {screen : HelplineStackNavigator,
         navigationOptions: {
             drawerIcon: () => (
                 <Ionicons name="md-medkit" size={16} />
             )
         }
     },
-    Feedback: {screen : FeedbackStackNavigator,
+    Feedback : {screen : FeedbackStackNavigator,
         navigationOptions: {
             drawerIcon: () => (
                 <Ionicons name="md-book" size={16} />
@@ -158,13 +158,13 @@ const AppDrawerNavigator = new createDrawerNavigator({
     // },
     
 
-    Developers: {screen: DeveloperStackNavigator,
-        navigationOptions:{
-            drawerIcon:()=>(
-                <Ionicons name="md-home" size={16}/>
-            )
-        }
-    }
+    // Developers: {screen: DeveloperStackNavigator,
+    //     navigationOptions:{
+    //         drawerIcon:()=>(
+    //             <Ionicons name="md-home" size={16}/>
+    //         )
+    //     }
+    // }
     // Logout: {screen : LogoutStackNavigator,
     //     navigationOptions: {
     //         drawerIcon: () => (
