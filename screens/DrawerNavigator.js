@@ -18,15 +18,25 @@ import EventTabNavigator from './EventTabNavigator'
 // import SponsorNavigator from './SponsorNavigator'
 import HelplineNavigator from './HelplineNavigator'
 import DeveloperNavigator from './DeveloperNavigator'
-import SpeakerNavigator from './SpeakerNavigator'
+// import SpeakerNavigator from './SpeakerNavigator'
 import ContactNavigator from './ContactNavigator'
 import FeedbackNavigator from './FeedbackNavigator'
 import LogoutNavigator from './LogoutNavigator'
-
+// import MessageNavigator from './MessageNavigator'
+import ChatNavigator from './ChatNavigator'
+import FriendNavigator from './FriendNavigator'
 const InnerStackNavigator = new createStackNavigator({
     TabNavigator: {
         screen: HomeScreenTabNavigator
     }
+})
+const MessageStackNavigator = new createStackNavigator({
+    FriendNavigator :{
+        screen:FriendNavigator
+    },
+    ChatNavigator :{
+        screen:ChatNavigator
+    },
 })
 
 const EventStackNavigator = new createStackNavigator({
@@ -41,11 +51,11 @@ const EventStackNavigator = new createStackNavigator({
 //     }
 // })
 
-const SpeakerStackNavigator = new createStackNavigator({
-    SpeakerNavigator: {
-        screen: SpeakerNavigator
-    }
-})
+// const SpeakerStackNavigator = new createStackNavigator({
+//     SpeakerNavigator: {
+//         screen: SpeakerNavigator
+//     }
+// })
 
 const HelplineStackNavigator = new createStackNavigator({
     HelplineNavigator: {
@@ -100,6 +110,14 @@ const CustomDrawerContentComponent = (props) => (
   );
   
 const AppDrawerNavigator = new createDrawerNavigator({
+    Messaging:{screen: MessageStackNavigator,
+        navigationOptions:{
+            drawerIcon: () => (
+                <Ionicons name="ios-chatboxes" size={16} />
+            )
+        }
+
+    },
     Highlights: { screen: InnerStackNavigator,
         navigationOptions: {
             drawerIcon: () => (
@@ -121,13 +139,13 @@ const AppDrawerNavigator = new createDrawerNavigator({
     //         )
     //     }
     // },
-    Speakers: {screen: SpeakerStackNavigator,
-        navigationOptions: {
-            drawerIcon: () => (
-                <Ionicons name="md-mic" size={16} />
-            )
-        }
-    },
+    // Speakers: {screen: SpeakerStackNavigator,
+    //     navigationOptions: {
+    //         drawerIcon: () => (
+    //             <Ionicons name="md-mic" size={16} />
+    //         )
+    //     }
+    // },
     Helpline: {screen : HelplineStackNavigator,
         navigationOptions: {
             drawerIcon: () => (
